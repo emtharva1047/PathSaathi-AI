@@ -24,7 +24,7 @@ app.include_router(health_router)
 @app.exception_handler(Exception)
 async def handle_unexpected_exception(request: Request, exc: Exception) -> JSONResponse:
     """Return a generic error without exposing internal details to API clients."""
-    logger.error("Unhandled API error on %s", request.url.path, exc_info=exc)
+    logger.error("Unhandled API error on %s (%s)", request.url.path, type(exc).__name__)
     return JSONResponse(
         status_code=500,
         content={"detail": "An unexpected server error occurred."},
