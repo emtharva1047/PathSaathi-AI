@@ -1,23 +1,18 @@
 # Project Research — SIH Problem Statement 26241
 
-## Official challenge metadata supplied by project owner
-
+## Official challenge metadata
 - **Problem Statement ID:** 26241
 - **Title:** AI-Enabled Career Counselling and Family Decision-Support Platform for Vocational Education
-- **Organisation:** Ministry of Skill Development and Entrepreneurship (MSDE)
-- **Department:** Ministry of Skill Development and Entrepreneurship (MSDE)
-- **Category:** Software
-- **Theme:** Smart Education
-- **Dataset field:** "NA - dummy placement/earnings datasets to be provided for hackathon evaluation"
-- **YouTube link / contact info:** blank in the supplied details.
+- **Organisation / Department:** Ministry of Skill Development and Entrepreneurship (MSDE)
+- **Category / Theme:** Software / Smart Education
+- **Official listing:** https://www.sih.gov.in/sih2026PS
+- **Dataset field:** NA — dummy placement/earnings datasets to be provided for hackathon evaluation.
 
-The complete background, challenge description and expected outcomes transcribed from the provided SIH screenshot/text are recorded in `docs/PROBLEM_STATEMENT_26241.md`.
+The full problem statement is transcribed in docs/PROBLEM_STATEMENT_26241.md.
 
 ## Problem interpretation
 
-The brief identifies family perception as a factor shaping vocational enrolment, retention and progression. It describes an important gap in learner-only career guidance: parents may influence or veto vocational choices, particularly when concerned about earning potential, safety and social standing. The product must therefore make the family unit part of counselling.
-
-The challenge is not satisfied by a generic chatbot, a static course catalogue or an individual career score. Its centre of gravity is:
+The challenge is not satisfied by a generic chatbot, static course catalogue or learner-only career quiz. Its centre of gravity is:
 1. joint learner-parent conversation;
 2. credible and localised outcome evidence for trades and training providers;
 3. plain-language explanation of trade-to-job-role and NSQF progression;
@@ -25,32 +20,54 @@ The challenge is not satisfied by a generic chatbot, a static course catalogue o
 5. administrator visibility into engagement and where resistance is concentrated;
 6. low-literacy and low-digital-familiarity design.
 
-## Product hypothesis
-
-PathSaathi AI will provide one shared counselling journey where learner and parent can ask questions in English or a regional language, see relevant local evidence and understand qualification pathways. A human counsellor request is available when the evidence is insufficient or the family needs personal support. Scheme administrators see privacy-protected aggregate trends.
-
 ## MVP choices
 
 - Streamlit + FastAPI + SQLAlchemy, Python-first.
 - English + Marathi for the first demonstrator; locale-ready architecture for more languages.
-- Use broad location, academic background and optional household-income bracket for context.
-- Use SIH dummy dataset when received; synthetic fixtures only before then.
-- Track sentiment shift through explicit pre/post self-report rather than hidden emotion inference.
-- Implement callback request and status if live counsellor integration is unavailable; label it accurately.
+- Broad location, academic background and optional household-income bracket for context.
+- SIH dummy dataset when received; synthetic fixtures only before then.
+- Sentiment shift through explicit pre/post self-report rather than hidden emotion inference.
+- Callback request and status if live counsellor integration is unavailable; label it accurately.
 - Admin views are aggregate with small-cohort suppression.
+
+## Qualification and progression evidence
+
+NCVET's National Qualification Register is an inventory of NSQF-aligned and approved qualifications. Qualification windows can contain qualification files, model curricula, industry validations and occupational maps. The NQR search interface exposes filters for academic education, experience, sector, notional hours, NSQF level, qualification type and awarding body.
+
+- NCVET NQR overview: https://ncvet.gov.in/national-qualifications-register/
+- NQR search: https://www.nqr.gov.in/qualifications-search
+- Revised NSQF notification: https://ncvet.gov.in/national-skills-qualification-framework/nsqf-notification/
+
+Use the specific qualification file for entry criteria and learning outcomes; do not infer eligibility from NSQF level alone.
+
+## Employment and earnings evidence
+
+The Directorate General of Training publishes ITI graduate tracer-study reports. One example is the Government of Uttarakhand's June 2023 tracer study:
+- DGT report listing: https://dgt.gov.in/en/node/1998
+- Report PDF: https://www.dgt.gov.in/sites/default/files/2024-02/Final_Tracer_Study_Report_Uttarakhand.pdf
+
+The report describes a survey of 738 ITI graduates across 36 ITIs and focuses on candidates who passed the AITT in academic year 2019. It includes trade and ITI-type employment findings and earnings bands. It is historical and Uttarakhand-specific; it is not a current Maharashtra estimate and must not be presented as an outcome for an individual provider unless the underlying source supports that exact scope.
+
+This demonstrates a possible official data-source type, not a substitute for the SIH dummy dataset or current provider-level records.
 
 ## Important data caveats
 
-The SIH entry says datasets will be provided, but they are not in the supplied materials. No earnings/placement figures can be responsibly claimed yet. The import contract is in `docs/OUTCOME_DATA_CONTRACT.md`.
+- The SIH dummy placement/earnings dataset and its data dictionary are not yet in the repository.
+- Public outcome data may be state-, scheme-, trade- or cohort-level rather than provider-specific.
+- Placement, post-training employment, trade-related employment, apprenticeship and self-employment are distinct measures.
+- Salary averages, medians and salary bands are not interchangeable.
+- Every displayed outcome must carry cohort, geography, sample/denominator, period and source.
+- Missing provider-level evidence must be shown as unavailable, not imputed from a broader study.
+- No real learner/parent personal data is required for the portfolio demo; use synthetic records.
 
-## Validation still needed
+## Validation dependencies
 
 - Inspect organiser-provided dataset schema, definitions, licence and permitted use when received.
-- Confirm which regional language is preferred for the actual target pilot; Marathi is the initial MVP language choice, not a restriction on later locales.
-- Validate wording and accessibility with representative learners and parents.
-- Confirm live counsellor escalation expectations and whether the organisers offer an endpoint or contact directory.
-- Confirm privacy, consent and retention requirements for any pilot.
+- Confirm whether Marathi is the preferred pilot language with the mentor/sponsor.
+- Validate wording and accessibility with representative learners and parents where feasible.
+- Confirm live counsellor escalation expectations and any approved endpoint/contact directory.
+- Review privacy, consent and retention requirements before a real pilot.
 
-## Initial conclusion
+## Phase 1 status
 
-The current 60-day roadmap has been rebalanced to cover every expected SIH outcome while protecting a demonstrable end-to-end workflow. Phase 1 remains open until data and user assumptions are validated and the acceptance checklist is reviewed.
+The requirements baseline is ready for Phase 2 implementation. The dataset, pilot-language and live-counsellor confirmations remain external dependencies tracked in GitHub Issues; they must not be represented as completed.
