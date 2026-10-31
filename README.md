@@ -54,7 +54,32 @@ External dependencies are tracked in GitHub issues: the authorised SIH dummy out
 
 ## Local setup
 
-Implementation commands will be added with the Phase 2 application skeleton.
+Requires Python 3.12+.
+
+```bash
+python -m venv .venv
+# macOS/Linux
+source .venv/bin/activate
+# Windows PowerShell: .venv\Scripts\Activate.ps1
+
+pip install -e ".[dev]"
+```
+
+Run the API and UI in separate terminals:
+
+```bash
+uvicorn backend.main:app --reload
+streamlit run app/streamlit_app.py
+```
+
+Run checks:
+
+```bash
+ruff check .
+pytest -q
+```
+
+The API health endpoint is available at http://127.0.0.1:8000/health. The Streamlit shell starts at http://localhost:8501.
 
 ## License
 
