@@ -1,12 +1,15 @@
-# Phase 1 Acceptance Checklist
+# Phase 1 Acceptance Checklist — SIH PS 26241
 
-- [ ] Confirm complete SIH problem statement and constraints.
-- [ ] Agree target learner cohort (initially Class 10/12 leavers exploring vocational education).
-- [ ] Validate personas and user journeys.
-- [ ] Review functional and non-functional requirements.
-- [ ] Approve 60-day scope and explicit exclusions.
-- [ ] Approve data-source hierarchy and provenance fields.
-- [ ] Review privacy, consent, minors and data-minimisation risks.
-- [ ] Agree MVP success criteria and recommendation evaluation plan.
-- [ ] Record unresolved assumptions and decisions.
-- [ ] Mark Phase 1 complete in ROADMAP only after evidence-based review.
+- [x] Capture PS ID, title, organisation, department, category and theme.
+- [x] Transcribe supplied background, challenge description and expected outcomes.
+- [x] Record the SIH note that dummy placement/earnings datasets will be provided.
+- [x] Update personas and scope to include learner, parent, counsellor and scheme administrator.
+- [x] Add bilingual counselling, low-literacy, NSQF, human escalation and analytics requirements to the SRS.
+- [x] Define initial outcome-data provenance policy and contract.
+- [ ] Inspect organiser-provided dummy dataset and confirm metric/denominator definitions when received.
+- [ ] Validate the first regional language choice with target users; MVP currently targets Marathi + English.
+- [ ] Validate low-literacy interaction with representative users.
+- [ ] Confirm whether an actual counsellor integration or callback workflow is expected.
+- [ ] Final Phase 1 sign-off and baseline acceptance review.
+
+Phase 1 must not be marked complete until unresolved data and user-validation dependencies are either satisfied or explicitly accepted as MVP limitations.
