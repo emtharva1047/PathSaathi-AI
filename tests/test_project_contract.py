@@ -78,4 +78,4 @@ def test_official_sih_requirements_are_mapped() -> None:
 def test_pathway_shortlisting_is_advisory_and_eligibility_safe() -> None:
     srs = read_doc("docs/SRS.md")
     assert "eligible, ineligible and unknown eligibility" in srs
-    assert "not a validated aptitude test" in srs
+    assert "shall not be presented as a validated aptitude test" in srs
