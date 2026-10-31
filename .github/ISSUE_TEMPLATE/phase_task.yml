@@ -1,0 +1,28 @@
+name: Phase task
+description: Track a focused deliverable for the 60-day roadmap
+body:
+  - type: input
+    id: phase
+    attributes:
+      label: Phase / planned day
+      placeholder: Phase 1 / Days 1-5
+    validations:
+      required: true
+  - type: textarea
+    id: outcome
+    attributes:
+      label: Expected outcome
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criteria
+    validations:
+      required: true
+  - type: textarea
+    id: checks
+    attributes:
+      label: Validation / tests
+    validations:
+      required: true
