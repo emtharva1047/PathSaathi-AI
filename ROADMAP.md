@@ -9,8 +9,8 @@ Day numbers are planning windows, not claims that four hours elapsed during an a
 
 | Phase | Days | Objective | Exit evidence | Status |
 |---|---:|---|---|---|
-| 1. Research & requirements | 1–5 | Map official SIH26241 brief, users, SRS, data and risk | Traceability matrix, reviewed SRS, data model, acceptance baseline | In progress |
-| 2. Application foundation | 6–12 | Build Streamlit/FastAPI skeleton, config, DB, locale and CI | App starts, API health, DB smoke test, CI green | Not started |
+| 1. Research & requirements | 1–5 | Map official SIH26241 brief, users, SRS, data and risk | Traceability matrix, reviewed SRS, data model, acceptance baseline | Complete |
+| 2. Application foundation | 6–12 | Build Streamlit/FastAPI skeleton, config, DB, locale and CI | App starts, API health, DB smoke test, CI green | Next |
 | 3. Assessment & recommendations | 13–22 | Build assessment and explainable eligibility-safe matching | Deterministic recommendations with unit tests | Not started |
 | 4. Course & outcome explorer | 23–29 | Import sourced qualifications and outcome evidence | Search/filter/detail/compare with provenance and metric semantics | Not started |
 | 5. Family counselling & escalation | 30–36 | Shared bilingual session, separate preferences and counsellor request queue | Student-parent flow and trackable escalation request | Not started |
@@ -55,20 +55,18 @@ Required evidence:
 - Explicit limitations and data gaps.
 - Deployed demonstration, screenshots and resume-ready documentation.
 
-## Phase 1 progress
-- [x] Official SIH26241 listing reviewed and requirement summary captured.
-- [x] Problem-to-product traceability matrix drafted.
-- [x] Target learner cohort and Maharashtra/Marathi pilot assumption documented.
-- [x] Personas and journeys updated for joint learner-parent counselling.
-- [x] SRS updated for bilingual interface, outcomes evidence, low-literacy UX, escalation and admin analytics.
-- [x] Outcome evidence data model and provenance rules documented.
-- [x] Architecture and risk register updated.
-- [ ] Phase 1 acceptance review and issue closure.
-- [ ] Confirm whether sponsor/mentor requires a different pilot region or language.
+## Phase 1 completion evidence
+- [x] Official SIH26241 listing reviewed and requirements summarised.
+- [x] Problem-to-product traceability matrix added.
+- [x] Initial learner cohort and Maharashtra/Marathi pilot assumption documented.
+- [x] Learner, parent, counsellor, admin and data-curator journeys documented.
+- [x] SRS, architecture, data-source policy, outcome data model and risk register updated.
+- [x] Four Phase 1 issues closed with evidence.
+- [x] External dependencies tracked in issues #5 and #6.
+- [x] Documentation contract tests added; CI validation pending.
 
 ## Progress log
 
 | Date | Phase / planned day | Increment | Checks | Commit |
 |---|---|---|---|---|
-| 2026-11-01 | Phase 1 / Day 1 | Initial requirements baseline and issue tracker | Repository reads verified | Initial docs commits |
-| 2026-11-01 | Phase 1 / Day 1 | Reviewed official SIH26241 requirements; expanded SRS, architecture, data and risk scope | GitHub writes verified; CI failure diagnosed as no tests collected | See commit history |
+| 2026-11-01 | Phase 1 / Days 1–5 | Official SIH brief research, traceability, requirements and data model | GitHub read-back verified; CI issue diagnosed and contract tests added; latest run pending | See commit history |
