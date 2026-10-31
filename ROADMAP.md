@@ -75,7 +75,7 @@ Required evidence:
 - [x] Shared logging configuration and generic API error response added.
 - [x] Package scaffolds created for app, backend, core, database and services.
 - [x] CI installs the project and dev dependencies, compiles packages, runs Ruff and Pytest.
-- [ ] Latest CI validation for the complete Phase 2 scaffold.
+- [x] GitHub Actions run 41232769034 passed: compileall, Ruff and Pytest (9 passed, no test warnings).
 - [ ] SQLAlchemy engine/session and initial models.
 - [ ] UI API-status integration and accessibility review.
 
@@ -84,4 +84,4 @@ Required evidence:
 | Date | Phase / planned days | Increment | Checks / evidence |
 |---|---|---|---|
 | 2026-11-01 | Phase 1 / Days 1–5 | Official SIH research, SRS, traceability, outcome contract, localization, escalation and admin analytics baseline | Ruff passed; Pytest 8 passed in Actions run 41232400382 |
-| 2026-11-01 | Phase 2 / Days 6–12 (started early after Phase 1 exit) | Python scaffold, FastAPI health route, Streamlit bilingual shell, logging and CI dependency setup | Actions run 41232599712: Ruff passed; Pytest 9 passed; latest API logging changes awaiting CI |
+| 2026-11-01 | Phase 2 / Days 6–12 (started early after Phase 1 exit) | Python scaffold, FastAPI health route, Streamlit bilingual shell, logging, safe error handling and CI dependency setup | Actions run 41232769034: compileall passed, Ruff passed, Pytest 9 passed |
