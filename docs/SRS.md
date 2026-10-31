@@ -132,3 +132,14 @@ For the MVP, capture an optional self-reported concern rating and objection cate
 - Admin dashboard shows aggregate engagement, objection categories and explicit self-reported concern shifts with small-cohort suppression.
 - Low-literacy usability choices are visible and tested.
 - Unit/integration tests and CI pass; deployment and data limitations are documented.
+
+
+## 10. Supporting pathway exploration (portfolio enhancement)
+
+This feature supports counselling but does not replace the SIH brief's central family conversation and outcome-evidence requirements.
+
+- FR-31: The learner may complete a short guided exploration of interests, education background, practical preferences and constraints to shortlist relevant vocational trades/qualifications for discussion.
+- FR-32: Pathway shortlisting shall be transparent and advisory. It shall not be presented as a validated aptitude test, psychometric assessment or prediction of success.
+- FR-33: Where a specific qualification has published entry criteria, the system shall distinguish eligible, ineligible and unknown eligibility. Unknown information shall not be represented as eligible.
+- FR-34: Any shortlist shall show why an option was surfaced, which profile factors were considered, which source supports its entry criteria, and what information is missing.
+- FR-35: A learner may explore options outside the shortlist; the shortlist shall not block access to other vocational information.
