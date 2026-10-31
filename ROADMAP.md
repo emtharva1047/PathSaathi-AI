@@ -45,8 +45,19 @@ Required quality evidence:
 - Documented limitations and production-readiness gaps.
 - Deployed demonstration and screenshots.
 
+## Phase 1 progress
+- [x] Initial project charter and scope drafted.
+- [x] Initial SRS and user journeys drafted.
+- [x] Initial architecture, risk register and data-source policy drafted.
+- [x] Four actionable Phase 1 issues created.
+- [ ] Full official SIH problem statement and sponsor constraints reviewed.
+- [ ] Personas/scope validated against the brief.
+- [ ] Data-source and eligibility assumptions reviewed.
+- [ ] Phase 1 acceptance checklist signed off.
+
 ## Progress log
 
 | Date | Phase / planned day | Increment | Checks | Commit |
 |---|---|---|---|---|
-| 2026-11-01 | Phase 1 / Day 1 | Initial repository planning and requirements baseline | Pending review | To be added after implementation |
+| 2026-11-01 | Phase 1 / Day 1 | Initial requirements baseline and GitHub issue setup | Repository file read-back verified; app tests not applicable yet | Initial documentation commits |
+| 2026-11-01 | Phase 1 / Day 1 | Added initial problem-framing research and clarified missing SIH brief dependency | GitHub file writes succeeded; complete SIH brief still outstanding | See commit history |
