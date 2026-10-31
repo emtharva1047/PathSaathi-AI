@@ -1,63 +1,64 @@
-# PathSaathi AI — 60-Day Roadmap
+# PathSaathi AI — 60-Day Delivery Roadmap
 
-**Mode:** Solo developer  
-**Time budget:** Up to 4 focused hours per day (approximately 240 planned hours)  
-**Priority:** Resume-quality portfolio product  
-**Stack:** Python, Streamlit, FastAPI, SQLAlchemy, SQLite/PostgreSQL-ready, Pytest, Ruff, GitHub Actions
+**SIH Problem Statement:** 26241 — AI-Enabled Career Counselling and Family Decision-Support Platform for Vocational Education  
+**Owner:** Solo developer  
+**Daily allocation:** Target up to 4 focused hours (240 planned hours over 60 days)  
+**Priority:** Resume-first, portfolio-quality implementation  
+**Stack:** Python, Streamlit, FastAPI, SQLAlchemy, SQLite/PostgreSQL-ready, Pandas, Pytest, Ruff, GitHub Actions
 
-Day numbers are planning windows, not claims that work has already been completed. Update status only after evidence exists in the repository.
+The full SIH brief is now recorded in `docs/PROBLEM_STATEMENT_26241.md`. The roadmap is rebalanced around the actual judging requirements: joint family counselling, localised verified outcomes, NSQF progression, bilingual/low-literacy access, human escalation and scheme-admin analytics.
 
-| Phase | Days | Objective | Exit evidence | Status |
+| Phase | Days | Focus | Exit evidence | Status |
 |---|---:|---|---|---|
-| 1. Research & requirements | 1–5 | Define users, scope, SRS, risks and data strategy | Reviewed SRS, use cases, scope and acceptance criteria | In progress |
-| 2. Application foundation | 6–12 | Build app/API skeleton, config, DB and CI | App starts, API health check, DB smoke test, CI green | Not started |
-| 3. Assessment & recommendations | 13–22 | Build assessment and explainable matching | Eligibility-safe recommendations with tests | Not started |
-| 4. Course explorer & pathways | 23–29 | Curate sourced data and exploration UI | Search/filter/detail/compare workflow | Not started |
-| 5. Family decision room | 30–36 | Link student-parent preferences and compare | Separate preferences and decision summary | Not started |
-| 6. AI counsellor & reporting | 37–41 | Grounded Q&A and PDF report | Source-grounded responses and report export | Not started |
-| 7. Quality, privacy & evaluation | 42–47 | Test, review security and improve usability | Test report, limitations, privacy review checklist | Not started |
-| 8. Portfolio release | 48–60 | Deploy, document and demonstrate product | Live demo, CI, screenshots, final README and resume summary | Not started |
+| 1. Problem validation & requirements | 1–5 | Official brief, users, SRS, data contract, risks and success criteria | Approved requirements and acceptance checklist | In progress |
+| 2. Platform foundation | 6–12 | Streamlit/FastAPI skeleton, auth, database, locale framework, CI | App/API starts, DB smoke test, CI green | Not started |
+| 3. Outcome data backend | 13–21 | Import contract, validation, provider/trade/geography/cohort metrics | Tested outcome-data import and evidence-aware queries | Not started |
+| 4. Joint bilingual counselling | 22–30 | Learner-parent conversation, English + Marathi, low-jargon flows | Shared bilingual family counselling journey | Not started |
+| 5. Trade and NSQF explainers | 31–37 | Job-role mapping, qualification progression, contextual comparisons | Plain-language local pathway explanation | Not started |
+| 6. Human escalation & admin analytics | 38–45 | Counsellor callback flow, engagement and resistance dashboard | Escalation workflow and privacy-safe dashboard | Not started |
+| 7. Integration, evaluation & safeguards | 46–52 | End-to-end tests, data quality, usability, security and evidence review | Tested integrated flow and evaluation report | Not started |
+| 8. Deployment & portfolio release | 53–60 | Hosting, documentation, demo, screenshots and resume story | Public demo, reproducible repo and final technical documentation | Not started |
 
 ## Daily execution protocol
 
-Each daily iteration should:
-1. Inspect repository state, open issues, recent commits and CI.
-2. Select the highest-priority incomplete task.
-3. Deliver one cohesive, substantive increment.
-4. Run relevant checks and record exact results.
-5. Update documentation and this roadmap.
-6. Commit only validated work.
+Each daily run must inspect the repository, open issues, recent commits and CI; select the next incomplete task; implement one substantive vertical slice; run actual relevant checks; update the roadmap; and commit only validated work. A scheduler invocation does not prove four continuous hours elapsed.
 
-A daily target of four hours is a planning allocation; automation runs do not prove four hours of continuous execution.
+## Core end-to-end experience
+
+**learner + parent → bilingual guided conversation → local outcome evidence → trade/job-role/NSQF explanation → human escalation when needed → family summary → aggregate scheme-admin insights**
+
+## Outcome data rules
+
+- The SIH brief states that dummy placement/earnings datasets will be provided for hackathon evaluation. They have not been supplied in the current project files.
+- Build an explicit import schema and validation tests now.
+- Use clearly labelled synthetic fixtures for development only.
+- Never substitute synthetic values for official evaluation evidence.
+- Show the placement denominator, cohort size, location and reporting period.
+- Show earnings period/currency/statistic and the number of observations.
+- Do not claim causality or guarantee an individual's outcome.
+
+## Privacy and human-centred safeguards
+
+- Store household income as a broad optional bracket, not exact income.
+- Use explicit consent for family linking and any sentiment/concern check-in.
+- Measure concern shifts using transparent self-report before/after prompts, not covert sentiment inference.
+- Show administrators aggregate trends only; suppress small cohorts and avoid household-level views.
+- Offer human escalation; AI must admit when evidence is insufficient.
 
 ## Definition of done
 
-The project is ready for portfolio release when the end-to-end flow works:
-
-**profile → assessment → eligibility filter → ranked recommendations → source-linked course comparison → family decision room → report**
-
-Required quality evidence:
-- Tests for recommendation logic, eligibility and access control.
-- Reproducible local setup.
-- CI workflow for tests and lint.
-- No secrets or real student personal data committed.
-- Source provenance and verification dates for factual course records.
-- Documented limitations and production-readiness gaps.
-- Deployed demonstration and screenshots.
-
-## Phase 1 progress
-- [x] Initial project charter and scope drafted.
-- [x] Initial SRS and user journeys drafted.
-- [x] Initial architecture, risk register and data-source policy drafted.
-- [x] Four actionable Phase 1 issues created.
-- [ ] Full official SIH problem statement and sponsor constraints reviewed.
-- [ ] Personas/scope validated against the brief.
-- [ ] Data-source and eligibility assumptions reviewed.
-- [ ] Phase 1 acceptance checklist signed off.
+- Learner and parent can participate in the same counselling journey.
+- English and at least one regional language work for key user flows (MVP: English + Marathi).
+- Verified trade/provider outcome records can be imported and queried by context.
+- Earnings/placement evidence is presented with provenance, cohort, denominator and period.
+- Plain-language trade, job-role and NSQF progression explainers work.
+- A human counsellor request can be submitted and its status tracked.
+- Admins can see privacy-safe aggregate engagement and family concern themes/shifts.
+- The product has tests, CI, reproducible setup, deployment, demo and explicit limitations.
 
 ## Progress log
 
-| Date | Phase / planned day | Increment | Checks | Commit |
-|---|---|---|---|---|
-| 2026-11-01 | Phase 1 / Day 1 | Initial requirements baseline and GitHub issue setup | Repository file read-back verified; app tests not applicable yet | Initial documentation commits |
-| 2026-11-01 | Phase 1 / Day 1 | Added initial problem-framing research and clarified missing SIH brief dependency | GitHub file writes succeeded; complete SIH brief still outstanding | See commit history |
+| Date | Phase | Increment | Evidence |
+|---|---|---|---|
+| 2026-11-01 | Phase 1 | Initial repository, SRS baseline and issue tracker | GitHub docs and issues exist |
+| 2026-11-01 | Phase 1 | Official SIH PS 26241 details received and scope being revised | `docs/PROBLEM_STATEMENT_26241.md` |
