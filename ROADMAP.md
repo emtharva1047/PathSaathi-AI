@@ -1,64 +1,74 @@
-# PathSaathi AI — 60-Day Delivery Roadmap
+# PathSaathi AI — 60-Day Roadmap
 
-**SIH Problem Statement:** 26241 — AI-Enabled Career Counselling and Family Decision-Support Platform for Vocational Education  
-**Owner:** Solo developer  
-**Daily allocation:** Target up to 4 focused hours (240 planned hours over 60 days)  
-**Priority:** Resume-first, portfolio-quality implementation  
+**Mode:** Solo developer  
+**Time budget:** Up to 4 focused hours per day (approximately 240 planned hours)  
+**Priority:** Resume-quality portfolio product  
 **Stack:** Python, Streamlit, FastAPI, SQLAlchemy, SQLite/PostgreSQL-ready, Pandas, Pytest, Ruff, GitHub Actions
 
-The full SIH brief is now recorded in `docs/PROBLEM_STATEMENT_26241.md`. The roadmap is rebalanced around the actual judging requirements: joint family counselling, localised verified outcomes, NSQF progression, bilingual/low-literacy access, human escalation and scheme-admin analytics.
+Day numbers are planning windows, not claims that four hours elapsed during an automation run. Update status only after repository evidence exists.
 
-| Phase | Days | Focus | Exit evidence | Status |
+| Phase | Days | Objective | Exit evidence | Status |
 |---|---:|---|---|---|
-| 1. Problem validation & requirements | 1–5 | Official brief, users, SRS, data contract, risks and success criteria | Approved requirements and acceptance checklist | In progress |
-| 2. Platform foundation | 6–12 | Streamlit/FastAPI skeleton, auth, database, locale framework, CI | App/API starts, DB smoke test, CI green | Not started |
-| 3. Outcome data backend | 13–21 | Import contract, validation, provider/trade/geography/cohort metrics | Tested outcome-data import and evidence-aware queries | Not started |
-| 4. Joint bilingual counselling | 22–30 | Learner-parent conversation, English + Marathi, low-jargon flows | Shared bilingual family counselling journey | Not started |
-| 5. Trade and NSQF explainers | 31–37 | Job-role mapping, qualification progression, contextual comparisons | Plain-language local pathway explanation | Not started |
-| 6. Human escalation & admin analytics | 38–45 | Counsellor callback flow, engagement and resistance dashboard | Escalation workflow and privacy-safe dashboard | Not started |
-| 7. Integration, evaluation & safeguards | 46–52 | End-to-end tests, data quality, usability, security and evidence review | Tested integrated flow and evaluation report | Not started |
-| 8. Deployment & portfolio release | 53–60 | Hosting, documentation, demo, screenshots and resume story | Public demo, reproducible repo and final technical documentation | Not started |
+| 1. Research & requirements | 1–5 | Map official SIH26241 brief, users, SRS, data and risk | Traceability matrix, reviewed SRS, data model, acceptance baseline | In progress |
+| 2. Application foundation | 6–12 | Build Streamlit/FastAPI skeleton, config, DB, locale and CI | App starts, API health, DB smoke test, CI green | Not started |
+| 3. Assessment & recommendations | 13–22 | Build assessment and explainable eligibility-safe matching | Deterministic recommendations with unit tests | Not started |
+| 4. Course & outcome explorer | 23–29 | Import sourced qualifications and outcome evidence | Search/filter/detail/compare with provenance and metric semantics | Not started |
+| 5. Family counselling & escalation | 30–36 | Shared bilingual session, separate preferences and counsellor request queue | Student-parent flow and trackable escalation request | Not started |
+| 6. AI counsellor & reporting | 37–41 | Retrieval-grounded bilingual Q&A and PDF report | Source-backed responses, explicit unknowns and report export | Not started |
+| 7. Admin analytics, quality & privacy | 42–47 | Aggregate engagement dashboard, testing and security review | Privacy-safe aggregate dashboard and test/security report | Not started |
+| 8. Portfolio release | 48–60 | Deploy, document, demonstrate and polish | Live demo, CI, screenshots, demo script and resume summary | Not started |
+
+## Scope decisions
+
+- Initial pilot: Maharashtra; English + Marathi. This is a project assumption, not an SIH-mandated geography.
+- Initial learner cohort: students considering vocational pathways after Class 10 or Class 12, with extension to current vocational/non-degree learners.
+- Use NQR/NCVET qualification sources and authorised DGT/state tracer studies.
+- SIH listing says dummy placement/earnings datasets will be provided for evaluation; until received, use clearly labelled synthetic fixtures.
+- Do not infer provider-level outcomes from state/trade aggregates.
+- Human escalation is a demonstrator request queue unless a real counsellor partner is connected.
+- Sentiment change uses optional self-report, not covert emotion inference.
 
 ## Daily execution protocol
 
-Each daily run must inspect the repository, open issues, recent commits and CI; select the next incomplete task; implement one substantive vertical slice; run actual relevant checks; update the roadmap; and commit only validated work. A scheduler invocation does not prove four continuous hours elapsed.
+Each daily iteration should:
+1. Inspect repository state, open issues, recent commits and Actions.
+2. Select the highest-priority incomplete task.
+3. Deliver one cohesive, substantive increment.
+4. Run relevant checks and record exact results.
+5. Update documentation and issue state based on evidence.
+6. Commit only validated work.
 
-## Core end-to-end experience
-
-**learner + parent → bilingual guided conversation → local outcome evidence → trade/job-role/NSQF explanation → human escalation when needed → family summary → aggregate scheme-admin insights**
-
-## Outcome data rules
-
-- The SIH brief states that dummy placement/earnings datasets will be provided for hackathon evaluation. They have not been supplied in the current project files.
-- Build an explicit import schema and validation tests now.
-- Use clearly labelled synthetic fixtures for development only.
-- Never substitute synthetic values for official evaluation evidence.
-- Show the placement denominator, cohort size, location and reporting period.
-- Show earnings period/currency/statistic and the number of observations.
-- Do not claim causality or guarantee an individual's outcome.
-
-## Privacy and human-centred safeguards
-
-- Store household income as a broad optional bracket, not exact income.
-- Use explicit consent for family linking and any sentiment/concern check-in.
-- Measure concern shifts using transparent self-report before/after prompts, not covert sentiment inference.
-- Show administrators aggregate trends only; suppress small cohorts and avoid household-level views.
-- Offer human escalation; AI must admit when evidence is insufficient.
+A four-hour target is a planned allocation, not a claim that an automation run consumed four uninterrupted hours.
 
 ## Definition of done
 
-- Learner and parent can participate in the same counselling journey.
-- English and at least one regional language work for key user flows (MVP: English + Marathi).
-- Verified trade/provider outcome records can be imported and queried by context.
-- Earnings/placement evidence is presented with provenance, cohort, denominator and period.
-- Plain-language trade, job-role and NSQF progression explainers work.
-- A human counsellor request can be submitted and its status tracked.
-- Admins can see privacy-safe aggregate engagement and family concern themes/shifts.
-- The product has tests, CI, reproducible setup, deployment, demo and explicit limitations.
+The end-to-end journey works:
+
+**profile → assessment → eligibility filter → ranked pathways → source-linked outcome/course comparison → shared family counselling → human escalation option → report**
+
+Required evidence:
+- Tests for eligibility, scoring, metric definitions, family permissions and analytics aggregation.
+- Reproducible local setup and environment-based secrets.
+- CI for lint and tests.
+- No secrets or real learner/parent records committed.
+- Source provenance and verification dates for qualification/outcome facts.
+- Explicit limitations and data gaps.
+- Deployed demonstration, screenshots and resume-ready documentation.
+
+## Phase 1 progress
+- [x] Official SIH26241 listing reviewed and requirement summary captured.
+- [x] Problem-to-product traceability matrix drafted.
+- [x] Target learner cohort and Maharashtra/Marathi pilot assumption documented.
+- [x] Personas and journeys updated for joint learner-parent counselling.
+- [x] SRS updated for bilingual interface, outcomes evidence, low-literacy UX, escalation and admin analytics.
+- [x] Outcome evidence data model and provenance rules documented.
+- [x] Architecture and risk register updated.
+- [ ] Phase 1 acceptance review and issue closure.
+- [ ] Confirm whether sponsor/mentor requires a different pilot region or language.
 
 ## Progress log
 
-| Date | Phase | Increment | Evidence |
-|---|---|---|---|
-| 2026-11-01 | Phase 1 | Initial repository, SRS baseline and issue tracker | GitHub docs and issues exist |
-| 2026-11-01 | Phase 1 | Official SIH PS 26241 details received and scope being revised | `docs/PROBLEM_STATEMENT_26241.md` |
+| Date | Phase / planned day | Increment | Checks | Commit |
+|---|---|---|---|---|
+| 2026-11-01 | Phase 1 / Day 1 | Initial requirements baseline and issue tracker | Repository reads verified | Initial docs commits |
+| 2026-11-01 | Phase 1 / Day 1 | Reviewed official SIH26241 requirements; expanded SRS, architecture, data and risk scope | GitHub writes verified; CI failure diagnosed as no tests collected | See commit history |
