@@ -1,80 +1,84 @@
-# Architecture (Target)
+# PathSaathi AI — Target Architecture
 
-## High-level components
+## High-level system
 
 ```text
-[Streamlit multilingual, low-jargon UI]
-        | HTTP / JSON
-        v
+[Streamlit learner + parent interface]
+  |-- English / Marathi locale
+  |-- Guided, low-jargon interaction
+  |-- Shared family counselling session
+  v
 [FastAPI application]
-        +--> Authentication, family consent & authorisation
-        +--> Learner profile and assessment
-        +--> Eligibility + explainable recommendation service
-        +--> Qualification/course/provider catalogue
-        +--> Outcome evidence service (metric definitions + provenance)
-        +--> Shared family counselling session
-        +--> Counsellor escalation queue
-        +--> Report service
-        +--> Grounded multilingual AI service
-        +--> Privacy-safe aggregate analytics
-        |
-        v
+  |-- Authentication, roles and consent
+  |-- Family session/conversation orchestration
+  |-- Context profile (broad region, education, income bracket)
+  |-- Trade/provider outcome retrieval
+  |-- Job-role and NSQF progression explainer
+  |-- Human counsellor escalation
+  |-- Concern check-ins and engagement events
+  |-- Report generation
+  |-- Scheme-admin analytics API
+  v
+[Domain services]
+  |-- Outcome data validation and calculation
+  |-- Evidence retrieval and freshness checks
+  |-- Prompt/context assembly and grounded answer validation
+  |-- Privacy aggregation and small-cohort suppression
+  v
 [SQLAlchemy repositories]
-        |
-        +--> SQLite local
-        +--> PostgreSQL deployment
-        |
-        +--> Curated qualification/outcome evidence records
+  |-- Users, profiles, family sessions and consent
+  |-- Trades, providers, outcome records and NSQF pathways
+  |-- Escalations, check-ins and aggregate metrics
+  v
+[SQLite local / PostgreSQL deployment]
+
+[AI provider] is called only with retrieved, relevant evidence; the core app remains useful if it is unavailable.
 ```
 
-## Domain boundaries
+## Main flows
 
-- UI: accessible presentation, locale selection and interaction.
-- API: request validation, authentication, authorisation and response contracts.
-- Domain services: eligibility, scoring, family preference comparison, outcome-metric validation and escalation.
-- Persistence: SQLAlchemy models and repositories.
-- Data ingestion: CSV/JSON import with schema validation, source metadata and file hash.
-- AI integration: retrieval over approved records; LLM generates explanations only from supplied evidence.
-- Analytics: opt-in event and feedback aggregation; no individual emotion profiling.
+### 1. Joint counselling
+1. Learner starts a session and selects English or Marathi.
+2. Parent joins through an authorised invitation or shared session flow.
+3. Participants' roles remain distinguishable.
+4. The application gathers broad context and concern categories.
+5. The orchestrator retrieves outcome and progression evidence using trade/provider/region filters.
+6. The AI explains retrieved facts in low-jargon language, including sample/period caveats.
+7. Unanswered or sensitive concerns can be escalated to a human counsellor.
 
-## Recommendation flow
+### 2. Outcome data
+- Import SIH-provided dummy data through a versioned CSV/JSON contract.
+- Validate data types, units, counts, denominators, missingness and provenance.
+- Calculate rates only when numerator and denominator definitions are compatible.
+- Query with trade/provider/region/cohort/time filters.
+- Present source, sample size, date and limitations next to each figure.
 
-1. Load assessment version and learner profile.
-2. Evaluate each qualification/course: eligible, ineligible or unknown.
-3. Exclude ineligible options from eligible ranking.
-4. Calculate deterministic weighted preference match for remaining options.
-5. Return factor breakdown, source/eligibility explanation and confidence metadata.
-6. Persist model version and input references.
+### 3. NSQF progression
+- Store qualifications and progression links as sourced records.
+- Render a graph/list of verified next-level and further-education routes.
+- If no verified edge exists, display no data rather than generating a plausible route.
 
-## Outcome evidence flow
+### 4. Admin analytics
+- Derive engagement funnel and concern-theme aggregates.
+- Compare explicit self-reported pre/post concern ratings.
+- Restrict access and suppress cohorts smaller than a configurable privacy threshold.
+- Never expose raw chat transcripts or household identities in general admin views.
 
-1. Import only an authorised dataset or curated official source record.
-2. Validate metric definitions, denominator/sample size, cohort, geography, units and provenance.
-3. Mark record verified, needs_review, stale or synthetic_demo.
-4. Query only evidence matching the requested scope.
-5. Display source date, cohort and geographic granularity; disclose gaps rather than extrapolate.
+## Component boundaries
+- UI: presentation, language selection and accessible guided interactions.
+- API: validation, role checks, consent and response contracts.
+- Domain services: outcome calculations, NSQF mapping, concern tracking, aggregation and escalation.
+- Data import: schema versioning, provenance, validation and audit.
+- AI integration: retrieval-grounded explanation, not a source of unverified statistics.
+- Persistence: SQLAlchemy models and repository layer.
 
-## Family counselling flow
+## Security and privacy
+- Enforce access server-side.
+- Keep exact household income out of scope; use optional broad brackets.
+- Keep learner and parent preference/concern entries attributed by role.
+- Minimise raw conversation retention.
+- Use aggregate views, consent and small-cohort suppression for scheme analytics.
+- Do not use real student or family data in development.
 
-1. Learner starts a session and authorises a parent/guardian invitation.
-2. Each participant joins with a distinct role and consent state.
-3. Both participants ask questions in the shared session.
-4. Retrieval selects qualification, outcome and progression evidence.
-5. AI responds in the selected locale with source references and uncertainty.
-6. Either participant may request human counsellor follow-up.
-7. Optional feedback pulses are aggregated for the admin dashboard.
-
-## Security and privacy boundaries
-
-- Enforce permissions in the API, not only in UI.
-- Store password hashes; secrets live in environment variables.
-- Family links grant only explicitly scoped shared data.
-- Collect broad income bands only if needed; do not require exact income or address.
-- Use synthetic profiles and outcome fixtures in development.
-- Do not store full chat transcripts by default; define retention and consent before production.
-- Analytics must be aggregate, consent-aware and suppress small groups.
-- Treat AI output as untrusted; validate source references and never infer emotional state from voice/face.
-
-## Deployment target
-
-A Python-compatible host for Streamlit and FastAPI, PostgreSQL for persistent deployment, HTTPS, environment-based secrets, CI checks and clear service-health monitoring.
+## Deployment
+Streamlit and FastAPI may be hosted as separate Python services. Use PostgreSQL for deployed persistence, HTTPS, environment-based secrets, logging without sensitive message contents, CI checks and a documented demo dataset clearly marked as synthetic until SIH data is supplied.
