@@ -1,5 +1,7 @@
 # Outcome Evidence Data Model
 
+> Companion conceptual model. The import and validation contract for the SIH-provided dummy dataset is authoritative in docs/OUTCOME_DATA_CONTRACT.md. Align both documents to the organiser's actual schema once it is supplied.
+
 ## Purpose
 
 Represent employment and earnings evidence without flattening different studies into misleading universal "placement" or "salary" numbers.
