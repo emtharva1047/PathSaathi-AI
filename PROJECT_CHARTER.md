@@ -1,46 +1,47 @@
 # Project Charter
 
 ## Project
-PathSaathi AI — AI-enabled career counselling and family decision-support platform for vocational education.
+PathSaathi AI — SIH26241 AI-enabled career counselling and family decision-support platform for vocational education.
 
 ## Problem
-Students exploring vocational education and their families may lack structured guidance, accessible course information, and a collaborative way to compare pathways against interests, eligibility, cost, distance, duration, and further-study options.
+Vocational pathway choices are shaped by learner interests and family perceptions. Students and parents need accessible, credible and localised information about qualifications, job roles, earnings and employment evidence, safety, progression and practical constraints. The platform must support both participants, not only the learner.
 
 ## Product vision
-Provide a transparent decision-support workflow that helps students explore realistic vocational options and enables families to discuss them using evidence rather than assumptions.
+Provide a bilingual, low-jargon counselling experience that helps learners and families explore realistic vocational pathways together, compare evidence and request human counselling when needed.
 
 ## Target users
-- Students after Class 10 or Class 12 considering vocational education.
-- Parents/guardians supporting education decisions.
-- Counsellors reviewing assessments and advising students.
-- Administrators maintaining course and career information.
+- Learners considering vocational education, initially after Class 10 or Class 12.
+- Parents/guardians participating in the decision.
+- Counsellors handling escalated questions.
+- Scheme administrators reviewing aggregate engagement and concerns.
+- Data curators maintaining qualification and outcome evidence.
 
-## Objectives
-1. Gather a structured student profile and preferences.
-2. Filter out courses for which eligibility is not met or not known.
-3. Rank suitable pathways using explainable, configurable matching criteria.
-4. Present course facts with provenance and freshness metadata.
-5. Support student-parent comparison and discussion.
-6. Generate a shareable report with caveats and next steps.
-7. Demonstrate professional software engineering through tests, CI, deployment and documentation.
+## MVP scope
+- Maharashtra pilot assumption, English + Marathi.
+- Student assessment and eligibility-aware recommendations.
+- Source-linked NQR/qualification and course explorer.
+- Outcome evidence backend with exact metric, cohort, geography, sample and provenance.
+- Shared learner-parent conversational session and separate preferences.
+- Grounded AI explanations with source links and explicit uncertainty.
+- Human-counsellor escalation request queue.
+- Privacy-safe aggregate admin dashboard using opt-in events and self-reported feedback.
+- Accessible simplified flow and PDF report.
 
-## In scope
-Student assessment, profile, eligibility-aware recommendation, vocational course catalogue, career pathway information, family decision room, grounded AI counsellor, PDF report, basic admin/counsellor tools, tests and deployment.
-
-## Out of scope for the 60-day solo build
-Custom foundation-model training, nationwide real-time course scraping, guaranteed job/salary prediction, automated admissions/enrolment, native mobile apps, facial/emotion analysis, and production-grade institutional integrations.
+## Out of scope for 60-day solo build
+Custom foundation-model training, nationwide live course scraping, guaranteed job/salary prediction, automated admissions, native mobile apps, facial/emotion analysis, and production integrations without authorised APIs or partners.
 
 ## Success measures
-- Core student-to-report workflow completes without manual database edits.
-- At least three suitable options are shown when the dataset contains them; otherwise the platform explains why fewer are available.
-- Every recommendation exposes its matching factors and eligibility status.
-- Factual course records include source URL and last verified date.
-- Parent and student preferences remain distinct and visible.
-- Unit/integration tests cover core rules and access restrictions.
-- Reproducible setup, CI, deployment instructions and known limitations are documented.
+- End-to-end learner-to-family-report flow works.
+- English and Marathi cover the core pilot journey.
+- Eligibility and recommendation logic is deterministic and tested.
+- Outcome claims preserve metric definition, cohort, geography, denominator/sample and source.
+- No provider-level claims are inferred from broader aggregates.
+- Family preferences remain distinct and counsellor escalation requests are trackable.
+- Admin analytics are aggregate and do not expose identifiable family sentiment.
+- Reproducible setup, CI, deployment, screenshots and limitations are documented.
 
 ## Constraints and assumptions
-Solo project, approximately four focused hours daily, 60 calendar days, Python-first stack, existing LLM API rather than training a model, synthetic test profiles, small initial curated dataset.
+Solo project, up to four focused hours per day, 60 calendar days, Python-first stack, existing LLM API rather than training a model, synthetic test profiles, small curated dataset, official SIH dummy evaluation data to be obtained through the authorised channel when available.
 
 ## Governance
-The developer owns implementation and release. Recommendation assumptions and course facts require review; production deployment for minors requires privacy/legal review and appropriate consent controls.
+The developer owns implementation. Qualification/outcome facts require source review. Production use involving minors or family data requires appropriate consent, retention controls and legal/privacy review.
