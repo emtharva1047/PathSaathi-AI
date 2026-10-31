@@ -1,149 +1,134 @@
-# Software Requirements Specification (SRS)
+# Software Requirements Specification — PathSaathi AI
 
-**Project:** PathSaathi AI  
-**Problem statement:** SIH26241 — AI-Enabled Career Counselling and Family Decision-Support Platform for Vocational Education  
-**Baseline reviewed:** 1 November 2026
+**SIH Problem Statement ID:** 26241  
+**Sponsor:** Ministry of Skill Development and Entrepreneurship (MSDE)  
+**Theme:** Smart Education
 
 ## 1. Purpose
 
-Specify a solo-developer portfolio MVP that addresses the official SIH26241 requirements while remaining achievable in a 60-day Python-first build.
+Specify a portfolio MVP for a bilingual AI-enabled counselling platform that engages vocational learners and their families together, uses localised trade/provider outcome evidence, explains career and NSQF progression, and provides human escalation and scheme-admin insights.
 
-## 2. Problem and product scope
+## 2. Problem context from the SIH brief
 
-The official challenge is not only a student-facing career recommender. It requires joint learner-family counselling, credible local evidence about vocational outcomes, bilingual/regional-language access, low-jargon support, a route to human counsellors, and an administrator view of engagement and parental concerns.
+The brief states that family perception can influence enrolment, retention and willingness to pursue NSQF-aligned progression. Parent concerns include earning potential, safety, job security and social standing. Existing career guidance is described as largely learner-facing. The proposed system must therefore support the family unit, not merely provide an individual career quiz.
 
-PathSaathi AI will provide:
-- a shared student-parent counselling journey with separate participant preferences;
-- an eligibility-aware, explainable pathway explorer;
-- source-linked qualification, provider and outcome evidence;
-- a simple-language conversational assistant in English and Marathi for the initial Maharashtra pilot;
-- a counsellor escalation request workflow;
-- privacy-conscious aggregate engagement and concern analytics.
+The expected solution includes:
+- joint learner-parent conversational counselling in regional language(s) plus English;
+- verified trade/training-provider outcome data, including post-training earnings and placement rates;
+- contextual plain-language explainers for trade/job-role mapping and NSQF progression;
+- human counsellor escalation;
+- an administrator dashboard showing where resistance is concentrated and how engagement/expressed sentiment changes;
+- design suitable for low-literacy and low-digital-familiarity users.
 
-**MVP geography/language assumption:** Maharashtra pilot, English + Marathi. This is a practical product scope assumption, not a restriction in the SIH statement. The architecture should permit additional regional languages and regions later.
-
-The platform is advisory. It does not make admission decisions, certify skills, guarantee jobs, or promise salary outcomes.
+The SIH entry notes that dummy placement/earnings datasets will be supplied for hackathon evaluation. Those files are not yet present in the repository.
 
 ## 3. User classes
 
-### Learner / student
-Creates a minimal profile, completes an assessment, explores recommendations, asks questions in a shared family session, compares courses and views a report.
+### Learner
+A student exploring vocational options who wants understandable guidance, realistic local evidence and a voice in the family decision.
 
-### Parent / guardian
-Joins a student-authorised family session, asks questions about earning potential, job security, safety, recognition and progression, and records independent priorities.
+### Parent/guardian
+A family member who may influence or support enrolment and may have questions about earnings, safety, job security, social perception, affordability and progression.
 
-### Counsellor
-Receives an escalation request, reviews the student's consented summary and provides human guidance. Human review remains authoritative for individual counselling.
+### Human counsellor
+A trained person who receives escalations, reviews complex concerns and provides guidance beyond the AI's evidence or competence.
 
 ### Scheme administrator
-Views aggregate engagement, concern categories and self-reported confidence changes; maintains approved reference data and outcome datasets.
+An authorised user who views aggregate engagement, objection themes and concern shifts to identify where outreach or support may be needed.
 
-### Data curator
-Imports and verifies qualification, provider and outcome records with provenance and quality metadata.
+### Data administrator
+An authorised user who imports/maintains outcome records and source metadata.
 
 ## 4. Functional requirements
 
-- FR-01: The system shall collect only necessary learner context: education/qualification, relevant subjects, interests, skills/confidence indicators, broad district/region, rural/semi-urban/urban context where volunteered, preferences and optional household-income band. It shall not require an exact household income or home address.
-- FR-02: The system shall provide a structured assessment and retain the assessment/questionnaire version used for a recommendation.
-- FR-03: The system shall evaluate course eligibility using explicit rules and return eligible, ineligible or unknown. Unknown must never be represented as eligible.
-- FR-04: The recommendation engine shall rank eligible pathways using transparent, configurable preference matching and shall show the factor breakdown.
-- FR-05: Each recommendation shall explain why it matched, identify missing information and show the model/weight version. Prototype weights are assumptions, not validated psychometrics.
-- FR-06: The catalogue shall store qualifications, job roles, courses and providers with source URL, source publisher, verification date and confidence/status.
-- FR-07: Users shall search, filter, view and compare course/provider/pathway information.
-- FR-08: The platform shall explain progression routes, including NSQF-aligned levels and further education routes where verified by source material.
-- FR-09: A student shall be able to invite/link a parent or guardian through a consent-aware flow.
-- FR-10: Student and parent preferences shall be stored separately; the shared decision view shall expose trade-offs without declaring one party the winner.
-- FR-11: The system shall provide a shared conversational counselling session in which learner and parent can ask questions and see the same evidence-backed explanation.
-- FR-12: The MVP shall support English and Marathi for key navigation, assessment instructions, common counselling flows and response presentation. Translation quality must be reviewed; raw machine translation shall not be represented as professionally validated.
-- FR-13: The AI counsellor shall retrieve from approved platform records and show source references for factual claims. It shall explicitly say when evidence is missing, stale, geographically mismatched or not granular enough.
-- FR-14: The outcome-data backend shall store trade/provider/region/cohort-specific employment and earnings evidence with numerator/denominator or sample size, measurement definition, survey period, source, publication date and methodology.
-- FR-15: The UI shall distinguish placement rate, post-training employment status, trade-related employment, apprenticeship, self-employment and unrelated employment. It shall not relabel one measure as another.
-- FR-16: Outcome evidence shall only be displayed at the granularity supported by the source. State-level evidence must not be presented as provider-specific; old cohorts and small samples must be clearly labelled.
-- FR-17: The platform shall provide a structured, low-jargon explainer tailored to broad location, optional household-income band and academic background.
-- FR-18: The interface shall provide a simplified journey: one question at a time where useful, clear labels, large controls, icons paired with text, plain-language summaries and an easy review/back path. Audio read-out may be a stretch feature.
-- FR-19: Users shall be able to submit a human-counsellor escalation request, choose a concern category and view request status. In the MVP this is a request queue/demo workflow; it must not claim a live counsellor is available unless a real service is connected.
-- FR-20: The administrator dashboard shall show aggregate engagement and common parental concern categories (for example, income, job security, safety, social perception, distance and cost).
-- FR-21: Sentiment/confidence change shall be based on explicit, optional self-reported feedback before/after counselling, not covert emotion inference. Analytics shall be aggregated and suppress small groups.
-- FR-22: The system shall generate a PDF report with profile summary, recommendations, evidence, limitations, source links and next steps.
-- FR-23: Counsellor/admin/data-curator functions shall have role-restricted access and auditable updates.
+### Joint counselling and language
+- FR-01: The system shall support a learner and parent/guardian in the same counselling journey, with their roles and contributions distinguishable.
+- FR-02: The system shall provide key user flows in English and at least one regional language. The MVP target is English and Marathi, using reviewed locale strings and templates.
+- FR-03: The conversation shall address common concerns including income potential, placement/job security, safety, social perception, affordability and progression.
+- FR-04: The system shall use short, low-jargon explanations and guided prompts suitable for users with limited digital familiarity.
+- FR-05: The system shall support optional contextual tailoring using broad location, household-income bracket and learner academic background. Exact household income should not be required.
+- FR-06: The system shall preserve learner and parent perspectives separately and shall not silently let one overwrite the other's preferences.
+
+### Outcome-data backend
+- FR-07: The system shall import the SIH-provided dummy placement/earnings dataset when it becomes available.
+- FR-08: The system shall validate schema, types, missing values, duplicates, impossible ranges, cohort denominators and source metadata during import.
+- FR-09: The system shall store outcome data at an appropriate trade/provider/geographic/cohort/time-period granularity.
+- FR-10: Placement rates shall be displayed with placed count, eligible/completed cohort denominator, cohort size and reporting period whenever provided; denominator definitions must be explicit.
+- FR-11: Earnings figures shall show currency, time basis (e.g. monthly/annual), statistic type (mean/median/range), follow-up period and observation count where available.
+- FR-12: The system shall never invent missing outcomes; unavailable or insufficient data must be labelled unknown/unavailable.
+- FR-13: Outcome comparisons shall expose source, last-updated/verification date and relevant cohort limitations.
+
+### Trade, job-role and NSQF explainer
+- FR-14: The system shall explain a selected trade, typical job-role mapping, skills and working-context information in plain language.
+- FR-15: The system shall show verified NSQF qualification level and possible level-up/further-education routes when source information exists.
+- FR-16: The system shall tailor examples and comparisons to broad location, income bracket and academic background without implying that these factors determine a learner's ability or future.
+- FR-17: The system shall distinguish verified facts, contextual explanation and unknown information.
+
+### Human escalation
+- FR-18: The user shall be able to request a human counsellor when the AI cannot answer adequately or the family asks for human help.
+- FR-19: The system shall capture the minimum contact and concern information needed for follow-up, with explicit consent.
+- FR-20: The system shall create a request reference and status (submitted, queued, contacted, resolved/cancelled).
+- FR-21: If no live counsellor integration exists, the MVP shall clearly label the workflow as a callback/follow-up request rather than pretending a live connection has occurred.
+
+### Admin analytics and engagement
+- FR-22: The administrator dashboard shall show aggregate engagement by available dimensions such as region, trade, training provider, language and conversation stage.
+- FR-23: The dashboard shall aggregate common family concern/objection categories such as income, safety, job security, social standing, affordability and progression.
+- FR-24: The system shall support an optional explicit self-reported concern/sentiment check-in before and after counselling, and show aggregate shifts.
+- FR-25: The system shall not perform covert emotion inference. Any text sentiment analysis, if later added, must be disclosed, consented, evaluated and secondary to self-report.
+- FR-26: The dashboard shall suppress small cohorts and avoid exposing household identities or individual conversation transcripts to general administrators.
+
+### Reports and administration
+- FR-27: The system shall generate a shareable summary containing discussed concerns, relevant outcome evidence, progression options, unresolved questions, escalation status and source references.
+- FR-28: Authorised data administrators shall manage outcome records and provenance.
+- FR-29: Authorised counsellors shall view only escalations and case information required for follow-up.
+- FR-30: The system shall provide exportable, privacy-safe aggregate dashboard summaries for scheme review.
 
 ## 5. Non-functional requirements
 
-- NFR-01 Security: passwords must be hashed; secrets supplied through environment variables; family and counsellor access authorised server-side.
-- NFR-02 Privacy: minimise personal data, use synthetic development profiles, provide deletion/retention controls, and obtain appropriate consent before collecting personal or minor data in production.
-- NFR-03 Explainability: recommendation scores must be decomposable into documented factors and versioned.
-- NFR-04 Reliability: deterministic recommendations must work if an LLM provider is unavailable.
-- NFR-05 Maintainability: separate UI, API, domain logic, persistence, data ingestion and AI integration.
-- NFR-06 Testability: eligibility, scoring, outcome-metric definitions, family permissions and analytics aggregation must be independently testable.
-- NFR-07 Accessibility: keyboard-usable controls, readable contrast, clear labels, simple language and responsive layouts.
-- NFR-08 Portability: reproducible local setup and environment-based configuration.
-- NFR-09 Provenance: every factual qualification/outcome claim must carry source and verification metadata.
-- NFR-10 Safety: never guarantee employment, salary, admission or outcomes; AI must not replace a counsellor.
-- NFR-11 Localisation: key user journeys must be available in English and Marathi for the pilot; translation updates must be versioned and reviewed.
-- NFR-12 Analytics privacy: do not expose identifiable family-level sentiment or small-cohort breakdowns in administrator views.
-- NFR-13 Low-bandwidth tolerance: prioritise lightweight text-first pages and graceful degradation when AI or network services are unavailable.
+- NFR-01 Security: hash passwords; protect secrets through environment variables; validate authorisation server-side.
+- NFR-02 Privacy: minimise personal data, use broad optional income brackets, define retention and deletion, and use synthetic profiles for development.
+- NFR-03 Consent: family linking, contact follow-up and optional sentiment/concern analytics require transparent consent.
+- NFR-04 Explainability: outcome summaries expose definitions, denominator, cohort, period and provenance.
+- NFR-05 Reliability: deterministic evidence retrieval and explainers must continue if the LLM API is unavailable.
+- NFR-06 Maintainability: separate UI, API, domain services, data ingestion, analytics and AI integrations.
+- NFR-07 Accessibility: mobile-friendly, high-contrast, labelled controls, short steps, simple text, and text alternatives to icons.
+- NFR-08 Localisation: UI strings and reusable content must be locale-managed; translations must be reviewed before release.
+- NFR-09 Testability: data calculations, eligibility, privacy aggregation and family comparison must be unit-testable.
+- NFR-10 Safety: no guaranteed salary, admission, placement or job-security claims.
 
-## 6. Recommendation model requirements
+## 6. Outcome-data model and integrity rules
 
-Eligibility is a hard filter. A course may be marked eligible only when required criteria are satisfied by available profile data. Missing learner or course data results in unknown.
+The data contract is specified in `docs/OUTCOME_DATA_CONTRACT.md`. Key dimensions include trade, training provider, district/state, cohort/batch, qualification/NSQF level, completion denominator, placement numerator, earnings fields, follow-up period, source and verification date.
 
-The MVP may use a transparent weighted match across interest alignment, skill alignment, work-style preference, progression preference and practical fit. Initial weights are prototype assumptions, configurable and versioned. Eligibility is not a weighted dimension.
+The SIH-provided dummy data is the intended evaluation dataset. Until it is supplied, use only explicitly synthetic fixtures to test the importer and UI. Do not make demo statistics look official.
 
-## 7. Outcome-data integrity requirements
+## 7. Sentiment and resistance measurement
 
-Every outcome record must include:
-- metric name and definition;
-- numerator and denominator where applicable, or sample size;
-- trade/job role and provider/ITI only if the source identifies them;
-- geography and cohort/training completion period;
-- survey/reference period and publication date;
-- salary unit and whether the figure is mean, median, range or band distribution;
-- source URL, publisher, page/table reference and methodology notes;
-- confidence/status and last-verified date.
+For the MVP, capture an optional self-reported concern rating and objection categories before and after counselling. This provides an interpretable shift measure without covertly inferring emotions. Admin views must aggregate data and suppress small groups. Raw family conversation content must not be exposed in general scheme-admin dashboards.
 
-Do not infer provider-level results from state-level studies. Do not compare datasets with incompatible definitions without a warning. If the source only gives salary bands, display bands rather than inventing a mean.
+## 8. Initial data entities
 
-## 8. Data entities (initial)
+- User: role, locale, authentication fields
+- LearnerProfile: education, broad region, optional income bracket, preferences
+- FamilySession: learner, invited parent/guardian, consent and status
+- ConversationMessage: session, participant role, language, content and timestamp (retention-limited)
+- ConcernCheckIn: session, stage (pre/post), concern category and self-reported rating
+- Trade: code, title, description, skills and source metadata
+- TrainingProvider: provider code/name, location and verified metadata
+- OutcomeRecord: trade/provider/region/cohort, completion count, placed count, earnings metrics, units, follow-up period, source and verification
+- QualificationPathway: qualification, NSQF level and progression edges with sources
+- EscalationRequest: session, reason, contact consent, reference and status
+- AggregateEngagement: privacy-safe derived metrics
+- Report: session, generated summary and source references
 
-- User: id, role, email, password_hash, created_at
-- LearnerProfile: user_id, education_level, broad_region, district, optional_income_band, preference fields
-- Assessment: id, learner_id, version, completed_at
-- AssessmentResponse: assessment_id, question_id, response
-- Career: id, title, sector, description, skill_tags, source metadata
-- Qualification: id, title, awarding_body, NSQF_level, entry_criteria, progression_links, source metadata
-- Course/Provider: id, qualification_id, provider_id, duration, eligibility_rule, fee_info, source_url, last_verified_at, confidence
-- OutcomeEvidence: id, metric, definition, trade_id, provider_id nullable, geography, cohort_period, numerator, denominator, sample_size, value/bands, unit, source_url, publication_date, methodology, verification_status
-- FamilySession: id, learner_id, status, locale, consent metadata
-- FamilyParticipant: session_id, user_id, participant_role
-- FamilyPreference: session_id, owner_role, option_id, priority_values
-- CounsellingMessage: session_id, sender_role, locale, content_reference/retention metadata
-- EscalationRequest: id, session_id, concern_category, preferred_contact_method, status, created_at
-- FeedbackPulse: session_id, owner_role, confidence_before, confidence_after, optional concern_category, consent flag
-- EngagementEvent: pseudonymous session id, event_type, timestamp, consent flag
-- RecommendationRun/Item: student/assessment/model version, eligibility status, score and factor breakdown
-- Report: id, recommendation_run_id, generated_at, storage reference
+## 9. Acceptance criteria
 
-## 9. AI and counselling guardrails
-
-- Retrieve only from approved, source-linked records.
-- Provide the source date, geographic scope and cohort when quoting outcomes.
-- Say "no verified local/provider-level data found" when that is the case.
-- Never fabricate income, placement, safety or job-security claims.
-- Do not infer a family's financial status beyond the optional broad band they provide.
-- Do not infer or label an individual's emotional state from their text, voice or face.
-- Escalate unresolved, high-stakes or highly personal concerns to a human counsellor workflow.
-- Make it clear that the tool supports, but does not decide, the family's choice.
-
-## 10. Acceptance criteria
-
-- A synthetic learner can complete an assessment and receive eligibility-safe, explainable recommendations.
-- English and Marathi are available for the main pilot journey.
-- A parent can join a shared session and submit separate preferences.
-- Course and qualification pages show source and verification metadata.
-- Outcome metrics display their definition, cohort, geography, sample/denominator and source.
-- State-level or historical outcomes are never presented as current provider-specific guarantees.
-- The family flow can create and track a counsellor escalation request.
-- The admin dashboard shows only aggregate engagement/concern data and suppresses small groups.
-- A simplified, low-jargon journey works on mobile and desktop.
-- The PDF report includes evidence, limitations and source links.
-- Tests cover eligibility, recommendation determinism, metric semantics, family access and analytics privacy.
+- A learner and parent can participate in one bilingual counselling flow.
+- The system can import and validate the eventual SIH dummy outcome dataset using a documented contract.
+- Outcome cards show trade/provider/region/cohort/time context and denominators.
+- The system refuses to invent unavailable earnings or placement data.
+- A plain-language trade and NSQF progression explainer can be generated from verified records.
+- A user can submit a human follow-up request and see its status.
+- Admin dashboard shows aggregate engagement, objection categories and explicit self-reported concern shifts with small-cohort suppression.
+- Low-literacy usability choices are visible and tested.
+- Unit/integration tests and CI pass; deployment and data limitations are documented.
