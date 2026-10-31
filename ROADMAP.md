@@ -1,72 +1,73 @@
-# PathSaathi AI — 60-Day Roadmap
+# PathSaathi AI — 100-Day Target / 120-Day Maximum Roadmap
 
 **Mode:** Solo developer  
-**Time budget:** Up to 4 focused hours per day (approximately 240 planned hours)  
+**Work cadence:** One development iteration every 36 hours (1.5 days)  
+**Focus target:** 2–3 hours per iteration  
+**Planned effort:** Approximately 160–240 focused hours across up to 80 iterations  
+**Nominal delivery target:** 100 calendar days  
+**Hard maximum:** 120 calendar days, including contingency  
 **Priority:** Resume-quality portfolio product  
 **Stack:** Python, Streamlit, FastAPI, SQLAlchemy, SQLite/PostgreSQL-ready, Pandas, Pytest, Ruff, GitHub Actions
 
-Day numbers are planning windows, not claims that four hours elapsed during an automation run. Update status only after repository evidence exists.
+The cadence and work duration are targets, not a claim that an automation run has occupied that amount of wall-clock time. Update status only after evidence exists in the repository.
 
-| Phase | Days | Objective | Exit evidence | Status |
+## Delivery phases
+
+| Phase | Project days | Objective | Exit evidence | Status |
 |---|---:|---|---|---|
-| 1. Research & requirements | 1–5 | Map official SIH26241 brief, users, SRS, data and risk | Traceability matrix, reviewed SRS, data model, acceptance baseline | Complete |
-| 2. Application foundation | 6–12 | Build Streamlit/FastAPI skeleton, config, DB, locale and CI | App starts, API health, DB smoke test, CI green | Next |
-| 3. Assessment & recommendations | 13–22 | Build assessment and explainable eligibility-safe matching | Deterministic recommendations with unit tests | Not started |
-| 4. Course & outcome explorer | 23–29 | Import sourced qualifications and outcome evidence | Search/filter/detail/compare with provenance and metric semantics | Not started |
-| 5. Family counselling & escalation | 30–36 | Shared bilingual session, separate preferences and counsellor request queue | Student-parent flow and trackable escalation request | Not started |
-| 6. AI counsellor & reporting | 37–41 | Retrieval-grounded bilingual Q&A and PDF report | Source-backed responses, explicit unknowns and report export | Not started |
-| 7. Admin analytics, quality & privacy | 42–47 | Aggregate engagement dashboard, testing and security review | Privacy-safe aggregate dashboard and test/security report | Not started |
-| 8. Portfolio release | 48–60 | Deploy, document, demonstrate and polish | Live demo, CI, screenshots, demo script and resume summary | Not started |
+| 1. Research & SIH requirements | 1–7 | Map SIH26241, personas, requirements, data and risks | Traceability matrix, reviewed SRS, data contract, acceptance baseline | Complete |
+| 2. Application foundation | 8–18 | Build Streamlit/FastAPI skeleton, config, DB, locale and CI | App starts, API health, DB smoke test, CI green | Next |
+| 3. Joint profile & recommendations | 19–38 | Bilingual learner/parent context, assessment, eligibility-aware matching | Deterministic recommendations with unit tests | Not started |
+| 4. Outcome data & course explorer | 39–52 | Import/validate outcome evidence, sourced catalogue, explorer and comparison | Outcome data contract, metrics with denominators and provenance | Not started |
+| 5. Family counselling & escalation | 53–67 | Shared bilingual counselling, distinct family views, human follow-up workflow | Joint counselling journey and trackable escalation | Not started |
+| 6. AI counsellor & reporting | 68–78 | Grounded Q&A, trade/NSQF explainers and PDF report | Source-backed answers, explicit unknowns and report export | Not started |
+| 7. Admin analytics, quality & privacy | 79–90 | Aggregate engagement/resistance dashboard, concern shifts, security and usability | Privacy-safe dashboard and test/security report | Not started |
+| 8. Portfolio release | 91–100 | Deploy, validate end-to-end, document and demonstrate | Live demo, CI, screenshots, demo script and resume summary | Not started |
+| Contingency | 101–120 | Resolve data/sponsor dependencies, improve accessibility, testing, stability and polish | Remaining critical gaps closed; no unnecessary feature expansion | Reserved |
 
-## Scope decisions
+## Iteration protocol
 
-- Initial pilot: Maharashtra; English + Marathi. This is a project assumption, not an SIH-mandated geography.
-- Initial learner cohort: students considering vocational pathways after Class 10 or Class 12, with extension to current vocational/non-degree learners.
-- Use NQR/NCVET qualification sources and authorised DGT/state tracer studies.
-- SIH listing says dummy placement/earnings datasets will be provided for evaluation; until received, use clearly labelled synthetic fixtures.
-- Do not infer provider-level outcomes from state/trade aggregates.
-- Human escalation is a demonstrator request queue unless a real counsellor partner is connected.
-- Sentiment change uses optional self-report, not covert emotion inference.
-
-## Daily execution protocol
-
-Each daily iteration should:
-1. Inspect repository state, open issues, recent commits and Actions.
+Every 36-hour iteration should:
+1. Inspect repository head, roadmap, open issues, recent commits and CI.
 2. Select the highest-priority incomplete task.
 3. Deliver one cohesive, substantive increment.
 4. Run relevant checks and record exact results.
 5. Update documentation and issue state based on evidence.
-6. Commit only validated work.
-
-A four-hour target is a planned allocation, not a claim that an automation run consumed four uninterrupted hours.
+6. Publish a Conventional Commit only after validation.
 
 ## Definition of done
 
 The end-to-end journey works:
 
-**profile → assessment → eligibility filter → ranked pathways → source-linked outcome/course comparison → shared family counselling → human escalation option → report**
+**profile → joint counselling → eligibility-aware recommendations → source-linked outcome/course comparison → trade/job-role/NSQF explainer → human escalation option → concern check-in → privacy-safe admin dashboard → report**
 
 Required evidence:
-- Tests for eligibility, scoring, metric definitions, family permissions and analytics aggregation.
-- Reproducible local setup and environment-based secrets.
-- CI for lint and tests.
+- English and Marathi support for key flows, with reviewed translations.
+- Placement rates with cohort definitions/denominators and reporting periods.
+- Earnings with currency, time basis, statistic type and follow-up period.
+- Source provenance and verification dates; unknown values remain unknown.
+- Tests for outcome calculations, eligibility, family permissions and privacy-safe aggregation.
+- Human escalation honestly represented as a request/callback queue unless a real counsellor system is integrated.
+- Self-reported concern measurement only; no covert emotion inference.
+- Reproducible setup, CI, deployment, screenshots and known limitations.
 - No secrets or real learner/parent records committed.
-- Source provenance and verification dates for qualification/outcome facts.
-- Explicit limitations and data gaps.
-- Deployed demonstration, screenshots and resume-ready documentation.
+
+## External dependencies
+
+- SIH dummy placement/earnings dataset is not yet available in the repository. Use synthetic fixtures only for tests until the authorised dataset is supplied.
+- Maharashtra/Marathi is a pilot assumption requiring confirmation.
+- Real-time human counsellor integration requires an actual counsellor partner or authorised endpoint.
 
 ## Phase 1 completion evidence
-- [x] Official SIH26241 listing reviewed and requirements summarised.
-- [x] Problem-to-product traceability matrix added.
-- [x] Initial learner cohort and Maharashtra/Marathi pilot assumption documented.
-- [x] Learner, parent, counsellor, admin and data-curator journeys documented.
-- [x] SRS, architecture, data-source policy, outcome data model and risk register updated.
-- [x] Four Phase 1 issues closed with evidence.
-- [x] External dependencies tracked in issues #5 and #6.
-- [x] Documentation contract tests added; GitHub Actions lint and tests pass (8 tests).
+
+- [x] Official SIH26241 requirements recorded.
+- [x] Joint learner-parent, bilingual, outcome-data, progression, escalation, admin analytics and low-literacy requirements mapped.
+- [x] SRS, architecture, data contract, provenance policy and risks documented.
+- [x] External dependencies tracked in GitHub issues.
 
 ## Progress log
 
-| Date | Phase / planned day | Increment | Checks | Commit |
-|---|---|---|---|---|
-| 2026-11-01 | Phase 1 / Days 1–5 | Official SIH brief research, traceability, SRS, outcome contract, localization, escalation and admin analytics docs; Phase 2 issues created | Ruff passed; Pytest 8 passed in GitHub Actions run 41232400382 | 159f7b070049890dca6772c50221a65179d2cbbc |
+| Date | Increment | Checks / evidence |
+|---|---|---|
+| 2026-11-01 | Phase 1 requirements and SIH traceability baseline completed | Requirements and repository docs reviewed |
+| 2026-11-01 | Schedule extended to 100-day target / 120-day maximum, with 36-hour iteration cadence | Automation configuration updated |
