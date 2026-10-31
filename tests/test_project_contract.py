@@ -73,3 +73,9 @@ def test_official_sih_requirements_are_mapped() -> None:
         "low-literacy",
     ):
         assert requirement in mapping
+
+
+def test_pathway_shortlisting_is_advisory_and_eligibility_safe() -> None:
+    srs = read_doc("docs/SRS.md")
+    assert "eligible, ineligible and unknown eligibility" in srs
+    assert "not a validated aptitude test" in srs
