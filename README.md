@@ -1,72 +1,58 @@
 # PathSaathi AI
 
-**AI-enabled career counselling and family decision-support for vocational education.**
+**SIH26241 — AI-enabled career counselling and family decision-support for vocational education.**
 
-PathSaathi AI helps students explore vocational pathways using structured assessments, transparent eligibility-aware recommendations, verified course information, and collaborative family decision tools.
+PathSaathi AI is a Python-first portfolio project that helps learners and families explore vocational pathways together using explainable eligibility-aware matching, source-linked qualification and outcome evidence, bilingual counselling, and a human-escalation workflow.
 
-> This is an educational decision-support tool, not a psychometric diagnosis or a guarantee of admission, employment, salary, or career outcomes.
+> This is a decision-support prototype, not a psychometric diagnosis or a guarantee of admission, employment, placement, safety or salary outcomes.
 
-## Portfolio goals
+## Why this project
 
-- Demonstrate Python application engineering with Streamlit and FastAPI.
-- Build an explainable recommendation engine with eligibility as a hard constraint.
-- Curate vocational course/career information with provenance and verification dates.
-- Support student and parent decision-making without allowing either party to override the student's agency.
-- Provide tests, reproducible setup, CI, deployment documentation, and a transparent limitations section.
+The SIH challenge is not just to recommend a course to a learner. It asks for a joint learner-parent counselling experience that addresses family concerns with credible local evidence, explains vocational progression in accessible language, supports regional languages, enables human escalation and gives administrators privacy-safe insight into engagement and parental concerns.
+
+See [SIH requirement mapping](docs/PROBLEM_STATEMENT_MAPPING.md) and [project research](docs/PROJECT_RESEARCH.md).
+
+## MVP focus
+
+- English + Marathi pilot interface (Maharashtra scope assumption).
+- Guided learner assessment and eligibility-aware recommendations.
+- Qualification/course explorer with NCVET/NQR provenance.
+- Outcome evidence model that preserves trade/provider/region/cohort granularity and metric definitions.
+- Shared learner-parent counselling session with separate preferences.
+- Retrieval-grounded AI explanations with source links and explicit unknowns.
+- Counsellor escalation request queue.
+- Aggregate admin analytics based on opt-in events and self-reported feedback.
+- PDF report, tests, CI and deployment documentation.
 
 ## Planned stack
 
-Python 3.12+, Streamlit, FastAPI, SQLAlchemy, SQLite (PostgreSQL-ready configuration), Pandas, scikit-learn where justified, Pytest, Ruff, GitHub Actions, retrieval-grounded LLM integration, and PDF reporting.
+Python 3.12+, Streamlit, FastAPI, SQLAlchemy, SQLite (PostgreSQL-ready), Pandas, scikit-learn only where justified, Pytest, Ruff, GitHub Actions, retrieval-grounded LLM integration and PDF reporting.
 
-## Status
+## Current status
 
-**Current phase: Phase 1 — Research and requirements.** See [ROADMAP.md](ROADMAP.md) and [docs/SRS.md](docs/SRS.md).
+**Phase 1 — Research and requirements.** The official SIH26241 listing has been reviewed and mapped to product requirements. The complete SRS, scope and data assumptions are being refined before application implementation.
 
-## Planned user journey
-
-1. Student creates a profile and completes an interest/skills/preferences assessment.
-2. The platform validates course eligibility separately from preference matching.
-3. A transparent scoring engine ranks suitable pathways and explains its reasoning.
-4. Student explores source-linked vocational courses and progression options.
-5. Student and parent independently record priorities and compare options in a family decision room.
-6. The platform produces a report with recommendations, evidence, uncertainties, and practical next steps.
-
-## Local setup
-
-Implementation instructions will be added in Phase 2. The intended developer setup is:
-
-```bash
-python -m venv .venv
-pip install -r requirements.txt
-```
-
-## Repository structure (target)
-
-```text
-app/                 Streamlit interface
-backend/             FastAPI routes, schemas, services
-core/                Configuration and shared utilities
-database/            SQLAlchemy models and session management
-data/                Licensed/official seed data and provenance
-docs/                SRS, architecture, research and decisions
-tests/               Unit and integration tests
-.github/workflows/   Continuous integration
-```
+- [60-day roadmap](ROADMAP.md)
+- [SRS](docs/SRS.md)
+- [Architecture](docs/ARCHITECTURE.md)
+- [Outcome data model](docs/OUTCOME_DATA_MODEL.md)
+- [Data-source policy](docs/DATA_SOURCE_POLICY.md)
 
 ## Engineering principles
 
-- Eligibility is a hard filter, not a small term in a weighted score.
-- Recommendation weights are configurable prototype assumptions until validated by qualified counsellors.
-- Use synthetic profiles for development and demos; never commit real student records.
-- Store source URLs and last-verified dates for factual course claims.
-- Keep AI responses grounded in curated sources and clearly mark missing or uncertain information.
-- Minimise personal data and document age-aware consent requirements before any real deployment.
-- Do not fabricate fees, placement rates, salaries, or outcome statistics.
+- Eligibility is a hard filter, not a weighted preference.
+- Matching weights are configurable prototype assumptions, not validated psychometrics.
+- Every outcome claim carries definition, cohort, geography, sample/denominator and source.
+- Never derive provider-level outcomes from state-level studies.
+- Use synthetic learner/outcome records for development; never commit real student data.
+- AI answers are grounded in approved records; missing evidence is stated plainly.
+- Use optional self-report for feedback, not covert emotion inference.
+- Minimise personal data and review age-aware consent/legal requirements before production.
 
-## Contributing
+## Local setup
 
-This is currently a solo portfolio project. Work is tracked through GitHub Issues and ROADMAP.md. Use focused changes, tests, and Conventional Commit messages.
+Implementation commands will be added with the Phase 2 application skeleton.
 
-## Licence
+## License
 
 MIT. See LICENSE.
