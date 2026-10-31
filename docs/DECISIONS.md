@@ -1,24 +1,25 @@
 # Architecture Decision Records
 
 ## ADR-001: Python-first modular application
-**Status:** Accepted for MVP
+**Status:** Accepted  
+Use Streamlit for the interface and FastAPI for API/domain access. Keep business rules in testable Python services.
 
-**Decision:** Use Streamlit for UI and FastAPI for backend API. Keep domain logic in reusable Python services.
+## ADR-002: Eligibility and evidence are explicit
+**Status:** Accepted  
+Eligibility is not inferred from preference scores. Missing data is unknown. Outcome figures must carry denominator, cohort, time basis and provenance.
 
-**Rationale:** Rapid UI development without coupling core eligibility/recommendation logic to UI widgets; independently testable API and services.
+## ADR-003: Deterministic evidence first, LLM second
+**Status:** Accepted  
+Outcome metrics and qualification mappings come from structured records. LLM is used to explain retrieved evidence in accessible language, not to invent data.
 
-**Trade-offs:** Two application processes and API integration work. Worthwhile for a portfolio demonstrating API design and modularity.
+## ADR-004: English + Marathi for the first demonstrator
+**Status:** Accepted for MVP, pending target-user validation  
+Use locale-managed strings and human-reviewed translations. Keep additional regional languages possible without redesign.
 
-## ADR-002: Eligibility is a hard filter
-**Status:** Accepted
+## ADR-005: Sentiment shift through explicit self-report
+**Status:** Accepted  
+Measure optional pre/post concern ratings and objection categories. Do not covertly infer emotion from private conversations. Admin analytics are aggregate and suppress small cohorts.
 
-**Decision:** Model eligibility as eligible, ineligible or unknown. Preference scores cannot compensate for unmet required eligibility.
-
-**Rationale:** A high preference match must not imply admission eligibility.
-
-## ADR-003: Deterministic recommendations before LLM
-**Status:** Accepted
-
-**Decision:** Recommendation ranking is computed by deterministic, testable code. LLM use is limited to grounded explanation and counselling.
-
-**Rationale:** Reproducibility, explainability, reduced hallucination risk and easier evaluation.
+## ADR-006: Honest counsellor escalation
+**Status:** Accepted  
+If no real-time counsellor integration exists, expose a consented callback/follow-up request with status. Never imply that a live person is connected when they are not.
