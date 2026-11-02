@@ -199,3 +199,33 @@ def test_earnings_require_currency_unit_and_statistic_type() -> None:
             geography_name="Maharashtra",
             statistic_type="median",
         )
+
+
+
+def test_non_finite_outcome_values_are_rejected() -> None:
+    with pytest.raises(ValueError, match="finite numbers"):
+        make_outcome("not-finite", value=float("nan"))
+
+
+def test_negative_earnings_are_rejected() -> None:
+    with pytest.raises(ValueError, match="cannot be negative"):
+        OutcomeEvidenceRecord(
+            evidence_id="negative-earnings",
+            metric_code="median_monthly_earnings",
+            metric_label="Median monthly earnings",
+            definition="Test earnings definition.",
+            metric_kind="earnings",
+            value=-1.0,
+            geography_level="state",
+            geography_name="Maharashtra",
+            currency="INR",
+            unit="per month",
+            statistic_type="median",
+        )
+
+
+def test_outcome_repository_rejects_duplicate_identifiers() -> None:
+    outcome = make_outcome("duplicate")
+
+    with pytest.raises(ValueError, match="identifiers must be unique"):
+        InMemoryOutcomeEvidenceRepository((outcome, outcome))
