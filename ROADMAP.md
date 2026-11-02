@@ -98,9 +98,12 @@ Required evidence:
 - [x] Shared logging configuration and generic API error response added.
 - [x] Package scaffolds created for app, backend, core, database and services.
 - [x] CI installs project and dev dependencies, compiles packages, runs Ruff and Pytest.
-- [x] SQLAlchemy removed from active dependencies until the post-Phase-4 persistence phase.
+- [x] SQLAlchemy removed from direct project dependencies and unused database URL configuration removed until the post-Phase-4 persistence phase.
+- [x] Bilingual navigation, translation parity, API health success/unavailable handling and offline UI fallback implemented; GitHub Actions run 41380633847 passed with 13 tests.
+- [x] Phase 2 Streamlit shell issue #10 closed after CI validation.
+- [x] Outdated Phase 2 SQLite issue #9 closed as superseded by post-Phase-4 issue #11.
 - [ ] Domain repository/service interfaces using fixture/in-memory adapters only before Phase 4.
-- [ ] Validate the updated UI and API contract in GitHub Actions.
+- [ ] Formal accessibility/usability review with target learners and parents.
 
 ## Progress log
 
@@ -110,4 +113,5 @@ Required evidence:
 | 2026-11-01 | Phase 2 Python scaffold, FastAPI health route, Streamlit bilingual shell, logging and CI | Previous Actions run 41232769034: compileall passed, Ruff passed, Pytest 9 passed |
 | 2026-11-01 | Database connection and Vercel/production deployment deliberately deferred until after Phase 4 | Roadmap and automation instructions updated |
 | 2026-11-02 | Streamlit shell expanded with Home/Profile/Pathways navigation, API health fallback and parallel English/Marathi copy; tests added | CI validation pending |
-| 2026-11-02 | Removed unused SQLAlchemy/database URL configuration from the Phase 2 runtime; documented post-Phase-4 persistence boundary | CI validation pending |
+| 2026-11-02 | Removed unused SQLAlchemy/database URL configuration from the Phase 2 runtime; documented post-Phase-4 persistence boundary | GitHub Actions run 41380633847: compileall passed, Ruff passed, Pytest 13 passed |
+| 2026-11-02 | Completed bilingual Streamlit navigation, API health status and graceful offline fallback; closed issue #10 and superseded issue #9 with #11 | GitHub Actions run 41380633847: all steps successful, Pytest 13 passed |
