@@ -7,7 +7,7 @@
 **Nominal delivery target:** 100 calendar days  
 **Hard maximum:** 120 calendar days  
 **Priority:** Resume-quality portfolio product  
-**Stack:** Python, Streamlit, FastAPI, Pandas, Pytest, Ruff, GitHub Actions; persistent PostgreSQL and cloud deployment are deliberately scheduled after Phase 4.
+**Stack:** Python, Streamlit, FastAPI, Pandas (Phase 4), Pytest, Ruff, GitHub Actions; persistent PostgreSQL and cloud deployment are deliberately scheduled after Phase 4.
 
 The cadence and work duration are targets, not a claim that an automation run has occupied that amount of wall-clock time. Update status only after repository evidence exists.
 
@@ -30,14 +30,14 @@ The cadence and work duration are targets, not a claim that an automation run ha
 **Before Phase 4 completion**
 - Define data contracts, domain models, repository/service interfaces and validation rules.
 - Use synthetic fixtures, CSV imports and isolated test adapters for development.
-- Do not provision or depend on a hosted production database.
+- Do not add SQLAlchemy as an active runtime dependency, create a database engine, provision or depend on a hosted production database.
 - Do not deploy the application to production hosting.
 
 **After Phase 4 completion**
 1. Select a managed PostgreSQL provider and provision the database.
-2. Connect SQLAlchemy using environment-based connection strings and secure secrets.
-3. Add Alembic migrations, indexes, transaction handling, connection pooling and backup/restore notes.
-4. Add integration tests against a disposable test database; never commit production credentials.
+2. Add SQLAlchemy and Alembic, then connect using environment-based connection strings and secure secrets.
+3. Add migrations, indexes, transaction handling, connection pooling and backup/restore notes.
+4. Add integration tests against a disposable PostgreSQL test database; never commit production credentials.
 5. Deploy the FastAPI backend to Vercel's Python runtime.
 6. Deploy Streamlit separately to Streamlit Community Cloud or another Streamlit-compatible host; do not assume Streamlit itself runs as a native Vercel app.
 7. Configure CORS, API base URL, health checks, secrets, logs and deployment smoke tests.
@@ -91,14 +91,16 @@ Required evidence:
 ## Phase 2 progress
 
 - [x] Python project metadata, runtime/dev dependencies and Python version added.
-- [x] Streamlit shell with English/Marathi navigation labels added.
-- [x] FastAPI app and /health endpoint added.
+- [x] Streamlit English/Marathi navigation and matching translation catalogues added.
+- [x] FastAPI app and `/health` endpoint added.
+- [x] Streamlit API-status indicator checks the health contract with a short timeout.
+- [x] UI remains usable and explains the offline limitation when the API is unavailable.
 - [x] Shared logging configuration and generic API error response added.
 - [x] Package scaffolds created for app, backend, core, database and services.
 - [x] CI installs project and dev dependencies, compiles packages, runs Ruff and Pytest.
-- [x] Previous GitHub Actions run 41232769034 passed: compileall, Ruff and Pytest (9 passed).
-- [ ] SQLAlchemy/domain repository interfaces using fixture/in-memory adapters only before Phase 4.
-- [ ] Complete UI/API contract and accessibility shell.
+- [x] SQLAlchemy removed from active dependencies until the post-Phase-4 persistence phase.
+- [ ] Domain repository/service interfaces using fixture/in-memory adapters only before Phase 4.
+- [ ] Validate the updated UI and API contract in GitHub Actions.
 
 ## Progress log
 
@@ -107,3 +109,5 @@ Required evidence:
 | 2026-11-01 | Phase 1 requirements and SIH traceability baseline completed | Requirements docs reviewed |
 | 2026-11-01 | Phase 2 Python scaffold, FastAPI health route, Streamlit bilingual shell, logging and CI | Previous Actions run 41232769034: compileall passed, Ruff passed, Pytest 9 passed |
 | 2026-11-01 | Database connection and Vercel/production deployment deliberately deferred until after Phase 4 | Roadmap and automation instructions updated |
+| 2026-11-02 | Streamlit shell expanded with Home/Profile/Pathways navigation, API health fallback and parallel English/Marathi copy; tests added | CI validation pending |
+| 2026-11-02 | Removed unused SQLAlchemy/database URL configuration from the Phase 2 runtime; documented post-Phase-4 persistence boundary | CI validation pending |
