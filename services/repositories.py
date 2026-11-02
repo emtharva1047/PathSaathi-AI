@@ -43,6 +43,15 @@ class OutcomeQuery:
     district: str | None = None
     verification_status: VerificationStatus | None = None
 
+    def __post_init__(self) -> None:
+        if self.verification_status is not None and self.verification_status not in {
+            "verified",
+            "needs_review",
+            "stale",
+            "synthetic_demo",
+        }:
+            raise ValueError("Unsupported outcome verification status filter.")
+
 
 class CourseRepository(Protocol):
     """Read contract for qualification/course catalogue implementations."""
