@@ -178,7 +178,7 @@ def test_rate_numerator_cannot_exceed_denominator() -> None:
             metric_label="Placement rate",
             definition="Test rate definition.",
             metric_kind="rate",
-            value=110.0,
+            value=100.0,
             geography_level="state",
             geography_name="Maharashtra",
             numerator=11,
