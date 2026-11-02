@@ -43,7 +43,7 @@ External dependencies are tracked in GitHub issues: the authorised SIH dummy out
 - [Architecture](docs/ARCHITECTURE.md)
 - [SIH traceability](docs/PROBLEM_STATEMENT_MAPPING.md)
 - [Outcome data contract](docs/OUTCOME_DATA_CONTRACT.md)
-- [Data-source policy](docs/DATA_SOURCE_POLICY.md)
+- [Data-source policy](docs/DATA_SOURCE_POLICY.md)\n- [Repository contracts](docs/REPOSITORY_CONTRACTS.md)
 
 ## Engineering principles
 
