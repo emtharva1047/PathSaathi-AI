@@ -8,6 +8,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from datetime import date
+from math import isfinite
 from typing import Literal
 from urllib.parse import urlsplit
 
@@ -122,6 +123,11 @@ class OutcomeEvidenceRecord:
                 raise ValueError(f"{field_name} cannot be empty.")
         if not self.geography_name.strip():
             raise ValueError("geography_name cannot be empty.")
+        if self.value is not None and not isfinite(self.value):
+            raise ValueError("Outcome values must be finite numbers or unknown.")
+        if self.value is not None and self.metric_kind in {"earnings", "count"}:
+            if self.value < 0:
+                raise ValueError("Earnings and count values cannot be negative.")
         if self.value is not None and self.metric_kind == "rate":
             if not 0 <= self.value <= 100:
                 raise ValueError("Rate values must be expressed as percentages from 0 to 100.")
@@ -132,8 +138,8 @@ class OutcomeEvidenceRecord:
                 raise ValueError("Rate counts require a non-negative numerator and positive denominator.")
             if self.numerator > self.denominator:
                 raise ValueError("numerator cannot exceed denominator.")
-        if self.sample_size is not None and self.sample_size < 0:
-            raise ValueError("sample_size cannot be negative.")
+        if self.sample_size is not None and self.sample_size <= 0:
+            raise ValueError("sample_size must be positive when supplied.")
         if self.metric_kind == "earnings" and self.value is not None:
             if not self.currency or not self.unit:
                 raise ValueError("Earnings values require an explicit currency and unit.")
