@@ -229,3 +229,28 @@ def test_outcome_repository_rejects_duplicate_identifiers() -> None:
 
     with pytest.raises(ValueError, match="identifiers must be unique"):
         InMemoryOutcomeEvidenceRepository((outcome, outcome))
+
+
+
+def test_unknown_verification_status_is_rejected() -> None:
+    with pytest.raises(ValueError, match="Unsupported outcome verification status"):
+        make_outcome("invalid-status", verification_status="official")  # type: ignore[arg-type]
+
+
+def test_unknown_metric_kind_is_rejected() -> None:
+    with pytest.raises(ValueError, match="Unsupported outcome metric kind"):
+        OutcomeEvidenceRecord(
+            evidence_id="invalid-kind",
+            metric_code="custom_metric",
+            metric_label="Custom metric",
+            definition="Test definition.",
+            metric_kind="unknown",  # type: ignore[arg-type]
+            value=None,
+            geography_level="state",
+            geography_name="Maharashtra",
+        )
+
+
+def test_unknown_verification_status_filter_is_rejected() -> None:
+    with pytest.raises(ValueError, match="Unsupported outcome verification status filter"):
+        OutcomeQuery(verification_status="official")  # type: ignore[arg-type]
