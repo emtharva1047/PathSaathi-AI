@@ -58,6 +58,8 @@ class CourseRecord:
     verification_status: VerificationStatus = "needs_review"
 
     def __post_init__(self) -> None:
+        if self.verification_status not in {"verified", "needs_review", "stale", "synthetic_demo"}:
+            raise ValueError("Unsupported course verification status.")
         if not self.course_id.strip():
             raise ValueError("course_id cannot be empty.")
         if not self.title.strip():
@@ -118,6 +120,14 @@ class OutcomeEvidenceRecord:
     verification_status: VerificationStatus = "needs_review"
 
     def __post_init__(self) -> None:
+        if self.metric_kind not in {"rate", "earnings", "count", "other"}:
+            raise ValueError("Unsupported outcome metric kind.")
+        if self.geography_level not in {"national", "state", "district", "provider"}:
+            raise ValueError("Unsupported outcome geography level.")
+        if self.statistic_type not in {"mean", "median", "band", "unknown"}:
+            raise ValueError("Unsupported earnings statistic type.")
+        if self.verification_status not in {"verified", "needs_review", "stale", "synthetic_demo"}:
+            raise ValueError("Unsupported outcome verification status.")
         for field_name in ("evidence_id", "metric_code", "metric_label", "definition"):
             if not getattr(self, field_name).strip():
                 raise ValueError(f"{field_name} cannot be empty.")
