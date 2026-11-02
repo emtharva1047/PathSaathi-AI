@@ -26,17 +26,19 @@ See [SIH requirement mapping](docs/PROBLEM_STATEMENT_MAPPING.md) and [project re
 
 ## Technology
 
-Python 3.12+, Streamlit, FastAPI, SQLAlchemy, SQLite (PostgreSQL-ready), Pandas where justified, Pytest, Ruff, GitHub Actions, retrieval-grounded LLM integration and PDF reporting.
+Python 3.12+, Streamlit, FastAPI, Pytest, Ruff and GitHub Actions. Pandas is planned for the outcome-data ingestion phase. SQLAlchemy, Alembic and managed PostgreSQL are deliberately deferred until after Phase 4; no database engine or persistent database connection is part of the current foundation.
 
 ## Current status
 
-**Phase 1 complete. Phase 2 foundation in progress.** The repository now contains the Python project scaffold, a FastAPI health endpoint, a bilingual Streamlit shell, shared logging/error handling and an initial CI pipeline. Database persistence and the end-to-end product workflows are still to be implemented.
+**Phase 1 complete. Phase 2 foundation in progress.** The repository contains the Python project scaffold, FastAPI health endpoint, English/Marathi navigation, a resilient API-status indicator, shared logging/error handling and an initial CI pipeline. The UI remains usable as a demo when the API is unavailable.
 
-The owner-set delivery target is 60 days with up to four focused hours planned per day. The project must not be extended beyond 60 days without explicit owner approval.
+The nominal delivery target is **100 calendar days**, with a **120-day hard maximum**. Development is planned as one iteration every 36 hours, targeting 2–3 focused hours per iteration. These are planning targets, not a claim that an automation run occupies that amount of wall-clock time.
+
+Database persistence and production deployment are explicitly scheduled after Phase 4. Before then, use validated CSVs, fixture-backed repositories and in-memory adapters; do not provision a hosted database or deploy the application.
 
 External dependencies are tracked in GitHub issues: the authorised SIH dummy outcome dataset, and confirmation of the pilot language/region and any live counsellor partner.
 
-- [60-day roadmap](ROADMAP.md)
+- [100-day roadmap](ROADMAP.md)
 - [SRS](docs/SRS.md)
 - [Architecture](docs/ARCHITECTURE.md)
 - [SIH traceability](docs/PROBLEM_STATEMENT_MAPPING.md)
@@ -65,6 +67,8 @@ pip install -e ".[dev]"
 uvicorn backend.main:app --reload
 streamlit run app/streamlit_app.py
 ```
+
+The Streamlit sidebar checks the API at `http://127.0.0.1:8000/health`. Set `PATHSAATHI_API_URL` when the API runs at another base URL. If the API is unavailable, the UI shows a status warning but keeps the informational shell available.
 
 Run checks with:
 
