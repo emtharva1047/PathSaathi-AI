@@ -102,7 +102,7 @@ Required evidence:
 - [x] Bilingual navigation, translation parity, API health success/unavailable handling and offline UI fallback implemented; GitHub Actions run 41380633847 passed with 13 tests.
 - [x] Phase 2 Streamlit shell issue #10 closed after CI validation.
 - [x] Outdated Phase 2 SQLite issue #9 closed as superseded by post-Phase-4 issue #11.
-- [ ] Domain repository/service interfaces using fixture/in-memory adapters only before Phase 4.
+- [ ] Domain repository/service interfaces using fixture/in-memory adapters only before Phase 4 ([issue #13](https://github.com/emtharva1047/PathSaathi-AI/issues/13)).
 - [ ] Formal accessibility/usability review with target learners and parents.
 
 ## Progress log
