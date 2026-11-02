@@ -102,7 +102,10 @@ Required evidence:
 - [x] Bilingual navigation, translation parity, API health success/unavailable handling and offline UI fallback implemented; GitHub Actions run 41380633847 passed with 13 tests.
 - [x] Phase 2 Streamlit shell issue #10 closed after CI validation.
 - [x] Outdated Phase 2 SQLite issue #9 closed as superseded by post-Phase-4 issue #11.
-- [ ] Domain repository/service interfaces using fixture/in-memory adapters only before Phase 4 ([issue #13](https://github.com/emtharva1047/PathSaathi-AI/issues/13)).
+- [x] Added typed course/outcome domain records, exact-match query objects, storage-independent repository protocols and deterministic in-memory adapters; unknown NSQF/outcome values remain explicit.
+- [x] Added repository contract tests for geography/trade filters, empty results, duplicate IDs, provenance, synthetic evidence, unknown values and numeric validation.
+- [ ] GitHub Actions validation for the repository-contract increment (local compileall and 16 focused Pytest tests pass; Ruff/CI result still pending).
+- [ ] Formal accessibility/usability review with target learners and parents ([issue #14](https://github.com/emtharva1047/PathSaathi-AI/issues/14)).
 - [ ] Formal accessibility/usability review with target learners and parents.
 
 ## Progress log
@@ -114,4 +117,4 @@ Required evidence:
 | 2026-11-01 | Database connection and Vercel/production deployment deliberately deferred until after Phase 4 | Roadmap and automation instructions updated |
 | 2026-11-02 | Streamlit shell expanded with Home/Profile/Pathways navigation, API health fallback and parallel English/Marathi copy; tests added | CI validation pending |
 | 2026-11-02 | Removed unused SQLAlchemy/database URL configuration from the Phase 2 runtime; documented post-Phase-4 persistence boundary | GitHub Actions run 41380633847: compileall passed, Ruff passed, Pytest 13 passed |
-| 2026-11-02 | Completed bilingual Streamlit navigation, API health status and graceful offline fallback; closed issue #10 and superseded issue #9 with #11 | GitHub Actions run 41380633847: all steps successful, Pytest 13 passed |
+| 2026-11-02 | Completed bilingual Streamlit navigation, API health status and graceful offline fallback; closed issue #10 and superseded issue #9 with #11 | GitHub Actions run 41380633847: all steps successful, Pytest 13 passed |\n| 2026-11-02 | Added storage-independent course/outcome domain records, repository protocols, in-memory adapters and 16 contract tests | Local `python -m compileall -q core services tests` passed; `python -m pytest -q tests/test_repositories.py` passed (16); GitHub Actions/Ruff validation pending |
