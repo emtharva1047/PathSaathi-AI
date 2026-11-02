@@ -25,15 +25,20 @@
   |-- Prompt/context assembly and grounded answer validation
   |-- Privacy aggregation and small-cohort suppression
   v
-[SQLAlchemy repositories]
-  |-- Users, profiles, family sessions and consent
-  |-- Trades, providers, outcome records and NSQF pathways
-  |-- Escalations, check-ins and aggregate metrics
+[Repository interfaces]
+  |-- Pre-Phase 4: CSV, fixture and in-memory adapters only
+  |-- After Phase 4: SQLAlchemy repositories and managed PostgreSQL
   v
-[SQLite local / PostgreSQL deployment]
+[Verified course and outcome records]
 
 [AI provider] is called only with retrieved, relevant evidence; the core app remains useful if it is unavailable.
 ```
+
+## Persistence and deployment gate
+
+Persistent storage is intentionally not part of the Phase 2 foundation. Before Phase 4 exit criteria are met, the application must use fixture-backed or in-memory adapters and validated CSV workflows. Do not create a database engine, connect to SQLite/PostgreSQL, provision a hosted database or deploy the application during Phases 2–4.
+
+After Phase 4 sign-off, add SQLAlchemy, Alembic and managed PostgreSQL as tracked in [issue #11](https://github.com/emtharva1047/PathSaathi-AI/issues/11). The FastAPI API is planned for Vercel; the Streamlit interface requires a separate Streamlit-compatible host.
 
 ## Main flows
 
@@ -70,7 +75,7 @@
 - Domain services: outcome calculations, NSQF mapping, concern tracking, aggregation and escalation.
 - Data import: schema versioning, provenance, validation and audit.
 - AI integration: retrieval-grounded explanation, not a source of unverified statistics.
-- Persistence: SQLAlchemy models and repository layer.
+- Persistence: introduced only after Phase 4; SQLAlchemy models and repositories use managed PostgreSQL.
 
 ## Security and privacy
 - Enforce access server-side.
@@ -81,4 +86,4 @@
 - Do not use real student or family data in development.
 
 ## Deployment
-Streamlit and FastAPI may be hosted as separate Python services. Use PostgreSQL for deployed persistence, HTTPS, environment-based secrets, logging without sensitive message contents, CI checks and a documented demo dataset clearly marked as synthetic until SIH data is supplied.
+After Phase 4 and database integration, host FastAPI and Streamlit as separate Python services. Use managed PostgreSQL for deployed persistence, HTTPS, environment-based secrets, logging without sensitive message contents, CI checks and a documented demo dataset clearly marked as synthetic until SIH data is supplied.
