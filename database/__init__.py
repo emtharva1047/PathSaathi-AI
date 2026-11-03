@@ -1,1 +1,1 @@
-"""Persistence and SQLAlchemy model package."""
+"""SQLAlchemy persistence models, repositories and session helpers."""
