@@ -254,3 +254,31 @@ def test_unknown_metric_kind_is_rejected() -> None:
 def test_unknown_verification_status_filter_is_rejected() -> None:
     with pytest.raises(ValueError, match="Unsupported outcome verification status filter"):
         OutcomeQuery(verification_status="official")  # type: ignore[arg-type]
+
+
+
+def test_provider_filter_excludes_state_aggregate_even_if_provider_id_is_tagged() -> None:
+    provider_record = make_outcome("provider", verification_status="synthetic_demo")
+    state_record = OutcomeEvidenceRecord(
+        evidence_id="state-tagged",
+        metric_code="trade_related_employment_rate",
+        metric_label="Trade-related employment",
+        definition="Synthetic state aggregate; provider identifier is not a provider sample.",
+        metric_kind="rate",
+        value=60.0,
+        geography_level="state",
+        geography_name="Maharashtra",
+        trade_or_job_role="Electrician",
+        provider_id="provider-01",
+        state="Maharashtra",
+        numerator=60,
+        denominator=100,
+        sample_size=100,
+        verification_status="synthetic_demo",
+    )
+    repository = InMemoryOutcomeEvidenceRepository((provider_record, state_record))
+
+    results = repository.list_outcomes(OutcomeQuery(provider_id="provider-01"))
+
+    assert [record.evidence_id for record in results] == ["provider"]
+    assert results[0].geography_level == "provider"
