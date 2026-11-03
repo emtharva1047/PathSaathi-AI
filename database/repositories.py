@@ -66,6 +66,8 @@ class SqlAlchemyOutcomeEvidenceRepository:
                 if expected is not None:
                     column = getattr(OutcomeEvidenceModel, field_name)
                     statement = statement.where(func.lower(column) == expected.strip().lower())
+            if query.provider_id is not None:
+                statement = statement.where(OutcomeEvidenceModel.geography_level == "provider")
         records = self._session.scalars(statement.order_by(OutcomeEvidenceModel.evidence_id)).all()
         return tuple(record.to_domain() for record in records)
 
