@@ -258,7 +258,20 @@ def test_unknown_verification_status_filter_is_rejected() -> None:
 
 
 def test_provider_filter_excludes_state_aggregate_even_if_provider_id_is_tagged() -> None:
-    provider_record = make_outcome("provider", verification_status="synthetic_demo")
+    provider_record = OutcomeEvidenceRecord(
+        evidence_id="provider",
+        metric_code="trade_related_employment_rate",
+        metric_label="Trade-related employment",
+        definition="Synthetic provider-scoped test evidence.",
+        metric_kind="rate",
+        value=62.0,
+        geography_level="provider",
+        geography_name="provider-01",
+        trade_or_job_role="Electrician",
+        provider_id="provider-01",
+        state="Maharashtra",
+        verification_status="synthetic_demo",
+    )
     state_record = OutcomeEvidenceRecord(
         evidence_id="state-tagged",
         metric_code="trade_related_employment_rate",
