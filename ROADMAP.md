@@ -1,120 +1,110 @@
-# PathSaathi AI — 100-Day Target / 120-Day Maximum Roadmap
+# PathSaathi AI — 60-Calendar-Day Delivery Roadmap
 
-**Mode:** Solo developer  
-**Work cadence:** One development iteration every 36 hours (1.5 days)  
-**Focus target:** 2–3 hours per iteration  
-**Planned effort:** Approximately 160–240 focused hours across up to 80 iterations  
-**Nominal delivery target:** 100 calendar days  
-**Hard maximum:** 120 calendar days  
-**Priority:** Resume-quality portfolio product  
-**Stack:** Python, Streamlit, FastAPI, Pandas (Phase 4), Pytest, Ruff, GitHub Actions; persistent PostgreSQL and cloud deployment are deliberately scheduled after Phase 4.
+**Owner-approved window:** 2 November–31 December 2026 (exactly 60 calendar days)  
+**Mode:** Solo developer; resume-first engineering portfolio  
+**Cadence:** One scheduled development run per day  
+**Work allocation:** Up to four focused hours per day; this is a planning target, not a claim of elapsed runtime  
+**Hard deadline:** 31 December 2026. Do not extend the plan without explicit owner approval.  
+**Stack:** Python 3.12+, Streamlit, FastAPI, SQLAlchemy 2.x, SQLite locally, PostgreSQL-ready URL configuration, Pandas where justified, Pytest, Ruff, GitHub Actions, retrieval-grounded LLM API and PDF reporting.
 
-The cadence and work duration are targets, not a claim that an automation run has occupied that amount of wall-clock time. Update status only after repository evidence exists.
+## Calendar and phase plan
 
-## Delivery phases
+Day 1 is 2 November 2026. Day 60 is 31 December 2026.
 
-| Phase | Project days | Objective | Exit evidence | Status |
-|---|---:|---|---|---|
-| 1. Research & SIH requirements | 1–7 | Map SIH26241, personas, requirements, outcome data and risks | Traceability matrix, reviewed SRS, data contract, acceptance baseline | Complete |
-| 2. Application foundation | 8–18 | Build Python/Streamlit/FastAPI skeleton, configuration, API contracts, locale scaffold and CI; no hosted DB connection yet | App starts, API health, service/repository interfaces, CI green | In progress |
-| 3. Assessment & recommendations | 19–38 | Build bilingual learner profile, assessment and explainable eligibility-aware matching using fixtures/adapters | Deterministic recommendations with tests and demo fixtures | Not started |
-| 4. Outcome data & course explorer | 39–52 | Build CSV/data import validation, provenance-aware outcome and course catalogue, explorer and comparison | Verified data contract, denominator/earnings validation, source-linked explorer | Not started |
-| 5. Persistent database & family workflows | 53–67 | After Phase 4, connect managed PostgreSQL, add migrations and persistence, then implement family accounts, consent, preferences and escalation | Deployed DB connection, migrations, tested persistence, joint family workflow | Not started |
-| 6. AI counsellor & reporting | 68–78 | Grounded Q&A, trade/NSQF explainers, evidence references and PDF report | Source-backed responses, explicit unknowns and report export | Not started |
-| 7. Admin analytics, quality & privacy | 79–90 | Aggregate engagement/resistance dashboard, self-reported concern shifts, small-cohort suppression, security and usability | Privacy-safe analytics and test/security report | Not started |
-| 8. Cloud deployment & portfolio release | 91–100 | After Phase 4, deploy FastAPI API to Vercel, Streamlit UI to a Streamlit-compatible host, connect managed PostgreSQL, verify E2E and publish portfolio evidence | Live API/UI, production-like DB integration, CI, screenshots, demo and resume summary | Not started |
-| Contingency | 101–120 | Resolve data/sponsor dependencies, migration/deployment problems, accessibility, user testing, performance/security and release stability | Critical gaps closed; no unjustified scope expansion | Reserved |
+| Phase | Project days | Calendar dates | Scope | Exit evidence | Status |
+|---|---:|---|---|---|---|
+| 1. Research and requirements | 1–5 | 2–6 Nov | Official SIH26241 review, personas/use cases, SRS, architecture, risks, outcome contract, traceability and acceptance | Requirements mapped, source policy and acceptance baseline | Complete |
+| 2. Foundation | 6–12 | 7–13 Nov | Streamlit/FastAPI skeleton, config/logging, SQLAlchemy models, local SQLite, PostgreSQL-ready URL, API health, locale scaffold, validation and CI | App/API start, schema creation is explicit, SQLite repository tests and CI green | In progress |
+| 3. Counselling/profile/pathway | 13–22 | 14–23 Nov | Learner and parent context, guided bilingual prompts, advisory shortlisting, eligibility and source-backed explainers | Deterministic recommendations, eligible/ineligible/unknown outcomes, explainable tests | Not started |
+| 4. Course/outcome explorer | 23–29 | 24–30 Nov | SIH dummy-data importer when supplied, validation, source-linked qualifications/outcomes, filters and comparisons | Provenance-aware import report and accurate comparison semantics | Not started |
+| 5. Family counselling/escalation | 30–36 | 1–7 Dec | Shared sessions, distinct learner/parent roles and preferences, consent and callback request workflow | Role separation, consent tests, honest escalation queue | Not started |
+| 6. AI and reporting | 37–41 | 8–12 Dec | Retrieval-grounded bilingual Q&A, safe prompts, source display and PDF report | Evidence-backed responses with source/caveat display; report export | Not started |
+| 7. Admin analytics, quality and privacy | 42–47 | 13–18 Dec | Aggregate dashboard, optional self-reported concern shifts, small-cohort suppression, security, data-quality and usability review | Privacy-safe analytics, QA and usability evidence | Not started |
+| 8. Portfolio release | 48–60 | 19–31 Dec | Production database configuration, deployment, CI, docs, screenshots, diagrams, demo script, resume summary, limitations and end-to-end validation | Deployed API/UI, verified persistence, E2E smoke tests and portfolio evidence | Not started |
 
-## Explicit database and hosting sequence
+## Database and deployment sequence
 
-**Before Phase 4 completion**
-- Define data contracts, domain models, repository/service interfaces and validation rules.
-- Use synthetic fixtures, CSV imports and isolated test adapters for development.
-- Do not add SQLAlchemy as an active runtime dependency, create a database engine, provision or depend on a hosted production database.
-- Do not deploy the application to production hosting.
+**Phase 2 (local development):**
+- SQLAlchemy 2.x models and repository adapters are part of the foundation.
+- SQLite is the default local database (sqlite:///./data/pathsaathi.db).
+- Schema creation is explicit; importing modules must not create files or open database connections.
+- PATHSAATHI_DATABASE_URL accepts a PostgreSQL-compatible SQLAlchemy URL. The optional postgres dependency extra installs Psycopg 3.
+- Unit and integration tests use isolated in-memory SQLite databases.
+- Do not provision a managed production database or deploy the application during this phase.
 
-**After Phase 4 completion**
-1. Select a managed PostgreSQL provider and provision the database.
-2. Add SQLAlchemy and Alembic, then connect using environment-based connection strings and secure secrets.
-3. Add migrations, indexes, transaction handling, connection pooling and backup/restore notes.
-4. Add integration tests against a disposable PostgreSQL test database; never commit production credentials.
-5. Deploy the FastAPI backend to Vercel's Python runtime.
-6. Deploy Streamlit separately to Streamlit Community Cloud or another Streamlit-compatible host; do not assume Streamlit itself runs as a native Vercel app.
-7. Configure CORS, API base URL, health checks, secrets, logs and deployment smoke tests.
-8. Run end-to-end checks across UI → Vercel API → PostgreSQL.
+**Phase 8 (production release):**
+- Select and provision managed PostgreSQL only when release prerequisites are ready.
+- Add/verify migrations, indexes, pooling, secret management, backup/restore notes and production integration tests.
+- Deploy FastAPI and Streamlit separately to compatible hosts; do not assume Streamlit is a native Vercel app.
+- Configure HTTPS, CORS, health checks, environment variables, logs and smoke tests.
+- Verify the full UI → API → PostgreSQL journey.
+- Never commit production credentials or real learner/family records.
 
-Vercel hosting is for the FastAPI API layer. Streamlit hosting is separate unless the UI architecture is intentionally changed and documented.
+## Product flow
 
-## Iteration protocol
+Learner/parent onboarding and consent → joint bilingual counselling → contextual profile → verified outcome evidence → trade/job-role/NSQF explainer → human callback/escalation request → optional self-reported pre/post concern check-in → privacy-safe admin dashboard → shareable report.
 
-Every 36-hour iteration should:
-1. Inspect repository head, roadmap, open issues, recent commits and CI.
-2. Select the highest-priority incomplete task.
-3. Deliver one cohesive, substantive increment.
-4. Run relevant checks and record exact results.
-5. Update documentation and issue state based on evidence.
-6. Commit only validated work using a meaningful Conventional Commit.
+## Responsible data and AI rules
 
-## Definition of done
-
-The end-to-end journey works:
-
-**profile → assessment → eligibility-aware pathways → source-linked outcome/course comparison → persistent family session → joint counselling → human escalation option → optional concern check-in → privacy-safe admin dashboard → report**
-
-Required evidence:
-- English and Marathi support for key flows with reviewed translations.
-- Placement rates with cohort definitions/denominators and reporting periods.
-- Earnings with currency, time basis, statistic type and follow-up period.
-- Source provenance and verification dates; unknown values remain unknown.
-- Tested PostgreSQL persistence and migrations after Phase 4.
-- Vercel FastAPI deployment and separate Streamlit deployment after Phase 4.
-- Tests for outcome calculations, eligibility, family permissions and privacy-safe aggregation.
-- Human escalation honestly represented as a request/callback queue unless a real counsellor system is integrated.
-- Self-reported concern measurement only; no covert emotion inference.
-- Reproducible setup, CI, deployment, screenshots and known limitations.
-- No secrets or real learner/parent records committed.
-
-## External dependencies
-
-- SIH dummy placement/earnings dataset is not yet available. Use synthetic fixtures only for tests until the authorised dataset is supplied.
-- Maharashtra/Marathi is a pilot assumption requiring confirmation.
-- Real-time human counsellor integration requires a partner or authorised endpoint.
-- PostgreSQL and hosting provider selection will be made when the post-Phase-4 integration work begins.
+- The SIH dummy dataset has not yet been received. Track it in [issue #5](https://github.com/emtharva1047/PathSaathi-AI/issues/5). Use synthetic fixtures only for tests and clearly labelled demonstrations.
+- Use NCVET/NQR qualification records and exact qualification files for entry criteria/progression. Any DGT tracer study must retain exact state/cohort/sample/period caveats.
+- Do not conflate placement, employment, trade-related employment, apprenticeship or self-employment.
+- Never derive provider-level outcomes from state/trade aggregates.
+- Earnings must retain currency, time basis, statistic type, follow-up period and observation count where available.
+- Missing values remain unknown; LLM output cannot fill data gaps.
+- AI answers retrieve approved evidence and disclose source date, cohort and geography. Deterministic evidence display must work without the LLM provider.
+- Keep Maharashtra/Marathi as configurable pilot assumptions pending mentor confirmation ([issue #6](https://github.com/emtharva1047/PathSaathi-AI)).
+- Keep learner and parent preferences distinct; preserve learner agency.
+- Human escalation is a callback/request queue until a real partner/endpoint exists.
+- Admin analytics are aggregate only, suppress small cohorts and never expose identities or raw transcripts.
+- Sentiment/concern shifts are optional self-report, never covert emotion inference.
+- Collect only broad optional income/location bands. Production use with minors requires appropriate consent, retention and legal/privacy review.
+- Never guarantee admission, salary, placement or job security; do not claim validated psychometrics.
 
 ## Phase 1 completion evidence
 
 - [x] Official SIH26241 requirements recorded.
 - [x] Joint learner-parent, bilingual, outcome-data, progression, escalation, admin analytics and low-literacy requirements mapped.
 - [x] SRS, architecture, data contract, provenance policy and risks documented.
-- [x] External dependencies tracked in GitHub issues.
+- [x] External dependencies #5 and #6 tracked.
 
 ## Phase 2 progress
 
-- [x] Python project metadata, runtime/dev dependencies and Python version added.
-- [x] Streamlit English/Marathi navigation and matching translation catalogues added.
-- [x] FastAPI app and `/health` endpoint added.
-- [x] Streamlit API-status indicator checks the health contract with a short timeout.
-- [x] UI remains usable and explains the offline limitation when the API is unavailable.
-- [x] Shared logging configuration and generic API error response added.
-- [x] Package scaffolds created for app, backend, core, database and services.
-- [x] CI installs project and dev dependencies, compiles packages, runs Ruff and Pytest.
-- [x] SQLAlchemy removed from direct project dependencies and unused database URL configuration removed until the post-Phase-4 persistence phase.
-- [x] Bilingual navigation, translation parity, API health success/unavailable handling and offline UI fallback implemented; GitHub Actions run 41380633847 passed with 13 tests.
-- [x] Phase 2 Streamlit shell issue #10 closed after CI validation.
-- [x] Outdated Phase 2 SQLite issue #9 closed as superseded by post-Phase-4 issue #11.
-- [x] Added typed course/outcome domain records, exact-match query objects, storage-independent repository protocols and deterministic in-memory adapters; unknown NSQF/outcome values remain explicit.
-- [x] Added repository contract tests for geography/trade filters, empty results, duplicate IDs, provenance, synthetic evidence, unknown values and numeric validation.
-- [ ] GitHub Actions validation for the repository-contract increment (local compileall and 19 focused Pytest tests pass; Ruff/CI result still pending).
-- [ ] Formal accessibility/usability review with target learners and parents ([issue #14](https://github.com/emtharva1047/PathSaathi-AI/issues/14)).
-- [ ] Formal accessibility/usability review with target learners and parents.
+- [x] Python project metadata, Streamlit shell, FastAPI health route, shared logging and CI scaffold.
+- [x] English/Marathi navigation and resilient API-status indicator.
+- [x] Typed course/outcome domain records, repository protocols and in-memory adapters.
+- [x] Local SQLAlchemy 2.x models for courses and outcome evidence.
+- [x] SQLite engine/session helpers with explicit schema creation and isolated in-memory test support.
+- [x] SQLAlchemy repositories implement exact-match course/outcome queries without broadening provider scope.
+- [x] PostgreSQL-ready URL configuration and optional Psycopg 3 dependency.
+- [x] Local database tests cover round trips, unknown values, exact filters, duplicate IDs and database constraints.
+- [ ] Fresh GitHub Actions validation for the current repository/domain/database increment.
+- [ ] Close/reconcile Phase 2 database tracking issue #9 after CI evidence.
+- [ ] Accessibility/usability review with target learners and parents ([issue #14](https://github.com/emtharva1047/PathSaathi-AI)).
 
 ## Progress log
 
-| Date | Increment | Checks / evidence |
+| Date | Increment | Evidence |
 |---|---|---|
-| 2026-11-01 | Phase 1 requirements and SIH traceability baseline completed | Requirements docs reviewed |
-| 2026-11-01 | Phase 2 Python scaffold, FastAPI health route, Streamlit bilingual shell, logging and CI | Previous Actions run 41232769034: compileall passed, Ruff passed, Pytest 9 passed |
-| 2026-11-01 | Database connection and Vercel/production deployment deliberately deferred until after Phase 4 | Roadmap and automation instructions updated |
-| 2026-11-02 | Streamlit shell expanded with Home/Profile/Pathways navigation, API health fallback and parallel English/Marathi copy; tests added | CI validation pending |
-| 2026-11-02 | Removed unused SQLAlchemy/database URL configuration from the Phase 2 runtime; documented post-Phase-4 persistence boundary | GitHub Actions run 41380633847: compileall passed, Ruff passed, Pytest 13 passed |
-| 2026-11-02 | Completed bilingual Streamlit navigation, API health status and graceful offline fallback; closed issue #10 and superseded issue #9 with #11 | GitHub Actions run 41380633847: all steps successful, Pytest 13 passed |\n| 2026-11-02 | Added storage-independent course/outcome domain records, repository protocols, in-memory adapters and 16 contract tests | Local `python -m compileall -q core services tests` passed; `python -m pytest -q tests/test_repositories.py` passed (19); GitHub Actions/Ruff validation pending |
+| 2026-11-02 | Project window began; Phase 1 documentation baseline carried forward and verified | Existing SRS, architecture, mapping, data contract and risk documents |
+| 2026-11-02 | Bilingual Streamlit shell and API health fallback | GitHub Actions run 41380633847: compileall, Ruff and 13 tests passed |
+| 2026-11-02 | Typed domain records and in-memory repository contracts | 19 focused repository tests reported passing locally; CI for this increment pending |
+| 2026-11-03 | Added SQLAlchemy course/outcome models, SQLite session helpers, SQLAlchemy repository adapters and 9 focused database tests | Local pytest tests/test_database.py: 9 passed; compileall passed; fresh GitHub Actions validation pending |
+| 2026-11-03 | Reconciled project documentation and issue plan to the owner's exact 60-day window | README, roadmap, architecture and issue #9/#11 updated in this increment |
+
+## Release acceptance checklist
+
+- [ ] Joint learner-parent flow with distinct roles/preferences and consent.
+- [ ] Reviewed English/Marathi key flows with accessible guided steps and optional read-aloud.
+- [ ] Eligibility states distinguish eligible, ineligible and unknown.
+- [ ] Advisory recommendations explain why options are shortlisted and are not psychometric claims.
+- [ ] Outcome import validates source, denominator, cohort, geography, period and units.
+- [ ] Course/NSQF explanations cite official qualification records.
+- [ ] Callback request queue is honest about partner availability.
+- [ ] Admin dashboard is aggregate-only with small-cohort suppression.
+- [ ] Optional concern changes are self-reported.
+- [ ] Retrieval-grounded AI discloses evidence and unknowns; deterministic mode works offline.
+- [ ] PDF report includes evidence references and caveats.
+- [ ] Local SQLite and production PostgreSQL workflows are tested.
+- [ ] FastAPI and Streamlit are deployed separately and E2E verified.
+- [ ] CI, setup docs, screenshots, demo script, known limitations and resume summary are complete.

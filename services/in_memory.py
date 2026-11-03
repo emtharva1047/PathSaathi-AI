@@ -85,6 +85,7 @@ class InMemoryOutcomeEvidenceRepository(OutcomeEvidenceRepository):
                     _matches(outcome.metric_code, query.metric_code),
                     _matches(outcome.trade_or_job_role, query.trade_or_job_role),
                     _matches(outcome.provider_id, query.provider_id),
+                    query.provider_id is None or outcome.geography_level == "provider",
                     _matches(outcome.state, query.state),
                     _matches(outcome.district, query.district),
                     _matches(outcome.verification_status, query.verification_status),

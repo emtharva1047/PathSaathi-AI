@@ -2,7 +2,7 @@
 
 ## High-level system
 
-```text
+~~~text
 [Streamlit learner + parent interface]
   |-- English / Marathi locale
   |-- Guided, low-jargon interaction
@@ -26,19 +26,34 @@
   |-- Privacy aggregation and small-cohort suppression
   v
 [Repository interfaces]
-  |-- Pre-Phase 4: CSV, fixture and in-memory adapters only
-  |-- After Phase 4: SQLAlchemy repositories and managed PostgreSQL
+  |-- In-memory adapters for deterministic tests/demo fixtures
+  |-- SQLAlchemy adapters for local SQLite and PostgreSQL-compatible URLs
   v
-[Verified course and outcome records]
+[Course, qualification and outcome records]
 
-[AI provider] is called only with retrieved, relevant evidence; the core app remains useful if it is unavailable.
-```
+[AI provider] is called only with retrieved, relevant evidence; deterministic core flows
+remain available when the provider is unavailable.
+~~~
 
-## Persistence and deployment gate
+## Persistence and deployment sequence
 
-Persistent storage is intentionally not part of the Phase 2 foundation. Before Phase 4 exit criteria are met, the application must use fixture-backed or in-memory adapters and validated CSV workflows. Do not create a database engine, connect to SQLite/PostgreSQL, provision a hosted database or deploy the application during Phases 2–4.
+### Phase 2: local persistence foundation
 
-After Phase 4 sign-off, add SQLAlchemy, Alembic and managed PostgreSQL as tracked in [issue #11](https://github.com/emtharva1047/PathSaathi-AI/issues/11). The FastAPI API is planned for Vercel; the Streamlit interface requires a separate Streamlit-compatible host.
+- SQLAlchemy 2.x declarative models represent course/qualification and outcome-evidence records.
+- SQLite is the default local database at sqlite:///./data/pathsaathi.db.
+- PATHSAATHI_DATABASE_URL accepts another SQLAlchemy URL, including PostgreSQL with the optional Psycopg 3 driver.
+- Engine and session creation are explicit helpers. Importing the API or database package must not open a connection or create tables.
+- create_schema(engine) is an explicit local-development/test helper; production schema changes must use controlled migrations.
+- Repository adapters preserve the same storage-independent contracts as the in-memory implementations.
+- Local database tests use isolated in-memory SQLite databases.
+
+### Phase 8: production release
+
+- Provision managed PostgreSQL only during the release phase, after product workflows and data validation are ready.
+- Add and verify Alembic migrations, indexes, transaction handling, connection pooling, secret management and backup/restore notes.
+- Deploy FastAPI and Streamlit separately to compatible hosts. Do not assume Streamlit itself runs as a native Vercel application.
+- Configure HTTPS, CORS, environment variables, health checks and smoke tests.
+- Verify the complete UI → API → PostgreSQL journey before calling the product deployed.
 
 ## Main flows
 
@@ -49,7 +64,7 @@ After Phase 4 sign-off, add SQLAlchemy, Alembic and managed PostgreSQL as tracke
 4. The application gathers broad context and concern categories.
 5. The orchestrator retrieves outcome and progression evidence using trade/provider/region filters.
 6. The AI explains retrieved facts in low-jargon language, including sample/period caveats.
-7. Unanswered or sensitive concerns can be escalated to a human counsellor.
+7. Unanswered or sensitive concerns can be escalated to a human.
 
 ### 2. Outcome data
 - Import SIH-provided dummy data through a versioned CSV/JSON contract.
@@ -70,14 +85,16 @@ After Phase 4 sign-off, add SQLAlchemy, Alembic and managed PostgreSQL as tracke
 - Never expose raw chat transcripts or household identities in general admin views.
 
 ## Component boundaries
+
 - UI: presentation, language selection and accessible guided interactions.
 - API: validation, role checks, consent and response contracts.
 - Domain services: outcome calculations, NSQF mapping, concern tracking, aggregation and escalation.
 - Data import: schema versioning, provenance, validation and audit.
 - AI integration: retrieval-grounded explanation, not a source of unverified statistics.
-- Persistence: introduced only after Phase 4; SQLAlchemy models and repositories use managed PostgreSQL.
+- Persistence: SQLAlchemy models and repositories are available in Phase 2; SQLite is the local default. Production PostgreSQL provisioning and migrations belong to Phase 8.
 
 ## Security and privacy
+
 - Enforce access server-side.
 - Keep exact household income out of scope; use optional broad brackets.
 - Keep learner and parent preference/concern entries attributed by role.
@@ -86,4 +103,5 @@ After Phase 4 sign-off, add SQLAlchemy, Alembic and managed PostgreSQL as tracke
 - Do not use real student or family data in development.
 
 ## Deployment
-After Phase 4 and database integration, host FastAPI and Streamlit as separate Python services. Use managed PostgreSQL for deployed persistence, HTTPS, environment-based secrets, logging without sensitive message contents, CI checks and a documented demo dataset clearly marked as synthetic until SIH data is supplied.
+
+Production release is a Phase 8 task. Host FastAPI and Streamlit as separate Python services, use managed PostgreSQL, HTTPS, environment-based secrets, logging without sensitive message contents, CI checks and a documented demo dataset clearly marked as synthetic until SIH data is supplied.
