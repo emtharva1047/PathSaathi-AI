@@ -43,7 +43,7 @@ The owner-approved delivery window is **60 calendar days: 2 November–31 Decemb
 | Admin analytics, quality and privacy | 42–47 | 13–18 Dec |
 | Portfolio release | 48–60 | 19–31 Dec |
 
-See the [60-day roadmap](ROADMAP.md) for exit criteria and verified progress.
+See the [60-day roadmap](ROADMAP.md) for exit criteria and verified progress, and [database setup](docs/DATABASE.md) for local persistence configuration.
 
 ## Current status
 
