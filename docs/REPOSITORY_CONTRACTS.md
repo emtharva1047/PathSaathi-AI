@@ -27,8 +27,9 @@ OutcomeEvidenceRepository exposes list_outcomes(OutcomeQuery | None) and
 get_outcome(evidence_id).
 
 Each query applies all supplied exact-match filters. Text matching is case-insensitive,
-but the adapter does not broaden a provider query into a state or trade average. NSQF
-range filters exclude records whose level is unknown instead of guessing.
+but the adapter does not broaden a provider query into a state or trade average. A provider
+filter also requires provider-level geography; a state aggregate remains excluded even if
+it carries a provider identifier. NSQF range filters exclude records whose level is unknown.
 
 ## In-memory adapters
 
