@@ -47,11 +47,21 @@ See the [60-day roadmap](ROADMAP.md) for exit criteria and verified progress, an
 
 ## Current status
 
-**Phase 1 requirements baseline is complete; Phase 2 foundation is in progress.** The repository contains the Python project scaffold, FastAPI health endpoint, English/Marathi navigation, resilient API-status indicator, shared logging/error handling, typed course/outcome domain records, storage-independent repository contracts, SQLAlchemy models and SQLite-backed repository adapters.
+**Phase 1 requirements baseline is complete; Phase 2 foundation is in progress.** The repository contains the Python project scaffold, FastAPI health endpoint, English/Marathi navigation, resilient API-status indicator, shared logging/error handling, typed course/outcome domain records, storage-independent repository contracts, SQLAlchemy models and SQLite-backed repository adapters. GitHub Actions run #99 passed Python compilation, Ruff and 42 tests for the Phase 2 increment.
 
 The local default database URL is sqlite:///./data/pathsaathi.db. The application creates tables only when the explicit create_schema() helper is called; importing the API does not create a database or connect to a hosted service. PATHSAATHI_DATABASE_URL can be set to a PostgreSQL URL, with the optional Psycopg driver installed when needed.
 
 Production PostgreSQL provisioning and application deployment are reserved for Phase 8. Local SQLite is part of Phase 2 and is not blocked by the production-hosting gate.
+
+## Project documentation
+
+- [Software Requirements Specification](docs/SRS.md)
+- [Architecture](docs/ARCHITECTURE.md)
+- [SIH requirement mapping](docs/PROBLEM_STATEMENT_MAPPING.md)
+- [Outcome data contract](docs/OUTCOME_DATA_CONTRACT.md)
+- [Data-source policy](docs/DATA_SOURCE_POLICY.md)
+- [Repository contracts](docs/REPOSITORY_CONTRACTS.md)
+- [Database setup](docs/DATABASE.md)
 
 ## Data integrity and limitations
 
