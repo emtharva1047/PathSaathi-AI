@@ -78,8 +78,8 @@ Learner/parent onboarding and consent → joint bilingual counselling → contex
 - [x] SQLAlchemy repositories implement exact-match course/outcome queries without broadening provider scope.
 - [x] PostgreSQL-ready URL configuration and optional Psycopg 3 dependency.
 - [x] Local database tests cover round trips, unknown values, exact filters, duplicate IDs and database constraints.
-- [ ] Fresh GitHub Actions validation for the current repository/domain/database increment.
-- [ ] Close/reconcile Phase 2 database tracking issue #9 after CI evidence.
+- [x] Fresh GitHub Actions validation for the repository/domain/database increment (run #99: compileall, Ruff and 42 tests passed).
+- [x] Reopened and completed Phase 2 local SQLite issue #9; production PostgreSQL/deployment remain in Phase 8 issue #11.
 - [ ] Accessibility/usability review with target learners and parents ([issue #14](https://github.com/emtharva1047/PathSaathi-AI)).
 
 ## Progress log
@@ -89,8 +89,8 @@ Learner/parent onboarding and consent → joint bilingual counselling → contex
 | 2026-11-02 | Project window began; Phase 1 documentation baseline carried forward and verified | Existing SRS, architecture, mapping, data contract and risk documents |
 | 2026-11-02 | Bilingual Streamlit shell and API health fallback | GitHub Actions run 41380633847: compileall, Ruff and 13 tests passed |
 | 2026-11-02 | Typed domain records and in-memory repository contracts | 19 focused repository tests reported passing locally; CI for this increment pending |
-| 2026-11-03 | Added SQLAlchemy course/outcome models, SQLite session helpers, SQLAlchemy repository adapters and 9 focused database tests | Local pytest tests/test_database.py: 9 passed; compileall passed; fresh GitHub Actions validation pending |
-| 2026-11-03 | Reconciled project documentation and issue plan to the owner's exact 60-day window | README, roadmap, architecture and issue #9/#11 updated in this increment |
+| 2026-11-03 | Added SQLAlchemy course/outcome models, SQLite session helpers, PostgreSQL-ready URL configuration and SQLAlchemy repositories; provider queries now require provider-level geography | GitHub Actions run #99: compileall passed, Ruff passed, Pytest 42 passed; PR #15 merged as 3efda43 |
+| 2026-11-03 | Reconciled project documentation and issue plan to the owner's exact 60-day window | README/ROADMAP/architecture updated; issue #9 reopened then completed; issue #11 moved to Phase 8; issue #13 completed |
 
 ## Release acceptance checklist
 
