@@ -30,11 +30,13 @@ All filters are exact matches. A provider filter is restricted to records whose 
 
 Every outcome response includes its metric definition, geography, cohort/observation periods, sample and numerator/denominator fields where available, earnings units/statistic/follow-up fields, verification status and source provenance.
 
-The API exposes a numeric `value` only when the record is marked `verified` and has complete source provenance (publisher, HTTP(S) source URL and verification date). Otherwise:
+The API exposes a numeric `value` only when the record is marked `verified` and has complete source provenance (publisher, HTTP(S) source URL and verification date). Numerator, denominator and sample-size counts are also withheld unless that verification status and provenance are complete. Otherwise:
 
 - `value` is `null`;
 - `value_status` is `withheld` when an unverified numeric value exists, or `unknown` when the value is absent;
-- `value_withheld` explains that an unverified numeric value was intentionally not returned.
+- `value_withheld` explains that an unverified outcome value was intentionally not returned;
+- `numeric_metadata_withheld` explains that numerator, denominator or sample-size counts were withheld;
+- `source_verified` reports whether the verification status and required source fields are present (it is not an independent audit claim).
 
 A `verified` label is not a claim that the source has been independently audited by PathSaathi; it records the current data-review status and must be supported by the supplied provenance. Synthetic fixtures are used only in tests and are never inserted as official outcomes.
 
