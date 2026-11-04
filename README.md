@@ -43,11 +43,11 @@ The owner-approved delivery window is **60 calendar days: 2 November–31 Decemb
 | Admin analytics, quality and privacy | 42–47 | 13–18 Dec |
 | Portfolio release | 48–60 | 19–31 Dec |
 
-See the [60-day roadmap](ROADMAP.md) for exit criteria and verified progress, and [database setup](docs/DATABASE.md) for local persistence configuration.
+See the [60-day roadmap](ROADMAP.md) for exit criteria and verified progress, [database setup](docs/DATABASE.md) for local persistence configuration, and the [read-only API contract](docs/API.md) for endpoint and evidence-display behaviour.
 
 ## Current status
 
-**Phase 1 requirements baseline is complete; Phase 2 foundation is in progress.** The repository contains the Python project scaffold, FastAPI health endpoint, English/Marathi navigation, resilient API-status indicator, shared logging/error handling, typed course/outcome domain records, storage-independent repository contracts, SQLAlchemy models and SQLite-backed repository adapters. GitHub Actions run #99 passed Python compilation, Ruff and 42 tests for the Phase 2 increment.
+**Phase 1 requirements baseline is complete; Phase 2 foundation is in progress.** The repository contains the Python project scaffold, FastAPI health endpoint, English/Marathi navigation, resilient API-status indicator, shared logging/error handling, typed course/outcome domain records, storage-independent repository contracts, SQLAlchemy models and SQLite-backed repository adapters. FastAPI now exposes read-only course and outcome list/detail endpoints through lazy request-scoped SQLAlchemy sessions. Outcome responses withhold numeric values unless verification status and source provenance are complete; provider filters remain scoped to provider-level records. GitHub Actions run #103 passed compilation, Ruff and 50 tests for this API increment (one Starlette/httpx deprecation warning).
 
 The local default database URL is sqlite:///./data/pathsaathi.db. The application creates tables only when the explicit create_schema() helper is called; importing the API does not create a database or connect to a hosted service. PATHSAATHI_DATABASE_URL can be set to a PostgreSQL URL, with the optional Psycopg driver installed when needed.
 
@@ -62,6 +62,7 @@ Production PostgreSQL provisioning and application deployment are reserved for P
 - [Data-source policy](docs/DATA_SOURCE_POLICY.md)
 - [Repository contracts](docs/REPOSITORY_CONTRACTS.md)
 - [Database setup](docs/DATABASE.md)
+- [Read-only catalogue API](docs/API.md)
 
 ## Data integrity and limitations
 
