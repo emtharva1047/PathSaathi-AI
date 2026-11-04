@@ -14,7 +14,7 @@ Day 1 is 2 November 2026. Day 60 is 31 December 2026.
 | Phase | Project days | Calendar dates | Scope | Exit evidence | Status |
 |---|---:|---|---|---|---|
 | 1. Research and requirements | 1–5 | 2–6 Nov | Official SIH26241 review, personas/use cases, SRS, architecture, risks, outcome contract, traceability and acceptance | Requirements mapped, source policy and acceptance baseline | Complete |
-| 2. Foundation | 6–12 | 7–13 Nov | Streamlit/FastAPI skeleton, config/logging, SQLAlchemy models, local SQLite, PostgreSQL-ready URL, API health, locale scaffold, validation and CI | App/API start, schema creation is explicit, SQLite repository tests and CI green | In progress |
+| 2. Foundation | 6–12 | 7–13 Nov | Streamlit/FastAPI skeleton, config/logging, SQLAlchemy models, local SQLite, PostgreSQL-ready URL, API health, locale scaffold, read-only catalogue/evidence API, validation and CI | App/API start, explicit schema creation, request-scoped SQLite repositories, safe evidence responses and CI green | In progress |
 | 3. Counselling/profile/pathway | 13–22 | 14–23 Nov | Learner and parent context, guided bilingual prompts, advisory shortlisting, eligibility and source-backed explainers | Deterministic recommendations, eligible/ineligible/unknown outcomes, explainable tests | Not started |
 | 4. Course/outcome explorer | 23–29 | 24–30 Nov | SIH dummy-data importer when supplied, validation, source-linked qualifications/outcomes, filters and comparisons | Provenance-aware import report and accurate comparison semantics | Not started |
 | 5. Family counselling/escalation | 30–36 | 1–7 Dec | Shared sessions, distinct learner/parent roles and preferences, consent and callback request workflow | Role separation, consent tests, honest escalation queue | Not started |
@@ -78,7 +78,11 @@ Learner/parent onboarding and consent → joint bilingual counselling → contex
 - [x] SQLAlchemy repositories implement exact-match course/outcome queries without broadening provider scope.
 - [x] PostgreSQL-ready URL configuration and optional Psycopg 3 dependency.
 - [x] Local database tests cover round trips, unknown values, exact filters, duplicate IDs and database constraints.
+- [x] FastAPI lazily creates a reusable SQLAlchemy session factory on first database-backed request and disposes its engine at shutdown; schema creation remains explicit.
+- [x] Read-only course and outcome list/detail endpoints expose provenance and exact filters; unverified numeric outcome values are withheld and unknowns remain null.
+- [x] Provider-specific API filters return only provider-geography evidence; the health route remains database-independent.
 - [x] Fresh GitHub Actions validation for the repository/domain/database increment (run #99: compileall, Ruff and 42 tests passed).
+- [x] Fresh GitHub Actions validation for the read-only API increment (run #103: compileall, Ruff and 50 tests passed; one Starlette/httpx deprecation warning).
 - [x] Reopened and completed Phase 2 local SQLite issue #9; production PostgreSQL/deployment remain in Phase 8 issue #11.
 - [ ] Accessibility/usability review with target learners and parents ([issue #14](https://github.com/emtharva1047/PathSaathi-AI)).
 
@@ -91,6 +95,7 @@ Learner/parent onboarding and consent → joint bilingual counselling → contex
 | 2026-11-02 | Typed domain records and in-memory repository contracts | 19 focused repository tests reported passing locally; CI for this increment pending |
 | 2026-11-03 | Added SQLAlchemy course/outcome models, SQLite session helpers, PostgreSQL-ready URL configuration and SQLAlchemy repositories; provider queries now require provider-level geography | GitHub Actions run #99: compileall passed, Ruff passed, Pytest 42 passed; PR #15 merged as 3efda43 |
 | 2026-11-03 | Reconciled project documentation and issue plan to the owner's exact 60-day window | README/ROADMAP/architecture updated; issue #9 reopened then completed; issue #11 moved to Phase 8; issue #13 completed |
+| 2026-11-04 | Added lazy request-scoped FastAPI database sessions and read-only course/outcome list/detail endpoints with provenance-aware value withholding and provider-scope filtering | PR #17 merged as e900263; GitHub Actions run #103: compileall passed, Ruff passed, 50 tests passed (one Starlette/httpx deprecation warning); issue #16 completed |
 
 ## Release acceptance checklist
 
