@@ -79,7 +79,7 @@ Learner/parent onboarding and consent → joint bilingual counselling → contex
 - [x] PostgreSQL-ready URL configuration and optional Psycopg 3 dependency.
 - [x] Local database tests cover round trips, unknown values, exact filters, duplicate IDs and database constraints.
 - [x] FastAPI lazily creates a reusable SQLAlchemy session factory on first database-backed request and disposes its engine at shutdown; schema creation remains explicit.
-- [x] Read-only course and outcome list/detail endpoints expose provenance and exact filters; unverified numeric outcome values are withheld and unknowns remain null.
+- [x] Read-only course and outcome list/detail endpoints expose provenance and exact filters; unverified outcome values and numeric numerator/denominator/sample-size metadata are withheld, while unknowns remain null.
 - [x] Provider-specific API filters return only provider-geography evidence; the health route remains database-independent.
 - [x] Fresh GitHub Actions validation for the repository/domain/database increment (run #99: compileall, Ruff and 42 tests passed).
 - [x] Fresh GitHub Actions validation for the read-only API increment (run #103: compileall, Ruff and 50 tests passed; one Starlette/httpx deprecation warning).
@@ -96,6 +96,7 @@ Learner/parent onboarding and consent → joint bilingual counselling → contex
 | 2026-11-03 | Added SQLAlchemy course/outcome models, SQLite session helpers, PostgreSQL-ready URL configuration and SQLAlchemy repositories; provider queries now require provider-level geography | GitHub Actions run #99: compileall passed, Ruff passed, Pytest 42 passed; PR #15 merged as 3efda43 |
 | 2026-11-03 | Reconciled project documentation and issue plan to the owner's exact 60-day window | README/ROADMAP/architecture updated; issue #9 reopened then completed; issue #11 moved to Phase 8; issue #13 completed |
 | 2026-11-04 | Added lazy request-scoped FastAPI database sessions and read-only course/outcome list/detail endpoints with provenance-aware value withholding and provider-scope filtering | PR #17 merged as e900263; GitHub Actions run #103: compileall passed, Ruff passed, 50 tests passed (one Starlette/httpx deprecation warning); issue #16 completed |
+| 2026-11-04 | Tightened the API response contract so unverified numerator, denominator and sample-size metadata are withheld alongside unverified values | PR #19 merged as e31ff27; GitHub Actions run #108: compileall passed, Ruff passed, 50 tests passed (one Starlette/httpx deprecation warning); issue #18 completed |
 
 ## Release acceptance checklist
 
