@@ -18,6 +18,7 @@
   |-- Concern check-ins and engagement events
   |-- Report generation
   |-- Scheme-admin analytics API
+  |-- Read-only course and outcome list/detail API with provenance-aware responses
   v
 [Domain services]
   |-- Outcome data validation and calculation
@@ -45,7 +46,10 @@ remain available when the provider is unavailable.
 - Engine and session creation are explicit helpers. Importing the API or database package must not open a connection or create tables.
 - create_schema(engine) is an explicit local-development/test helper; production schema changes must use controlled migrations.
 - Repository adapters preserve the same storage-independent contracts as the in-memory implementations.
-- Local database tests use isolated in-memory SQLite databases.
+- FastAPI obtains request-scoped sessions through a lazy cached session factory; the engine is disposed at application shutdown.
+- The health route does not depend on persistence. Catalogue/evidence list and detail routes use exact filters and preserve source/cohort/geography metadata.
+- Numeric outcome values are returned only when the record is verified and complete source provenance is present; unverified numeric values are withheld and unknown values remain null.
+- No engine connection or schema creation occurs on module import or application startup. Local database tests use isolated in-memory SQLite databases.
 
 ### Phase 8: production release
 
@@ -87,7 +91,7 @@ remain available when the provider is unavailable.
 ## Component boundaries
 
 - UI: presentation, language selection and accessible guided interactions.
-- API: validation, role checks, consent and response contracts.
+- API: validation, role checks, consent and response contracts. The current read-only catalogue API is documented in `docs/API.md`; write workflows and production authorisation remain future work.
 - Domain services: outcome calculations, NSQF mapping, concern tracking, aggregation and escalation.
 - Data import: schema versioning, provenance, validation and audit.
 - AI integration: retrieval-grounded explanation, not a source of unverified statistics.
