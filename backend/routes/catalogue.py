@@ -50,6 +50,8 @@ class OutcomeEvidenceResponse(BaseModel):
     value: float | None
     value_status: Literal["verified", "withheld", "unknown"]
     value_withheld: bool
+    numeric_metadata_withheld: bool
+    source_verified: bool
     geography_level: str
     geography_name: str
     trade_or_job_role: str | None
@@ -98,7 +100,16 @@ def _course_response(record: CourseRecord) -> CourseResponse:
 
 
 def _outcome_response(record: OutcomeEvidenceRecord) -> OutcomeEvidenceResponse:
+    source_verified = (
+        record.verification_status == "verified"
+        and bool(record.source_publisher)
+        and bool(record.source_url)
+        and record.last_verified_at is not None
+    )
     displayable = record.is_verified_displayable
+    numeric_metadata_present = any(
+        item is not None for item in (record.numerator, record.denominator, record.sample_size)
+    )
     value_status: Literal["verified", "withheld", "unknown"]
     if displayable:
         value_status = "verified"
@@ -116,15 +127,17 @@ def _outcome_response(record: OutcomeEvidenceRecord) -> OutcomeEvidenceResponse:
         value=record.value if displayable else None,
         value_status=value_status,
         value_withheld=record.value is not None and not displayable,
+        numeric_metadata_withheld=numeric_metadata_present and not source_verified,
+        source_verified=source_verified,
         geography_level=record.geography_level,
         geography_name=record.geography_name,
         trade_or_job_role=record.trade_or_job_role,
         provider_id=record.provider_id,
         state=record.state,
         district=record.district,
-        numerator=record.numerator,
-        denominator=record.denominator,
-        sample_size=record.sample_size,
+        numerator=record.numerator if source_verified else None,
+        denominator=record.denominator if source_verified else None,
+        sample_size=record.sample_size if source_verified else None,
         cohort_period=record.cohort_period,
         observation_period=record.observation_period,
         currency=record.currency,
