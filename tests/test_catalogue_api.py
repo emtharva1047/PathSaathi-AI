@@ -167,6 +167,7 @@ def test_unverified_outcome_values_are_withheld_and_unknowns_stay_null(api_clien
         outcomes=(
             make_outcome("verified", value=62.0, verification_status="verified"),
             make_outcome("synthetic", value=71.0),
+            make_outcome("needs-review", value=58.0, verification_status="needs_review"),
             make_outcome("unknown", value=None),
         ),
     )
@@ -178,12 +179,23 @@ def test_unverified_outcome_values_are_withheld_and_unknowns_stay_null(api_clien
     assert records["verified"]["value"] == 62.0
     assert records["verified"]["value_status"] == "verified"
     assert records["verified"]["displayable"] is True
+    assert records["verified"]["source_verified"] is True
+    assert records["verified"]["numerator"] == 62
+    assert records["verified"]["denominator"] == 100
+    assert records["verified"]["sample_size"] == 100
     assert records["synthetic"]["value"] is None
     assert records["synthetic"]["value_status"] == "withheld"
     assert records["synthetic"]["value_withheld"] is True
+    assert records["synthetic"]["numerator"] is None
+    assert records["synthetic"]["denominator"] is None
+    assert records["synthetic"]["sample_size"] is None
+    assert records["synthetic"]["numeric_metadata_withheld"] is True
+    assert records["needs-review"]["value"] is None
+    assert records["needs-review"]["numeric_metadata_withheld"] is True
     assert records["unknown"]["value"] is None
     assert records["unknown"]["value_status"] == "unknown"
     assert records["unknown"]["value_withheld"] is False
+    assert records["unknown"]["numeric_metadata_withheld"] is False
 
 
 def test_provider_filter_never_returns_state_aggregate_with_provider_tag(api_client) -> None:
