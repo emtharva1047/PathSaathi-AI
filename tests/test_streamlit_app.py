@@ -1,5 +1,7 @@
 """Tests for the bilingual Streamlit shell and optional API health check."""
 
+from __future__ import annotations
+
 import json
 import sys
 from contextlib import nullcontext
