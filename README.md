@@ -47,7 +47,7 @@ See the [60-day roadmap](ROADMAP.md) for exit criteria and verified progress, [d
 
 ## Current status
 
-**Phase 1 requirements baseline is complete; Phase 2 foundation is in progress.** The repository contains the Python project scaffold, FastAPI health endpoint, English/Marathi navigation, resilient API-status indicator, shared logging/error handling, typed course/outcome domain records, storage-independent repository contracts, SQLAlchemy models and SQLite-backed repository adapters. FastAPI now exposes read-only course and outcome list/detail endpoints through lazy request-scoped SQLAlchemy sessions. Outcome responses withhold numeric values and numerator/denominator/sample-size counts unless verification status and source provenance are complete; provider filters remain scoped to provider-level records. GitHub Actions runs #103 and #108 passed compilation, Ruff and 50 tests each for the API and its follow-up data-integrity safeguard (each run reports one Starlette/httpx deprecation warning).
+**Phase 1 requirements baseline is complete; Phase 2 foundation is in progress.** The repository contains the Python project scaffold, FastAPI health endpoint, English/Marathi navigation, resilient API-status indicator, shared logging/error handling, typed course/outcome domain records, storage-independent repository contracts, SQLAlchemy models and SQLite-backed repository adapters. FastAPI exposes read-only course and outcome list/detail endpoints through lazy request-scoped SQLAlchemy sessions. Outcome responses withhold numeric values and numerator/denominator/sample-size counts unless verification status and source provenance are complete; provider filters remain scoped to provider-level records. The Streamlit shell now includes locale-managed step progress, Back/Continue controls and contextual Help. Human usability, assistive-technology and Marathi review remain pending; see [accessibility review](docs/ACCESSIBILITY_REVIEW.md) and [issue #14](https://github.com/emtharva1047/PathSaathi-AI/issues/14). GitHub Actions runs #103 and #108 passed compilation, Ruff and 50 tests each for the API and its follow-up data-integrity safeguard (each run reports one Starlette/httpx deprecation warning).
 
 The local default database URL is sqlite:///./data/pathsaathi.db. The application creates tables only when the explicit create_schema() helper is called; importing the API does not create a database or connect to a hosted service. PATHSAATHI_DATABASE_URL can be set to a PostgreSQL URL, with the optional Psycopg driver installed when needed.
 
@@ -63,6 +63,7 @@ Production PostgreSQL provisioning and application deployment are reserved for P
 - [Repository contracts](docs/REPOSITORY_CONTRACTS.md)
 - [Database setup](docs/DATABASE.md)
 - [Read-only catalogue API](docs/API.md)
+- [Accessibility implementation review](docs/ACCESSIBILITY_REVIEW.md)
 
 ## Data integrity and limitations
 
