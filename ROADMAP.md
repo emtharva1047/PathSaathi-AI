@@ -85,6 +85,7 @@ Learner/parent onboarding and consent → joint bilingual counselling → contex
 - [x] Fresh GitHub Actions validation for the read-only API increment (run #103: compileall, Ruff and 50 tests passed; one Starlette/httpx deprecation warning).
 - [x] Reopened and completed Phase 2 local SQLite issue #9; production PostgreSQL/deployment remain in Phase 8 issue #11.
 - [x] Add locale-managed step progress, explicit Back/Continue controls and contextual Help to the Streamlit shell; rendering-contract tests cover English and Marathi states.
+- [x] GitHub Actions validation for accessibility shell and rendering-contract tests (run #112: compileall passed, Ruff passed, Pytest 52 passed; one Starlette/httpx deprecation warning).
 - [ ] Validate understandability, contrast, focus order, screen-reader output, mobile behaviour, read-aloud need and translations with target users/human Marathi reviewer ([issue #14](https://github.com/emtharva1047/PathSaathi-AI)).
 
 ## Progress log
@@ -98,7 +99,7 @@ Learner/parent onboarding and consent → joint bilingual counselling → contex
 | 2026-11-03 | Reconciled project documentation and issue plan to the owner's exact 60-day window | README/ROADMAP/architecture updated; issue #9 reopened then completed; issue #11 moved to Phase 8; issue #13 completed |
 | 2026-11-04 | Added lazy request-scoped FastAPI database sessions and read-only course/outcome list/detail endpoints with provenance-aware value withholding and provider-scope filtering | PR #17 merged as e900263; GitHub Actions run #103: compileall passed, Ruff passed, 50 tests passed (one Starlette/httpx deprecation warning); issue #16 completed |
 | 2026-11-04 | Tightened the API response contract so unverified numerator, denominator and sample-size metadata are withheld alongside unverified values | PR #19 merged as e31ff27; GitHub Actions run #108: compileall passed, Ruff passed, 50 tests passed (one Starlette/httpx deprecation warning); issue #18 completed |
-| 2026-11-05 | Added three-step progress, explicit Back/Continue controls and contextual Help in English/Marathi; added rendering-contract tests and documented what static review cannot validate | Accessibility implementation review recorded; PR and CI validation pending; target-user and assistive-technology validation remain open in issue #14 |
+| 2026-11-05 | Added three-step progress, explicit Back/Continue controls and contextual Help in English/Marathi; added rendering-contract tests and documented what static review cannot validate | PR #20 opened; GitHub Actions run #112 passed compileall, Ruff and 52 tests (one Starlette/httpx deprecation warning); target-user and assistive-technology validation remain open in issue #14 |
 
 ## Release acceptance checklist
 
