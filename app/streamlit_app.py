@@ -20,6 +20,15 @@ TRANSLATIONS = {
         "nav_home": "Home",
         "nav_profile": "Learner profile",
         "nav_pathways": "Explore pathways",
+        "progress": "Step {step} of {total}",
+        "help_title": "Need help?",
+        "help_body": (
+            "Use the section list to move between Home, Learner profile and Explore pathways. "
+            "You can change language at any time. This prototype screen does not collect "
+            "personal information."
+        ),
+        "back": "Back",
+        "next": "Continue",
         "api_label": "Connection to counselling service",
         "api_online": "API connected",
         "api_offline": "API not reachable",
@@ -64,6 +73,15 @@ TRANSLATIONS = {
         "nav_home": "मुख्यपृष्ठ",
         "nav_profile": "विद्यार्थ्याची माहिती",
         "nav_pathways": "शिक्षणाचे पर्याय",
+        "progress": "टप्पा {step} / {total}",
+        "help_title": "मदत हवी आहे?",
+        "help_body": (
+            "मुख्यपृष्ठ, विद्यार्थ्याची माहिती आणि शिक्षणाचे पर्याय या विभागांमध्ये "
+            "जाण्यासाठी विभाग सूची वापरा. तुम्ही कधीही भाषा बदलू शकता. या नमुना "
+            "स्क्रीनवर वैयक्तिक माहिती घेतली जात नाही."
+        ),
+        "back": "मागील टप्पा",
+        "next": "पुढील टप्पा",
         "api_label": "समुपदेशन सेवेशी जोडणी",
         "api_online": "API जोडलेले आहे",
         "api_offline": "API शी जोडणी होत नाही",
@@ -129,7 +147,7 @@ def is_api_healthy(
 
 
 def main() -> None:
-    """Render the bilingual, low-jargon application shell."""
+    """Render the bilingual shell with explicit progress, navigation and help."""
     import streamlit as st
 
     st.set_page_config(page_title="PathSaathi AI", page_icon="🎓", layout="centered")
@@ -137,9 +155,20 @@ def main() -> None:
     locale = st.sidebar.selectbox("Language / भाषा", list(TRANSLATIONS))
     copy = TRANSLATIONS[locale]
     page_keys = ("home", "profile", "pathways")
-    page_labels = [copy[f"nav_{key}"] for key in page_keys]
-    selected_label = st.sidebar.radio(copy["navigation"], page_labels)
-    selected_page = page_keys[page_labels.index(selected_label)]
+    if st.session_state.get("page_navigation") not in page_keys:
+        st.session_state["page_navigation"] = "home"
+
+    selected_page = st.sidebar.radio(
+        copy["navigation"],
+        page_keys,
+        format_func=lambda key: copy[f"nav_{key}"],
+        key="page_navigation",
+    )
+    selected_index = page_keys.index(selected_page)
+
+    def set_page(page: str) -> None:
+        """Update the stable page key before Streamlit reruns the script."""
+        st.session_state["page_navigation"] = page
 
     st.sidebar.caption(copy["api_label"])
     if is_api_healthy():
@@ -147,6 +176,13 @@ def main() -> None:
     else:
         st.sidebar.warning(copy["api_offline"])
     st.sidebar.caption(copy["api_fallback"])
+
+    st.progress(
+        (selected_index + 1) / len(page_keys),
+        text=copy["progress"].format(step=selected_index + 1, total=len(page_keys)),
+    )
+    with st.expander(copy["help_title"], expanded=False):
+        st.write(copy["help_body"])
 
     if selected_page == "home":
         st.title(copy["title"])
@@ -162,6 +198,23 @@ def main() -> None:
         st.title(copy["pathways_heading"])
         st.write(copy["pathways_description"])
         st.info(copy["pathways_placeholder"])
+
+    if selected_index > 0:
+        st.button(
+            copy["back"],
+            key="back_navigation",
+            on_click=set_page,
+            args=(page_keys[selected_index - 1],),
+            use_container_width=True,
+        )
+    if selected_index < len(page_keys) - 1:
+        st.button(
+            copy["next"],
+            key="next_navigation",
+            on_click=set_page,
+            args=(page_keys[selected_index + 1],),
+            use_container_width=True,
+        )
 
     st.caption(copy["footer"])
 
