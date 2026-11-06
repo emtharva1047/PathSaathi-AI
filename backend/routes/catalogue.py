@@ -163,6 +163,8 @@ def list_courses(
     provider_id: Annotated[str | None, Query(min_length=1, max_length=100)] = None,
     min_nsqf_level: Annotated[int | None, Query(ge=1, le=10)] = None,
     max_nsqf_level: Annotated[int | None, Query(ge=1, le=10)] = None,
+    limit: Annotated[int, Query(ge=1, le=100)] = 50,
+    offset: Annotated[int, Query(ge=0)] = 0,
     session: Session = Depends(get_db_session),
 ) -> list[CourseResponse]:
     """List courses using exact filters; unknown NSQF levels remain unknown."""
@@ -182,6 +184,8 @@ def list_courses(
         provider_id=provider_id,
         min_nsqf_level=min_nsqf_level,
         max_nsqf_level=max_nsqf_level,
+        limit=limit,
+        offset=offset,
     )
     records = SqlAlchemyCourseRepository(session).list_courses(query)
     return [_course_response(record) for record in records]
@@ -207,6 +211,8 @@ def list_outcomes(
     state: Annotated[str | None, Query(min_length=1, max_length=100)] = None,
     district: Annotated[str | None, Query(min_length=1, max_length=100)] = None,
     verification_status: VerificationStatus | None = None,
+    limit: Annotated[int, Query(ge=1, le=100)] = 50,
+    offset: Annotated[int, Query(ge=0)] = 0,
     session: Session = Depends(get_db_session),
 ) -> list[OutcomeEvidenceResponse]:
     """List source-scoped outcomes without exposing unverified numeric values."""
@@ -217,6 +223,8 @@ def list_outcomes(
         state=state,
         district=district,
         verification_status=verification_status,
+        limit=limit,
+        offset=offset,
     )
     records = SqlAlchemyOutcomeEvidenceRepository(session).list_outcomes(query)
     return [_outcome_response(record) for record in records]

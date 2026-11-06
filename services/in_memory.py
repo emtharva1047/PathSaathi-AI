@@ -56,7 +56,10 @@ class InMemoryCourseRepository(CourseRepository):
                 if course.nsqf_level is None or course.nsqf_level > query.max_nsqf_level:
                     continue
             matches.append(course)
-        return tuple(matches)
+        matches.sort(key=lambda course: course.course_id)
+        start = query.offset
+        stop = None if query.limit is None else start + query.limit
+        return tuple(matches[start:stop])
 
     def get_course(self, course_id: str) -> CourseRecord | None:
         return self._by_id.get(course_id)
@@ -77,7 +80,7 @@ class InMemoryOutcomeEvidenceRepository(OutcomeEvidenceRepository):
         if query is None:
             return self._outcomes
 
-        return tuple(
+        matches = [
             outcome
             for outcome in self._outcomes
             if all(
@@ -91,7 +94,11 @@ class InMemoryOutcomeEvidenceRepository(OutcomeEvidenceRepository):
                     _matches(outcome.verification_status, query.verification_status),
                 )
             )
-        )
+        ]
+        matches.sort(key=lambda outcome: outcome.evidence_id)
+        start = query.offset
+        stop = None if query.limit is None else start + query.limit
+        return tuple(matches[start:stop])
 
     def get_outcome(self, evidence_id: str) -> OutcomeEvidenceRecord | None:
         return self._by_id.get(evidence_id)

@@ -32,6 +32,9 @@ class SqlAlchemyCourseRepository:
                 statement = statement.where(CourseModel.nsqf_level >= query.min_nsqf_level)
             if query.max_nsqf_level is not None:
                 statement = statement.where(CourseModel.nsqf_level <= query.max_nsqf_level)
+            statement = statement.offset(query.offset)
+            if query.limit is not None:
+                statement = statement.limit(query.limit)
         records = self._session.scalars(statement.order_by(CourseModel.course_id)).all()
         return tuple(record.to_domain() for record in records)
 
@@ -68,6 +71,9 @@ class SqlAlchemyOutcomeEvidenceRepository:
                     statement = statement.where(func.lower(column) == expected.strip().lower())
             if query.provider_id is not None:
                 statement = statement.where(OutcomeEvidenceModel.geography_level == "provider")
+            statement = statement.offset(query.offset)
+            if query.limit is not None:
+                statement = statement.limit(query.limit)
         records = self._session.scalars(statement.order_by(OutcomeEvidenceModel.evidence_id)).all()
         return tuple(record.to_domain() for record in records)
 

@@ -246,3 +246,54 @@ def test_health_endpoint_does_not_require_database_session(api_client) -> None:
 
     assert response.status_code == 200
     assert response.json() == {"status": "ok", "service": "pathsaathi-api"}
+
+
+
+def test_course_list_uses_bounded_offset_pagination(api_client) -> None:
+    client, factory = api_client
+    seed_records(
+        factory,
+        courses=(make_course("course-c"), make_course("course-a"), make_course("course-b")),
+    )
+
+    first_page = client.get("/api/v1/courses", params={"limit": 2, "offset": 0})
+    second_page = client.get("/api/v1/courses", params={"limit": 2, "offset": 2})
+
+    assert first_page.status_code == 200
+    assert [record["course_id"] for record in first_page.json()] == ["course-a", "course-b"]
+    assert second_page.status_code == 200
+    assert [record["course_id"] for record in second_page.json()] == ["course-c"]
+
+
+def test_outcome_list_uses_bounded_offset_pagination(api_client) -> None:
+    client, factory = api_client
+    seed_records(
+        factory,
+        outcomes=(
+            make_outcome("evidence-c"),
+            make_outcome("evidence-a"),
+            make_outcome("evidence-b"),
+        ),
+    )
+
+    first_page = client.get("/api/v1/outcomes", params={"limit": 2})
+    second_page = client.get("/api/v1/outcomes", params={"limit": 2, "offset": 2})
+
+    assert first_page.status_code == 200
+    assert [record["evidence_id"] for record in first_page.json()] == [
+        "evidence-a",
+        "evidence-b",
+    ]
+    assert second_page.status_code == 200
+    assert [record["evidence_id"] for record in second_page.json()] == ["evidence-c"]
+
+
+@pytest.mark.parametrize(
+    "params",
+    ({"limit": 0}, {"limit": 101}, {"offset": -1}),
+)
+def test_catalogue_pagination_rejects_invalid_bounds(api_client, params) -> None:
+    client, _ = api_client
+
+    assert client.get("/api/v1/courses", params=params).status_code == 422
+    assert client.get("/api/v1/outcomes", params=params).status_code == 422

@@ -24,6 +24,8 @@ The API does not create tables during import or application startup. The health 
 | GET | `/api/v1/outcomes` | List outcome evidence; supports metric, trade/job role, provider, state, district and verification-status filters |
 | GET | `/api/v1/outcomes/{evidence_id}` | Fetch one evidence record |
 
+Both list endpoints accept `limit` (default 50, maximum 100) and `offset` (default 0). Results use stable identifier ordering (`course_id` or `evidence_id`) so adjacent pages do not depend on database row order. The API returns a plain list; clients can request the next page by adding the returned page length to `offset`. A total-count field is intentionally omitted until a concrete UI needs it.
+
 All filters are exact matches. A provider filter is restricted to records whose `geography_level` is `provider`; a state or trade aggregate is never promoted to provider evidence.
 
 ## Outcome value display contract
