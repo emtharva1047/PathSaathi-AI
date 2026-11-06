@@ -30,11 +30,14 @@ Each query applies all supplied exact-match filters. Text matching is case-insen
 but the adapter does not broaden a provider query into a state or trade average. A provider
 filter also requires provider-level geography; a state aggregate remains excluded even if
 it carries a provider identifier. NSQF range filters exclude records whose level is unknown.
+Queries support a non-negative offset and an optional limit from 1 through 100. SQLAlchemy
+applies these bounds in the database; in-memory adapters sort by stable identifier before
+slicing so paginated results have deterministic ordering across adapters.
 
 ## In-memory adapters
 
 InMemoryCourseRepository and InMemoryOutcomeEvidenceRepository accept iterables of
-immutable domain records. They reject duplicate identifiers, preserve insertion order,
+immutable domain records. They reject duplicate identifiers, sort paginated query results by stable identifier,
 and return tuples. They are intended for tests and explicitly labelled synthetic demos.
 
 ## SQLAlchemy adapters

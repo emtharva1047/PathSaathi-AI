@@ -295,3 +295,33 @@ def test_provider_filter_excludes_state_aggregate_even_if_provider_id_is_tagged(
 
     assert [record.evidence_id for record in results] == ["provider"]
     assert results[0].geography_level == "provider"
+
+
+
+def test_course_repository_paginates_in_stable_identifier_order() -> None:
+    repository = InMemoryCourseRepository(
+        (make_course("course-c"), make_course("course-a"), make_course("course-b"))
+    )
+
+    page = repository.list_courses(CourseQuery(limit=2, offset=1))
+
+    assert [course.course_id for course in page] == ["course-b", "course-c"]
+
+
+def test_outcome_repository_paginates_in_stable_identifier_order() -> None:
+    repository = InMemoryOutcomeEvidenceRepository(
+        (make_outcome("evidence-c"), make_outcome("evidence-a"), make_outcome("evidence-b"))
+    )
+
+    page = repository.list_outcomes(OutcomeQuery(limit=1, offset=1))
+
+    assert [record.evidence_id for record in page] == ["evidence-b"]
+
+
+@pytest.mark.parametrize(
+    "query_factory",
+    (lambda: CourseQuery(limit=101), lambda: OutcomeQuery(offset=-1)),
+)
+def test_repository_queries_reject_invalid_pagination(query_factory) -> None:
+    with pytest.raises(ValueError):
+        query_factory()
