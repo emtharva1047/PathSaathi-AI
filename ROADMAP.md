@@ -88,6 +88,8 @@ Learner/parent onboarding and consent → joint bilingual counselling → contex
 - [x] GitHub Actions validation for accessibility shell and rendering-contract tests (runs #112 and #113: compileall passed, Ruff passed, Pytest 52 passed each; one Starlette/httpx deprecation warning per run).
 - [x] Add bounded `limit`/`offset` pagination to course and outcome list APIs (default 50, maximum 100), applying bounds in SQL and matching stable identifier ordering in in-memory adapters.
 - [x] GitHub Actions validation for catalogue pagination (run #117: compileall passed, Ruff passed, Pytest 61 passed; one existing Starlette/httpx deprecation warning).
+- [x] Add an end-to-end FastAPI/SQLite lifecycle smoke test using the real lazy database dependency; verify database-independent health, lazy engine/session-factory creation, engine reuse across requests and shutdown cleanup.
+- [x] GitHub Actions validation for the lifecycle smoke test (run #120: compileall passed, Ruff passed, Pytest 62 passed; one existing Starlette/httpx deprecation warning).
 - [ ] Validate understandability, contrast, focus order, screen-reader output, mobile behaviour, read-aloud need and translations with target users/human Marathi reviewer ([issue #14](https://github.com/emtharva1047/PathSaathi-AI)).
 
 ## Progress log
@@ -103,6 +105,7 @@ Learner/parent onboarding and consent → joint bilingual counselling → contex
 | 2026-11-04 | Tightened the API response contract so unverified numerator, denominator and sample-size metadata are withheld alongside unverified values | PR #19 merged as e31ff27; GitHub Actions run #108: compileall passed, Ruff passed, 50 tests passed (one Starlette/httpx deprecation warning); issue #18 completed |
 | 2026-11-05 | Added three-step progress, explicit Back/Continue controls and contextual Help in English/Marathi; added rendering-contract tests and documented what static review cannot validate | PR #20 merged as aab687e; GitHub Actions runs #112 and #113 passed compileall, Ruff and 52 tests each (one Starlette/httpx deprecation warning per run); target-user and assistive-technology validation remain open in issue #14 |
 | 2026-11-06 | Added bounded, stable offset pagination to course/outcome APIs and both repository adapters, with API-bound validation and integration tests | PR #21; GitHub Actions run #117 passed compileall, Ruff and 61 tests (one Starlette/httpx deprecation warning) |
+| 2026-11-07 | Added a FastAPI/SQLite lifecycle smoke test against the real lazy database dependency, including database-independent health, engine reuse and shutdown cleanup | PR #22; GitHub Actions run #120 passed compileall, Ruff and 62 tests (one Starlette/httpx deprecation warning) |
 
 ## Release acceptance checklist
 
