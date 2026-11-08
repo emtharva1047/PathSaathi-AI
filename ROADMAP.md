@@ -90,6 +90,7 @@ Learner/parent onboarding and consent → joint bilingual counselling → contex
 - [x] GitHub Actions validation for catalogue pagination (run #117: compileall passed, Ruff passed, Pytest 61 passed; one existing Starlette/httpx deprecation warning).
 - [x] Add an end-to-end FastAPI/SQLite lifecycle smoke test using the real lazy database dependency; verify database-independent health, lazy engine/session-factory creation, engine reuse across requests and shutdown cleanup.
 - [x] GitHub Actions validation for the lifecycle smoke test (run #120: compileall passed, Ruff passed, Pytest 62 passed; one existing Starlette/httpx deprecation warning).
+- [x] Add a network-level local-stack smoke check that starts real Uvicorn and verifies the Streamlit health client through offline → online → offline states; GitHub Actions run #123 passed compileall, Ruff, 62 tests and the live-process smoke check (one existing Starlette/httpx deprecation warning).
 - [ ] Validate understandability, contrast, focus order, screen-reader output, mobile behaviour, read-aloud need and translations with target users/human Marathi reviewer ([issue #14](https://github.com/emtharva1047/PathSaathi-AI)).
 
 ## Progress log
@@ -106,6 +107,7 @@ Learner/parent onboarding and consent → joint bilingual counselling → contex
 | 2026-11-05 | Added three-step progress, explicit Back/Continue controls and contextual Help in English/Marathi; added rendering-contract tests and documented what static review cannot validate | PR #20 merged as aab687e; GitHub Actions runs #112 and #113 passed compileall, Ruff and 52 tests each (one Starlette/httpx deprecation warning per run); target-user and assistive-technology validation remain open in issue #14 |
 | 2026-11-06 | Added bounded, stable offset pagination to course/outcome APIs and both repository adapters, with API-bound validation and integration tests | PR #21; GitHub Actions run #117 passed compileall, Ruff and 61 tests (one Starlette/httpx deprecation warning) |
 | 2026-11-07 | Added a FastAPI/SQLite lifecycle smoke test against the real lazy database dependency, including database-independent health, engine reuse and shutdown cleanup | PR #22; GitHub Actions run #120 passed compileall, Ruff and 62 tests (one Starlette/httpx deprecation warning) |
+| 2026-11-08 | Added a network-level smoke script that launches Uvicorn on an ephemeral loopback port and exercises the same health client used by Streamlit; added the smoke check to CI and documented manual startup/offline-fallback verification | GitHub Actions run #123 passed compileall, Ruff, 62 tests and the live-process smoke check (one existing Starlette/httpx deprecation warning) |
 
 ## Release acceptance checklist
 

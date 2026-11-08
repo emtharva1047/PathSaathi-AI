@@ -43,11 +43,11 @@ The owner-approved delivery window is **60 calendar days: 2 November–31 Decemb
 | Admin analytics, quality and privacy | 42–47 | 13–18 Dec |
 | Portfolio release | 48–60 | 19–31 Dec |
 
-See the [60-day roadmap](ROADMAP.md) for exit criteria and verified progress, [database setup](docs/DATABASE.md) for local persistence configuration, and the [read-only API contract](docs/API.md) for endpoint and evidence-display behaviour.
+See the [60-day roadmap](ROADMAP.md) for exit criteria and verified progress, [database setup](docs/DATABASE.md) for local persistence configuration, and the [read-only API contract](docs/API.md) for endpoint, evidence-display and local smoke-test behaviour.
 
 ## Current status
 
-**Phase 1 requirements baseline is complete; Phase 2 foundation is in progress.** The repository contains the Python project scaffold, FastAPI health endpoint, English/Marathi navigation, resilient API-status indicator, shared logging/error handling, typed course/outcome domain records, storage-independent repository contracts, SQLAlchemy models and SQLite-backed repository adapters. FastAPI exposes read-only course and outcome list/detail endpoints through lazy request-scoped SQLAlchemy sessions. Outcome responses withhold numeric values and numerator/denominator/sample-size counts unless verification status and source provenance are complete; provider filters remain scoped to provider-level records. The Streamlit shell now includes locale-managed step progress, Back/Continue controls and contextual Help. Course and outcome list APIs now support bounded `limit`/`offset` pagination with stable identifier ordering across SQLAlchemy and in-memory repositories. GitHub Actions run #117 passed compilation, Ruff and 61 tests for the pagination increment (one existing Starlette/httpx deprecation warning). A FastAPI lifecycle smoke test now exercises the real lazy database dependency: health and startup remain database-independent, the first catalogue request creates the SQLite engine/session factory, subsequent requests reuse the engine, and shutdown clears cached resources. GitHub Actions run #120 passed compilation, Ruff and 62 tests (one existing Starlette/httpx deprecation warning). Human usability, assistive-technology and Marathi review remain pending; see [accessibility review](docs/ACCESSIBILITY_REVIEW.md) and [issue #14](https://github.com/emtharva1047/PathSaathi-AI/issues/14). GitHub Actions runs #103 and #108 passed compilation, Ruff and 50 tests each for the API and its follow-up data-integrity safeguard (each run reports one Starlette/httpx deprecation warning).
+**Phase 1 requirements baseline is complete; Phase 2 foundation is in progress.** The repository contains the Python project scaffold, FastAPI health endpoint, English/Marathi navigation, resilient API-status indicator, shared logging/error handling, typed course/outcome domain records, storage-independent repository contracts, SQLAlchemy models and SQLite-backed repository adapters. FastAPI exposes read-only course and outcome list/detail endpoints through lazy request-scoped SQLAlchemy sessions. Outcome responses withhold numeric values and numerator/denominator/sample-size counts unless verification status and source provenance are complete; unknowns remain null. Provider filters are restricted to provider-level records. The Streamlit shell includes locale-managed step progress, Back/Continue controls and contextual Help. Course and outcome list APIs support bounded `limit`/`offset` pagination with stable identifier ordering. A FastAPI lifecycle smoke test exercises the real lazy database dependency. The network-level local-stack smoke script starts a real Uvicorn process and checks the same health client used by Streamlit through offline → online → offline states; GitHub Actions run #123 passed this smoke check, compileall, Ruff and all 62 tests (one existing Starlette/httpx deprecation warning). Human usability, assistive-technology and Marathi review remain pending; see [accessibility review](docs/ACCESSIBILITY_REVIEW.md) and [issue #14](https://github.com/emtharva1047/PathSaathi-AI/issues/14).
 
 The local default database URL is sqlite:///./data/pathsaathi.db. The application creates tables only when the explicit create_schema() helper is called; importing the API does not create a database or connect to a hosted service. PATHSAATHI_DATABASE_URL can be set to a PostgreSQL URL, with the optional Psycopg driver installed when needed.
 
@@ -62,7 +62,7 @@ Production PostgreSQL provisioning and application deployment are reserved for P
 - [Data-source policy](docs/DATA_SOURCE_POLICY.md)
 - [Repository contracts](docs/REPOSITORY_CONTRACTS.md)
 - [Database setup](docs/DATABASE.md)
-- [Read-only catalogue API](docs/API.md)
+- [Read-only catalogue API and local smoke check](docs/API.md)
 - [Accessibility implementation review](docs/ACCESSIBILITY_REVIEW.md)
 
 ## Data integrity and limitations
@@ -81,31 +81,44 @@ Production PostgreSQL provisioning and application deployment are reserved for P
 
 Requires Python 3.12+.
 
-~~~
+```bash
 python -m venv .venv
 source .venv/bin/activate
 pip install -e ".[dev]"
+```
+
+Run the network-level API/Streamlit health-client smoke check:
+
+```bash
+python scripts/smoke_test.py
+```
+
+The check starts FastAPI on an ephemeral local port and verifies that the Streamlit health client reports offline before startup, online while the API is serving, and offline after shutdown. It uses the database-independent health route and does not create a SQLite database or schema.
+
+For manual UI use, start the API in one terminal:
+
+```bash
 uvicorn backend.main:app --reload
-~~~
+```
 
 In a second terminal:
 
-~~~
+```bash
 streamlit run app/streamlit_app.py
-~~~
+```
 
-The local SQLite URL defaults to sqlite:///./data/pathsaathi.db. To create the schema explicitly for local development:
+The local SQLite URL defaults to sqlite:///./data/pathsaathi.db. To create the schema explicitly for database-backed local development:
 
-~~~
-python -c "from database.session import create_database_engine, create_schema; create_schema(create_database_engine())"
-~~~
+```bash
+python -c "from database.session import create_database_engine, create_schema; engine = create_database_engine(); create_schema(engine); engine.dispose()"
+```
 
 To configure PostgreSQL later, install the optional driver and set a secret-managed URL:
 
-~~~
+```bash
 pip install -e ".[postgres]"
 export PATHSAATHI_DATABASE_URL="postgresql+psycopg://USER:PASSWORD@HOST:5432/DBNAME"
-~~~
+```
 
 Do not commit database credentials. No managed production database is required for current development.
 
@@ -113,10 +126,11 @@ The Streamlit sidebar checks the API at http://127.0.0.1:8000/health. Set PATHSA
 
 Run checks with:
 
-~~~
+```bash
 ruff check .
 pytest -q
-~~~
+python scripts/smoke_test.py
+```
 
 The API health endpoint is at http://127.0.0.1:8000/health. The Streamlit UI is at http://localhost:8501.
 
