@@ -15,6 +15,36 @@ The API does not create tables during import or application startup. The health 
 
 - `GET /health`
 
+### Verify the local application connection
+
+Run the network-level smoke check from the repository root after installing the project and development dependencies:
+
+```bash
+python scripts/smoke_test.py
+```
+
+The script starts a real Uvicorn process on an ephemeral loopback port and calls the same `is_api_healthy()` function used by the Streamlit sidebar. It verifies the sequence:
+
+1. The client reports the API as offline before startup.
+2. The client reports the API as online after the FastAPI `/health` endpoint responds.
+3. The client reports the API as offline after the server is stopped.
+
+This check uses only the database-independent health route. It does not create a SQLite file or schema, and it does not require a hosted database.
+
+For a manual UI check, start the API in one terminal:
+
+```bash
+uvicorn backend.main:app --reload
+```
+
+Then start Streamlit in a second terminal:
+
+```bash
+streamlit run app/streamlit_app.py
+```
+
+The sidebar should show the API as connected. Stop Uvicorn and rerun the Streamlit page; the sidebar should show the offline message while the informational shell remains usable. The smoke script validates the network health client, while the existing Streamlit rendering tests validate the bilingual status and navigation copy.
+
 ## Endpoints
 
 | Method | Endpoint | Purpose |
@@ -46,4 +76,4 @@ A `verified` label is not a claim that the source has been independently audited
 
 The engine and session factory are created lazily on first database-backed request, reused across requests and disposed during application shutdown. Each request receives a short-lived SQLAlchemy session. The API routes are read-only and do not commit writes.
 
-Schema creation remains an explicit local-development operation. Production migrations, managed PostgreSQL and deployment are Phase 8 work. The current list endpoints are intended for the MVP catalogue; pagination and production authorisation must be completed before importing large datasets or exposing non-public records.
+Schema creation remains an explicit local-development operation. Production migrations, managed PostgreSQL and deployment are Phase 8 work. Bounded pagination is implemented for the current list endpoints. Production authorisation and importer-scale validation remain prerequisites before importing large datasets or exposing non-public records.
