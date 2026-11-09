@@ -232,4 +232,4 @@ def test_offline_ui_shows_localised_status_and_keeps_each_page_usable(
         "profile": [copy["back"], copy["next"]],
         "pathways": [copy["back"]],
     }
-    assert fake_streamlit.buttons == expected_buttons
+    assert fake_streamlit.buttons == expected_buttons[page]
