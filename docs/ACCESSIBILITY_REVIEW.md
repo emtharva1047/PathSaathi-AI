@@ -25,6 +25,17 @@ The review inspected the current Streamlit shell, its locale catalogue and the e
 - The current placeholder profile screen explicitly states that it does not collect personal information.
 - The prototype continues to disclose that guidance is not a guarantee of admission, employment, placement or earnings.
 
+## Offline-state regression coverage — 9 November 2026
+
+The Streamlit render-contract suite now exercises all three informational pages (Home, Learner profile and Explore pathways) in both English and Marathi while the API health check reports offline. For each of the six states it asserts:
+
+- the locale-specific offline warning is shown and the online-success message is not shown;
+- the locale-specific fallback explanation remains visible;
+- the selected page's heading and explanatory/placeholder content still render;
+- progress, contextual Help and the available Back/Continue control remain present.
+
+These deterministic Streamlit-surface tests use the existing test double. They verify the UI's offline rendering contract, not browser layout, real network failure timing, screen-reader announcements or user comprehension.
+
 ## Not yet validated
 
 The following require a real browser/device or human review and must not be marked complete based on the static checks above:
