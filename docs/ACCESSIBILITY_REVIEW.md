@@ -34,7 +34,7 @@ The Streamlit render-contract suite now exercises all three informational pages 
 - the selected page's heading and explanatory/placeholder content still render;
 - progress, contextual Help and the available Back/Continue control remain present.
 
-These deterministic Streamlit-surface tests use the existing test double. They verify the UI's offline rendering contract, not browser layout, real network failure timing, screen-reader announcements or user comprehension.
+These deterministic Streamlit-surface tests use the existing test double. GitHub Actions PR run #127 passed compilation, Ruff, all 68 tests and the separate live-process health-client smoke check (one existing Starlette/httpx deprecation warning). They verify the UI's offline rendering contract, not browser layout, real network failure timing, screen-reader announcements or user comprehension.
 
 ## Not yet validated
 
