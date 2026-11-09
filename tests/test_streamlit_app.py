@@ -8,6 +8,8 @@ from contextlib import nullcontext
 from urllib.error import URLError
 from unittest.mock import patch
 
+import pytest
+
 from app import streamlit_app
 from app.streamlit_app import TRANSLATIONS, is_api_healthy
 
@@ -150,3 +152,84 @@ def test_marathi_profile_renders_localised_progress_and_back_next_controls(monke
     assert fake_streamlit.progress_calls == [(2 / 3, "टप्पा 2 / 3")]
     assert fake_streamlit.expanders == ["मदत हवी आहे?"]
     assert fake_streamlit.buttons == ["मागील टप्पा", "पुढील टप्पा"]
+
+
+
+@pytest.mark.parametrize(
+    ("locale", "page"),
+    [
+        ("English", "home"),
+        ("English", "profile"),
+        ("English", "pathways"),
+        ("मराठी", "home"),
+        ("मराठी", "profile"),
+        ("मराठी", "pathways"),
+    ],
+)
+def test_offline_ui_shows_localised_status_and_keeps_each_page_usable(
+    monkeypatch, locale: str, page: str
+) -> None:
+    """Keep the bilingual informational journey available when the API is offline."""
+    fake_streamlit = FakeStreamlit(locale=locale, page=page)
+    monkeypatch.setitem(sys.modules, "streamlit", fake_streamlit)
+    monkeypatch.setattr(streamlit_app, "is_api_healthy", lambda: False)
+
+    streamlit_app.main()
+
+    copy = TRANSLATIONS[locale]
+    sidebar_warnings = [
+        args[0] for name, args, _ in fake_streamlit.calls if name == "sidebar.warning"
+    ]
+    sidebar_captions = [
+        args[0] for name, args, _ in fake_streamlit.calls if name == "sidebar.caption"
+    ]
+    rendered_text = [
+        argument
+        for _, args, _ in fake_streamlit.calls
+        for argument in args
+        if isinstance(argument, str)
+    ]
+
+    assert sidebar_warnings == [copy["api_offline"]]
+    assert copy["api_label"] in sidebar_captions
+    assert copy["api_fallback"] in sidebar_captions
+    assert not any(name == "sidebar.success" for name, _, _ in fake_streamlit.calls)
+
+    page_copy = {
+        "home": (
+            copy["title"],
+            copy["tagline"],
+            copy["notice"],
+            copy["welcome"],
+            copy["home_next"],
+        ),
+        "profile": (
+            copy["profile_heading"],
+            copy["profile_description"],
+            copy["profile_placeholder"],
+        ),
+        "pathways": (
+            copy["pathways_heading"],
+            copy["pathways_description"],
+            copy["pathways_placeholder"],
+        ),
+    }
+    assert all(
+        any(expected in rendered for rendered in rendered_text)
+        for expected in page_copy[page]
+    )
+
+    page_index = ("home", "profile", "pathways").index(page)
+    assert fake_streamlit.progress_calls == [
+        (
+            (page_index + 1) / 3,
+            copy["progress"].format(step=page_index + 1, total=3),
+        )
+    ]
+    assert fake_streamlit.expanders == [copy["help_title"]]
+    expected_buttons = {
+        "home": [copy["next"]],
+        "profile": [copy["back"], copy["next"]],
+        "pathways": [copy["back"]],
+    }
+    assert fake_streamlit.buttons == expected_buttons[page]
