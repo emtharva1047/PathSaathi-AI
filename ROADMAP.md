@@ -93,6 +93,9 @@ Learner/parent onboarding and consent → joint bilingual counselling → contex
 - [x] Add a network-level local-stack smoke check that starts real Uvicorn and verifies the Streamlit health client through offline → online → offline states; GitHub Actions run #123 passed compileall, Ruff, 62 tests and the live-process smoke check (one existing Starlette/httpx deprecation warning).
 - [x] Add offline-state Streamlit render-contract coverage for Home, Learner profile and Explore pathways in English and Marathi; assert the localised warning/fallback copy, page content, progress, Help and available navigation controls remain rendered when the API is unavailable.
 - [x] GitHub Actions validation for offline-state UI coverage (PR #24 run #127: compileall passed, Ruff passed, 68 tests passed and the live FastAPI/Streamlit health-client smoke check passed; one existing Starlette/httpx deprecation warning).
+- [x] Read `PATHSAATHI_API_URL` as the Streamlit health-client default, preserve explicit-argument precedence, validate absolute HTTP(S) URLs and fail closed without a request for blank/malformed, credential-bearing, query-bearing or fragment-bearing values.
+- [x] Document the API URL override and add regression tests for environment override, explicit override and seven invalid URL configurations.
+- [x] GitHub Actions validation for API URL configuration (PR #25 run #130: compileall passed, Ruff passed, 77 tests passed and the live FastAPI/Streamlit health-client smoke check passed; one existing Starlette/httpx deprecation warning).
 - [ ] Validate understandability, contrast, focus order, screen-reader output, mobile behaviour, read-aloud need and translations with target users/human Marathi reviewer ([issue #14](https://github.com/emtharva1047/PathSaathi-AI)).
 
 ## Progress log
@@ -111,6 +114,7 @@ Learner/parent onboarding and consent → joint bilingual counselling → contex
 | 2026-11-07 | Added a FastAPI/SQLite lifecycle smoke test against the real lazy database dependency, including database-independent health, engine reuse and shutdown cleanup | PR #22; GitHub Actions run #120 passed compileall, Ruff and 62 tests (one Starlette/httpx deprecation warning) |
 | 2026-11-08 | Added a network-level smoke script that launches Uvicorn on an ephemeral loopback port and exercises the same health client used by Streamlit; added the smoke check to CI and documented manual startup/offline-fallback verification | GitHub Actions run #123 passed compileall, Ruff, 62 tests and the live-process smoke check (one existing Starlette/httpx deprecation warning) |
 | 2026-11-09 | Added six offline UI render-contract cases covering all three informational pages in English and Marathi; the tests assert translated offline status/fallback copy and preserve page content, progress, Help and navigation controls | GitHub Actions run #127 on PR #24: compileall passed, Ruff passed, Pytest 68 passed and live-process smoke check passed (one existing Starlette/httpx deprecation warning) |
+| 2026-11-10 | Hardened the Streamlit API health client to honour PATHSAATHI_API_URL, validate HTTP(S) base URLs and fail closed on unsafe/malformed configuration; added environment/explicit override and invalid-URL regression cases | PR #25 run #130: compileall passed, Ruff passed, Pytest 77 passed and live-process smoke check passed (one existing Starlette/httpx deprecation warning) |
 
 ## Release acceptance checklist
 

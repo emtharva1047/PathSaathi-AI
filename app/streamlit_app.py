@@ -5,6 +5,7 @@ from __future__ import annotations
 import json
 import os
 from urllib.error import HTTPError, URLError
+from urllib.parse import urlsplit
 from urllib.request import Request, urlopen
 
 
@@ -123,20 +124,51 @@ TRANSLATIONS = {
 }
 
 
+def _health_endpoint(api_base_url: str | None) -> str | None:
+    """Resolve and validate the configured API base URL without making a request."""
+    configured_url = (
+        api_base_url
+        if api_base_url is not None
+        else os.getenv("PATHSAATHI_API_URL", DEFAULT_API_BASE_URL)
+    )
+    base_url = configured_url.strip().rstrip("/")
+    if not base_url:
+        return None
+
+    try:
+        parsed = urlsplit(base_url)
+        if (
+            parsed.scheme not in {"http", "https"}
+            or not parsed.hostname
+            or parsed.username is not None
+            or parsed.password is not None
+            or parsed.query
+            or parsed.fragment
+        ):
+            return None
+        _ = parsed.port
+    except ValueError:
+        return None
+
+    return f"{base_url}/health"
+
+
 def is_api_healthy(
     api_base_url: str | None = None,
     timeout: float = API_TIMEOUT_SECONDS,
 ) -> bool:
     """Check the API health contract without making the UI depend on the API."""
-    base_url = (api_base_url or os.getenv("PATHSAATHI_API_URL", DEFAULT_API_BASE_URL)).rstrip("/")
-    request = Request(f"{base_url}/health", headers={"Accept": "application/json"})
+    health_url = _health_endpoint(api_base_url)
+    if health_url is None:
+        return False
 
     try:
+        request = Request(health_url, headers={"Accept": "application/json"})
         with urlopen(request, timeout=timeout) as response:
             if response.status != 200:
                 return False
             payload = json.loads(response.read().decode("utf-8"))
-    except (HTTPError, URLError, TimeoutError, OSError, ValueError, UnicodeDecodeError):
+    except (HTTPError, URLError, TimeoutError, OSError, ValueError):
         return False
 
     return (
