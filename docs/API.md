@@ -45,6 +45,16 @@ streamlit run app/streamlit_app.py
 
 The sidebar should show the API as connected. Stop Uvicorn and rerun the Streamlit page; the sidebar should show the offline message while the informational shell remains usable. The smoke script validates the network health client, while the existing Streamlit rendering tests validate the bilingual status and navigation copy.
 
+### API base URL configuration
+
+The Streamlit health client reads `PATHSAATHI_API_URL` when no explicit base URL is supplied. The default is `http://127.0.0.1:8000`. For example, if FastAPI is listening on another local port:
+
+```bash
+export PATHSAATHI_API_URL="http://127.0.0.1:8001"
+```
+
+Use an absolute HTTP or HTTPS base URL without embedded credentials, a query string or a fragment. A path prefix is allowed. A blank or malformed value is treated as offline without making a network request; the informational UI remains available. The explicit URL argument used by tests and smoke checks takes precedence over the environment variable.
+
 ## Endpoints
 
 | Method | Endpoint | Purpose |

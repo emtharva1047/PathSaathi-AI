@@ -129,6 +129,55 @@ def test_api_health_check_fails_gracefully_when_api_is_unavailable() -> None:
         assert is_api_healthy("http://localhost:8000") is False
 
 
+def test_api_health_check_uses_environment_url_override(monkeypatch) -> None:
+    monkeypatch.setenv("PATHSAATHI_API_URL", "https://api.example.test/path/")
+
+    with patch(
+        "app.streamlit_app.urlopen",
+        return_value=StubResponse({"status": "ok", "service": "pathsaathi-api"}),
+    ) as mocked:
+        assert is_api_healthy() is True
+
+    request = mocked.call_args.args[0]
+    assert request.full_url == "https://api.example.test/path/health"
+
+
+def test_explicit_api_base_url_takes_precedence_over_environment(monkeypatch) -> None:
+    monkeypatch.setenv("PATHSAATHI_API_URL", "https://environment.example.test")
+
+    with patch(
+        "app.streamlit_app.urlopen",
+        return_value=StubResponse({"status": "ok", "service": "pathsaathi-api"}),
+    ) as mocked:
+        assert is_api_healthy("http://explicit.example.test:9000/") is True
+
+    request = mocked.call_args.args[0]
+    assert request.full_url == "http://explicit.example.test:9000/health"
+
+
+@pytest.mark.parametrize(
+    "invalid_url",
+    [
+        "",
+        "not-a-url",
+        "ftp://api.example.test",
+        "http://user:secret@api.example.test",
+        "http://localhost:99999",
+        "http://localhost:8000?debug=1",
+        "http://localhost:8000#health",
+    ],
+)
+def test_invalid_api_url_fails_closed_without_network_request(
+    monkeypatch, invalid_url: str
+) -> None:
+    monkeypatch.setenv("PATHSAATHI_API_URL", invalid_url)
+
+    with patch("app.streamlit_app.urlopen") as mocked:
+        assert is_api_healthy() is False
+
+    mocked.assert_not_called()
+
+
 def test_home_renders_progress_help_and_continue_control(monkeypatch) -> None:
     fake_streamlit = FakeStreamlit(locale="English", page="home")
     monkeypatch.setitem(sys.modules, "streamlit", fake_streamlit)
