@@ -23,13 +23,14 @@ Run the network-level smoke check from the repository root after installing the 
 python scripts/smoke_test.py
 ```
 
-The script starts a real Uvicorn process on an ephemeral loopback port and calls the same `is_api_healthy()` function used by the Streamlit sidebar. It verifies the sequence:
+The script starts the real Streamlit and Uvicorn applications on distinct ephemeral loopback ports. It verifies the Streamlit `/_stcore/health` and root HTTP endpoints while the configured API is offline, then exercises the same `is_api_healthy()` function used by the Streamlit sidebar through the sequence:
 
-1. The client reports the API as offline before startup.
-2. The client reports the API as online after the FastAPI `/health` endpoint responds.
-3. The client reports the API as offline after the server is stopped.
+1. Streamlit serves its health endpoint and HTML shell while FastAPI is offline.
+2. The configured API is detected as online after FastAPI `/health` responds.
+3. The API is stopped and the health client reports it offline again.
+4. Streamlit continues serving its health endpoint and HTML shell after API shutdown.
 
-This check uses only the database-independent health route. It does not create a SQLite file or schema, and it does not require a hosted database.
+This is a real-process startup and availability check, not a browser/WebSocket interaction or an accessibility-conformance test. It uses only the database-independent health route; it does not create a SQLite file or schema, and it does not require a hosted database.
 
 For a manual UI check, start the API in one terminal:
 
