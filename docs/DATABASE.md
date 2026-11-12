@@ -52,3 +52,17 @@ and deployment are reserved for Phase 8.
 
 Automated database tests use sqlite+pysqlite:///:memory: with an isolated SQLAlchemy
 engine and session factory. They do not read or write a developer's local database file.
+
+## Runtime settings validation
+
+The core settings object validates environment-backed values before the application serves
+requests. Invalid configuration raises a concise `ValueError`; URL parsing does not open a
+database connection.
+
+- `APP_NAME`, `APP_ENV` and `API_HOST` must be non-blank; the host cannot contain whitespace.
+- `API_PORT` must be an integer in the TCP port range 1–65535.
+- `DATABASE_ECHO` accepts explicit true/false tokens: `true/false`, `1/0`, `yes/no`
+  or `on/off`. Unknown tokens are rejected rather than silently interpreted as false.
+- `PATHSAATHI_DATABASE_URL` must parse as a SQLite or PostgreSQL SQLAlchemy URL.
+  PostgreSQL URLs must include a host. This is syntax/configuration validation only;
+  it does not test credentials, open a connection or provision a database.
