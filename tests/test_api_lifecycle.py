@@ -74,3 +74,39 @@ def test_health_is_database_independent_and_lazy_database_dependency_is_reused_a
     finally:
         dependencies.dispose_database()
         engine.dispose()
+
+
+def test_database_dependency_creates_and_closes_a_distinct_session_per_request(monkeypatch) -> None:
+    """Each dependency invocation owns and closes its own short-lived session."""
+    engine = create_database_engine("sqlite+pysqlite:///:memory:")
+
+    from sqlalchemy.orm import Session, sessionmaker
+
+    class TrackingSession(Session):
+        def __init__(self, *args, **kwargs):
+            super().__init__(*args, **kwargs)
+            self.close_calls = 0
+
+        def close(self) -> None:
+            self.close_calls += 1
+            super().close()
+
+    factory = sessionmaker(bind=engine, class_=TrackingSession)
+    monkeypatch.setattr(dependencies, "_get_session_factory", lambda: factory)
+
+    first_request = dependencies.get_db_session()
+    second_request = dependencies.get_db_session()
+    first_session = next(first_request)
+    second_session = next(second_request)
+
+    try:
+        assert first_session is not second_session
+        assert first_session.close_calls == 0
+        assert second_session.close_calls == 0
+    finally:
+        first_request.close()
+        second_request.close()
+        engine.dispose()
+
+    assert first_session.close_calls == 1
+    assert second_session.close_calls == 1
