@@ -14,7 +14,7 @@ Day 1 is 2 November 2026. Day 60 is 31 December 2026.
 | Phase | Project days | Calendar dates | Scope | Exit evidence | Status |
 |---|---:|---|---|---|---|
 | 1. Research and requirements | 1–5 | 2–6 Nov | Official SIH26241 review, personas/use cases, SRS, architecture, risks, outcome contract, traceability and acceptance | Requirements mapped, source policy and acceptance baseline | Complete |
-| 2. Foundation | 6–12 | 7–13 Nov | Streamlit/FastAPI skeleton, config/logging, SQLAlchemy models, local SQLite, PostgreSQL-ready URL, API health, locale scaffold, read-only catalogue/evidence API, validation and CI | App/API start, explicit schema creation, request-scoped SQLite repositories, safe evidence responses and CI green | In progress |
+| 2. Foundation | 6–12 | 7–13 Nov | Streamlit/FastAPI skeleton, config/logging, SQLAlchemy models, local SQLite, PostgreSQL-ready URL, API health, locale scaffold, read-only catalogue/evidence API, validation and CI | App/API start, explicit schema creation, request-scoped SQLite repositories, safe evidence responses and CI green | Complete (13 Nov) |
 | 3. Counselling/profile/pathway | 13–22 | 14–23 Nov | Learner and parent context, guided bilingual prompts, advisory shortlisting, eligibility and source-backed explainers | Deterministic recommendations, eligible/ineligible/unknown outcomes, explainable tests | Not started |
 | 4. Course/outcome explorer | 23–29 | 24–30 Nov | SIH dummy-data importer when supplied, validation, source-linked qualifications/outcomes, filters and comparisons | Provenance-aware import report and accurate comparison semantics | Not started |
 | 5. Family counselling/escalation | 30–36 | 1–7 Dec | Shared sessions, distinct learner/parent roles and preferences, consent and callback request workflow | Role separation, consent tests, honest escalation queue | Not started |
@@ -99,7 +99,10 @@ Learner/parent onboarding and consent → joint bilingual counselling → contex
 - [x] Validate runtime configuration at startup: required text settings, API port range, explicit boolean tokens and supported SQLite/PostgreSQL SQLAlchemy URLs; reject invalid values before serving requests without opening a database connection.
 - [x] GitHub Actions validation for runtime settings (PR #27 run #136: compileall passed, Ruff passed, Pytest 113 passed and the real Streamlit/FastAPI process smoke check passed; one existing Starlette/httpx deprecation warning).
 - [x] GitHub Actions validation for API URL configuration (PR #25 run #130: compileall passed, Ruff passed, 77 tests passed and the live FastAPI/Streamlit health-client smoke check passed; one existing Starlette/httpx deprecation warning).
-- [ ] Validate understandability, contrast, focus order, screen-reader output, mobile behaviour, read-aloud need and translations with target users/human Marathi reviewer ([issue #14](https://github.com/emtharva1047/PathSaathi-AI)).
+- [ ] Cross-phase usability/accessibility follow-up: validate understandability, contrast, focus order, screen-reader output, mobile behaviour, read-aloud need and translations with target users/human Marathi reviewer ([issue #14](https://github.com/emtharva1047/PathSaathi-AI)); this remains required before public accessibility/usability claims but does not block the Phase 2 foundation exit gate.
+
+- [x] Add a direct regression test proving each database dependency invocation receives a distinct SQLAlchemy session and closes it at request completion (PR #28, Actions run #139).
+- [x] Complete the Phase 2 foundation acceptance review; see [PHASE2_ACCEPTANCE.md](docs/PHASE2_ACCEPTANCE.md). Human/device accessibility validation remains an explicit cross-phase follow-up in issue #14.
 
 ## Progress log
 
@@ -120,6 +123,7 @@ Learner/parent onboarding and consent → joint bilingual counselling → contex
 | 2026-11-10 | Hardened the Streamlit API health client to honour PATHSAATHI_API_URL, validate HTTP(S) base URLs and fail closed on unsafe/malformed configuration; added environment/explicit override and invalid-URL regression cases | PR #25 run #130: compileall passed, Ruff passed, Pytest 77 passed and live-process smoke check passed (one existing Starlette/httpx deprecation warning) |
 | 2026-11-11 | Extended the live-process smoke check to start the actual Streamlit server, verify its health and HTML endpoints while the API is offline, and keep it healthy after FastAPI shutdown | PR #26 run #133: compileall passed, Ruff passed, Pytest 77 passed and real Streamlit/FastAPI process lifecycle smoke check passed (one existing Starlette/httpx deprecation warning) |
 | 2026-11-12 | Added fail-fast runtime settings validation for required text values, API_PORT range, DATABASE_ECHO boolean tokens and SQLite/PostgreSQL SQLAlchemy URL syntax; added isolated regression coverage | PR #27 GitHub Actions run #136: compileall passed, Ruff passed, Pytest 113 passed and real Streamlit/FastAPI process smoke check passed (one existing Starlette/httpx deprecation warning) |
+| 2026-11-13 | Added a direct request-scope session lifecycle regression test and completed the Phase 2 foundation acceptance review | PR #28 GitHub Actions run #139: compileall passed, Ruff passed, Pytest 114 passed and the real Streamlit/FastAPI process smoke check passed (one existing Starlette/httpx deprecation warning); human/device validation remains open in issue #14 |
 
 ## Release acceptance checklist
 
