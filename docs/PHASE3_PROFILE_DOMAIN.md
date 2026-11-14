@@ -5,14 +5,14 @@
 
 ## Learner and parent context
 
-The storage-independent records in \`core/profiles.py\` are immutable:
+The storage-independent records in `core/profiles.py` are immutable:
 
-- \`LearnerProfile\` contains a pseudonymous reference, normalized education level,
+- `LearnerProfile` contains a pseudonymous reference, normalized education level,
   optional state/district reference codes, an optional configured income-band code,
   interests, work preferences and preferred language.
-- \`ParentContext\` contains a separate participant reference, explicitly reported
+- `ParentContext` contains a separate participant reference, explicitly reported
   concern categories, priorities and preferred language.
-- \`FamilyCounsellingContext\` composes the two records without merging or overwriting
+- `FamilyCounsellingContext` composes the two records without merging or overwriting
   either participant's preferences. The references must be distinct.
 
 The domain intentionally has no fields for names, phone numbers, email addresses,
@@ -26,29 +26,29 @@ from conversation text. These records are not yet persisted or collected through
 
 ## Education normalization
 
-\`EducationLevel\` is a set of normalized labels, not an ordered ranking. Equivalence
+`EducationLevel` is a set of normalized labels, not an ordered ranking. Equivalence
 between school, ITI/vocational, diploma and other credentials must be mapped from the
 specific qualification's published entry criteria. The application must not assume
 that one label is automatically equivalent to another.
 
 ## Three-state eligibility
 
-\`core/eligibility.py\` evaluates only a qualification's published education requirement:
+`core/eligibility.py` evaluates only a qualification's published education requirement:
 
 | Status | Rule |
 |---|---|
-| \`eligible\` | The learner's recorded normalized education level appears in an accepted-level set from complete, verified criteria. |
-| \`ineligible\` | Complete, verified criteria exist, but the recorded level is not in the accepted set. Equivalence must still be confirmed before excluding a pathway. |
-| \`unknown\` | Criteria are missing, unverified or stale, or the learner's education level is unknown. |
+| `eligible` | The learner's recorded normalized education level appears in an accepted-level set from complete, verified criteria. |
+| `ineligible` | Complete, verified criteria exist, but the recorded level is not in the accepted set. Equivalence must still be confirmed before excluding a pathway. |
+| `unknown` | Criteria are missing, unverified or stale, or the learner's education level is unknown. |
 
 A verified criteria record requires a qualification code, accepted education levels,
 publisher, absolute HTTP(S) source URL and verification date. Results carry the
-qualification code and source reference. They explicitly set \`admission_decision=False\`
-and \`scope=education_requirement_only\`: other criteria and the provider's admission
+qualification code and source reference. They explicitly set `admission_decision=False`
+and `scope=education_requirement_only`: other criteria and the provider's admission
 decision may still apply.
 
 No official qualification entry criteria have been added in this increment. The
-\`example.org\` source in tests is a synthetic fixture only. Real criteria must be
+`example.org` source in tests is a synthetic fixture only. Real criteria must be
 transcribed from the exact NCVET/NQR qualification record and reviewed before use.
 
 ## Validation
@@ -57,8 +57,8 @@ transcribed from the exact NCVET/NQR qualification record and reviewed before us
   broad region codes, income-band-only storage and duplicate/blank preference handling.
 - Eligibility tests cover eligible, ineligible and unknown states; missing, unverified
   and stale criteria; source requirements; and invalid source URLs.
-- Local validation on 14 November 2026: \`python -m compileall -q core tests\` and
-  \`pytest -q\` (16 passed). GitHub Actions validation is required before merge.
+- Local validation on 14 November 2026: `python -m compileall -q core tests` and
+  `pytest -q` (16 passed). GitHub Actions validation is required before merge.
 
 ## Deliberate limitations
 
