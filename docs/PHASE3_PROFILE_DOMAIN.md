@@ -8,7 +8,7 @@
 The storage-independent records in `core/profiles.py` are immutable:
 
 - `LearnerProfile` contains a pseudonymous reference, normalized education level,
-  optional state/district reference codes, an optional configured income-band code,
+  optional state/district reference codes, an optional income-band code (taxonomy pending mentor/pilot review),
   interests, work preferences and preferred language.
 - `ParentContext` contains a separate participant reference, explicitly reported
   concern categories, priorities and preferred language.

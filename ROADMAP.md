@@ -110,7 +110,7 @@ Learner/parent onboarding and consent → joint bilingual counselling → contex
 - [x] Restrict location to normalized broad-region codes and household income to a configured band identifier; no exact address or amount fields are present.
 - [x] Add deterministic `eligible` / `ineligible` / `unknown` education-criterion evaluation. Missing, unverified or stale qualification criteria and unknown learner education remain unknown.
 - [x] Require qualification code, accepted education levels, publisher, HTTP(S) source URL and verification date before criteria can produce an eligible/ineligible result.
-- [x] Add 16 focused local tests for profile separation, data minimization, source provenance and all eligibility states. GitHub Actions run #142 passed compileall, Ruff, 130 Pytest tests and the live Streamlit/FastAPI process smoke check (one existing Starlette/httpx deprecation warning).
+- [x] Add 16 focused local tests for profile separation, data minimization, source provenance and all eligibility states. GitHub Actions PR run #142 and merged-main run #144 both passed compileall, Ruff, 130 Pytest tests and the live Streamlit/FastAPI process smoke check (one existing Starlette/httpx deprecation warning).
 - [ ] Add guided bilingual profile capture and advisory pathway shortlisting; do not present shortlisting as a validated aptitude test.
 
 ## Progress log
@@ -134,7 +134,7 @@ Learner/parent onboarding and consent → joint bilingual counselling → contex
 | 2026-11-12 | Added fail-fast runtime settings validation for required text values, API_PORT range, DATABASE_ECHO boolean tokens and SQLite/PostgreSQL SQLAlchemy URL syntax; added isolated regression coverage | PR #27 GitHub Actions run #136: compileall passed, Ruff passed, Pytest 113 passed and real Streamlit/FastAPI process smoke check passed (one existing Starlette/httpx deprecation warning) |
 | 2026-11-13 | Added a direct request-scope session lifecycle regression test and completed the Phase 2 foundation acceptance review | PR #28 GitHub Actions run #139: compileall passed, Ruff passed, Pytest 114 passed and the real Streamlit/FastAPI process smoke check passed (one existing Starlette/httpx deprecation warning); human/device validation remains open in issue #14 |
 
-| 2026-11-14 | Started Phase 3 with separate immutable learner/parent context records and a source-backed three-state education eligibility evaluator | PR #30, Actions run #142: compileall and Ruff passed, 130 Pytest tests passed and live Streamlit/FastAPI smoke check passed (one existing Starlette/httpx deprecation warning); no official qualification criteria or real learner data added |
+| 2026-11-14 | Started Phase 3 with separate immutable learner/parent context records and a source-backed three-state education eligibility evaluator | PR #30 / Actions run #142 and merged-main run #144: compileall and Ruff passed, 130 Pytest tests passed and live Streamlit/FastAPI smoke check passed (one existing Starlette/httpx deprecation warning); no official qualification criteria or real learner data added |
 
 ## Release acceptance checklist
 
