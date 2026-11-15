@@ -15,7 +15,7 @@ Day 1 is 2 November 2026. Day 60 is 31 December 2026.
 |---|---:|---|---|---|---|
 | 1. Research and requirements | 1–5 | 2–6 Nov | Official SIH26241 review, personas/use cases, SRS, architecture, risks, outcome contract, traceability and acceptance | Requirements mapped, source policy and acceptance baseline | Complete |
 | 2. Foundation | 6–12 | 7–13 Nov | Streamlit/FastAPI skeleton, config/logging, SQLAlchemy models, local SQLite, PostgreSQL-ready URL, API health, locale scaffold, read-only catalogue/evidence API, validation and CI | App/API start, explicit schema creation, request-scoped SQLite repositories, safe evidence responses and CI green | Complete (13 Nov) |
-| 3. Counselling/profile/pathway | 13–22 | 14–23 Nov | Learner and parent context, guided bilingual prompts, advisory shortlisting, eligibility and source-backed explainers | Deterministic recommendations, eligible/ineligible/unknown outcomes, explainable tests | In progress (14 Nov) |
+| 3. Counselling/profile/pathway | 13–22 | 14–23 Nov | Learner and parent context, guided bilingual prompts, advisory shortlisting, eligibility and source-backed explainers | Deterministic recommendations, eligible/ineligible/unknown outcomes, explainable tests | In progress (15 Nov) |
 | 4. Course/outcome explorer | 23–29 | 24–30 Nov | SIH dummy-data importer when supplied, validation, source-linked qualifications/outcomes, filters and comparisons | Provenance-aware import report and accurate comparison semantics | Not started |
 | 5. Family counselling/escalation | 30–36 | 1–7 Dec | Shared sessions, distinct learner/parent roles and preferences, consent and callback request workflow | Role separation, consent tests, honest escalation queue | Not started |
 | 6. AI and reporting | 37–41 | 8–12 Dec | Retrieval-grounded bilingual Q&A, safe prompts, source display and PDF report | Evidence-backed responses with source/caveat display; report export | Not started |
@@ -111,7 +111,10 @@ Learner/parent onboarding and consent → joint bilingual counselling → contex
 - [x] Add deterministic `eligible` / `ineligible` / `unknown` education-criterion evaluation. Missing, unverified or stale qualification criteria and unknown learner education remain unknown.
 - [x] Require qualification code, accepted education levels, publisher, HTTP(S) source URL and verification date before criteria can produce an eligible/ineligible result.
 - [x] Add 16 focused local tests for profile separation, data minimization, source provenance and all eligibility states. GitHub Actions PR run #142 and merged-main run #144 both passed compileall, Ruff, 130 Pytest tests and the live Streamlit/FastAPI process smoke check (one existing Starlette/httpx deprecation warning).
-- [ ] Add guided bilingual profile capture and advisory pathway shortlisting; do not present shortlisting as a validated aptitude test.
+- [x] Add seven-step, one-question-at-a-time profile capture in English and Marathi for learner education, broad optional region, learner interests/work preferences, parent-reported concerns and parent priorities.
+- [x] Keep the draft in Streamlit session state only; do not write profiles to the API/database before consent and retention design. Leave household-income bands uncollected until a pilot taxonomy is approved.
+- [x] Add bilingual UI/domain integration tests for one-question rendering, back/continue navigation, role separation, optional unknowns, Marathi language and session-only save. GitHub Actions validation is pending.
+- [ ] Build transparent advisory pathway shortlisting; do not present it as a validated aptitude test.
 
 ## Progress log
 
@@ -135,6 +138,7 @@ Learner/parent onboarding and consent → joint bilingual counselling → contex
 | 2026-11-13 | Added a direct request-scope session lifecycle regression test and completed the Phase 2 foundation acceptance review | PR #28 GitHub Actions run #139: compileall passed, Ruff passed, Pytest 114 passed and the real Streamlit/FastAPI process smoke check passed (one existing Starlette/httpx deprecation warning); human/device validation remains open in issue #14 |
 
 | 2026-11-14 | Started Phase 3 with separate immutable learner/parent context records and a source-backed three-state education eligibility evaluator | PR #30 / Actions run #142 and merged-main run #144: compileall and Ruff passed, 130 Pytest tests passed and live Streamlit/FastAPI smoke check passed (one existing Starlette/httpx deprecation warning); no official qualification criteria or real learner data added |
+| 2026-11-15 | Added a seven-step bilingual learner/parent profile wizard with separate role-owned fields, optional broad region, unknown-preserving defaults and a session-only review/save; income-band capture remains disabled pending an approved taxonomy | Branch `feat/guided-bilingual-profile-capture`; 8 focused flow tests passed in an isolated local harness; full repository CI pending |
 
 ## Release acceptance checklist
 
