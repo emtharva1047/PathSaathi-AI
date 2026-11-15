@@ -1,7 +1,7 @@
 # Phase 3 — Learner/Parent Context and Eligibility Domain
 
-**Implementation slice:** Day 13, 14 November 2026  
-**Status:** First domain increment; UI capture, persistence and counselling orchestration remain future Phase 3 work.
+**Implementation slices:** Days 13–14, 14–15 November 2026  
+**Status:** Separate learner/parent domain records and verified-criteria eligibility are implemented; guided bilingual profile capture is session-only. Durable storage and counselling orchestration remain future work.
 
 ## Learner and parent context
 
@@ -22,7 +22,25 @@ category identifier; the actual band taxonomy and labels remain unconfigured pen
 pilot/mentor review. No exact income amount is accepted in that field.
 
 Parent concerns are explicit self-reports. The model does not infer concerns or emotions
-from conversation text. These records are not yet persisted or collected through the UI.
+from conversation text. The guided UI now collects the corresponding choices into session-local context only; no profile write API or database persistence is used.
+
+## Guided bilingual capture
+
+`app/profile_flow.py` renders seven short steps, one main question at a time:
+
+1. Learner's highest completed education level (unknown is the default).
+2. Optional broad state code. Maharashtra (`MH`) is labelled as a provisional pilot assumption, not a confirmed deployment region.
+3. Learner interests.
+4. Learner work preferences.
+5. Parent/guardian's explicitly reported concern categories.
+6. Parent/guardian priorities.
+7. A review that shows learner and parent perspectives separately.
+
+The Back/Continue controls and question-level progress indicator are local to this flow. English and Marathi labels/help text are maintained together and tested for matching keys. The existing page-level Help remains available.
+
+The flow stores only a `FamilyCounsellingContext` draft in Streamlit session state when the user chooses to keep it. It is not submitted to FastAPI or written to SQLite. The draft may disappear when the session ends. No names, phone numbers, email addresses, exact income or exact address are requested. District-level and household-income-band inputs remain disabled until their pilot taxonomies are approved; missing values remain unset.
+
+The review explicitly describes the feature as a conversation aid, not an aptitude/psychometric test or prediction of success. Parent concerns are self-reported; no emotion inference is performed.
 
 ## Education normalization
 
@@ -57,12 +75,13 @@ transcribed from the exact NCVET/NQR qualification record and reviewed before us
   broad region codes, income-band-only storage and duplicate/blank preference handling.
 - Eligibility tests cover eligible, ineligible and unknown states; missing, unverified
   and stale criteria; source requirements; and invalid source URLs.
-- Local validation on 14 November 2026: `python -m compileall -q core tests` and
-  `pytest -q` (16 passed). GitHub Actions validation is required before merge.
+- The original domain increment passed its 16 focused local tests and GitHub Actions run #144.
+- The guided-flow increment adds bilingual UI/domain tests for one-question rendering, navigation, role separation, unknown values and session-only save. Full repository GitHub Actions validation is pending.
 
 ## Deliberate limitations
 
-- No profile database tables, write API or UI capture in this increment.
+- No profile database tables or write API are introduced; the current draft is session-only.
+- No household-income band is requested until an approved band taxonomy exists.
 - No age, subject, disability, income threshold or other entry rule is inferred.
 - No aptitude/psychometric score or prediction of success is produced.
 - The SIH dummy outcome dataset and mentor-confirmed pilot settings remain external
@@ -70,6 +89,6 @@ transcribed from the exact NCVET/NQR qualification record and reviewed before us
 
 ## Next Phase 3 work
 
-Add guided bilingual profile capture with explicit learner/parent roles, then build
-transparent advisory pathway shortlisting. Keep eligibility tied to exact verified
-qualification sources and retain an unrestricted option to explore other pathways.
+Build transparent advisory pathway shortlisting with reasons tied to the learner's
+stated interests and work preferences, while preserving an unrestricted option to
+explore other pathways. Do not rank learners or claim validated psychometrics.
