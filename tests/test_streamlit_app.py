@@ -11,6 +11,7 @@ from unittest.mock import patch
 import pytest
 
 from app import streamlit_app
+from app.profile_flow import PROFILE_COPY
 from app.streamlit_app import TRANSLATIONS, is_api_healthy
 
 
@@ -198,9 +199,12 @@ def test_marathi_profile_renders_localised_progress_and_back_next_controls(monke
 
     streamlit_app.main()
 
-    assert fake_streamlit.progress_calls == [(2 / 3, "टप्पा 2 / 3")]
+    assert fake_streamlit.progress_calls == [
+        (2 / 3, "टप्पा 2 / 3"),
+        (1 / 7, "प्रश्न 1 / 7"),
+    ]
     assert fake_streamlit.expanders == ["मदत हवी आहे?"]
-    assert fake_streamlit.buttons == ["मागील टप्पा", "पुढील टप्पा"]
+    assert fake_streamlit.buttons == ["पुढील प्रश्न"]
 
 
 
@@ -269,16 +273,24 @@ def test_offline_ui_shows_localised_status_and_keeps_each_page_usable(
     )
 
     page_index = ("home", "profile", "pathways").index(page)
-    assert fake_streamlit.progress_calls == [
+    expected_progress = [
         (
             (page_index + 1) / 3,
             copy["progress"].format(step=page_index + 1, total=3),
         )
     ]
+    if page == "profile":
+        expected_progress.append(
+            (
+                1 / 7,
+                PROFILE_COPY[locale]["progress"].format(step=1, total=7),
+            )
+        )
+    assert fake_streamlit.progress_calls == expected_progress
     assert fake_streamlit.expanders == [copy["help_title"]]
     expected_buttons = {
         "home": [copy["next"]],
-        "profile": [copy["back"], copy["next"]],
+        "profile": [PROFILE_COPY[locale]["next"]],
         "pathways": [copy["back"]],
     }
     assert fake_streamlit.buttons == expected_buttons[page]
