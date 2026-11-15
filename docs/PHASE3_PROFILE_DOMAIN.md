@@ -76,7 +76,7 @@ transcribed from the exact NCVET/NQR qualification record and reviewed before us
 - Eligibility tests cover eligible, ineligible and unknown states; missing, unverified
   and stale criteria; source requirements; and invalid source URLs.
 - The original domain increment passed its 16 focused local tests and GitHub Actions run #144.
-- The guided-flow increment adds bilingual UI/domain tests for one-question rendering, navigation, role separation, unknown values and session-only save. Full repository GitHub Actions validation is pending.
+- The guided-flow increment adds bilingual UI/domain tests for one-question rendering, navigation, role separation, unknown values and session-only save. PR #32 was merged as `b2c9ee6`; GitHub Actions run #148 passed compileall, Ruff, 138 Pytest tests and the live Streamlit/FastAPI process smoke check (one existing Starlette/httpx deprecation warning).
 
 ## Deliberate limitations
 
