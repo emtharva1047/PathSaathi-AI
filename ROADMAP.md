@@ -113,7 +113,7 @@ Learner/parent onboarding and consent → joint bilingual counselling → contex
 - [x] Add 16 focused local tests for profile separation, data minimization, source provenance and all eligibility states. GitHub Actions PR run #142 and merged-main run #144 both passed compileall, Ruff, 130 Pytest tests and the live Streamlit/FastAPI process smoke check (one existing Starlette/httpx deprecation warning).
 - [x] Add seven-step, one-question-at-a-time profile capture in English and Marathi for learner education, broad optional region, learner interests/work preferences, parent-reported concerns and parent priorities.
 - [x] Keep the draft in Streamlit session state only; do not write profiles to the API/database before consent and retention design. Leave household-income bands uncollected until a pilot taxonomy is approved.
-- [x] Add bilingual UI/domain integration tests for one-question rendering, back/continue navigation, role separation, optional unknowns, Marathi language and session-only save. GitHub Actions validation is pending.
+- [x] Add bilingual UI/domain integration tests for one-question rendering, back/continue navigation, role separation, optional unknowns, Marathi language and session-only save. PR #32 merged as `b2c9ee6`; GitHub Actions run #148 passed compileall, Ruff, 138 Pytest tests and the live Streamlit/FastAPI process smoke check (one existing Starlette/httpx deprecation warning).
 - [ ] Build transparent advisory pathway shortlisting; do not present it as a validated aptitude test.
 
 ## Progress log
@@ -138,7 +138,7 @@ Learner/parent onboarding and consent → joint bilingual counselling → contex
 | 2026-11-13 | Added a direct request-scope session lifecycle regression test and completed the Phase 2 foundation acceptance review | PR #28 GitHub Actions run #139: compileall passed, Ruff passed, Pytest 114 passed and the real Streamlit/FastAPI process smoke check passed (one existing Starlette/httpx deprecation warning); human/device validation remains open in issue #14 |
 
 | 2026-11-14 | Started Phase 3 with separate immutable learner/parent context records and a source-backed three-state education eligibility evaluator | PR #30 / Actions run #142 and merged-main run #144: compileall and Ruff passed, 130 Pytest tests passed and live Streamlit/FastAPI smoke check passed (one existing Starlette/httpx deprecation warning); no official qualification criteria or real learner data added |
-| 2026-11-15 | Added a seven-step bilingual learner/parent profile wizard with separate role-owned fields, optional broad region, unknown-preserving defaults and a session-only review/save; income-band capture remains disabled pending an approved taxonomy | Branch `feat/guided-bilingual-profile-capture`; 8 focused flow tests passed in an isolated local harness; full repository CI pending |
+| 2026-11-15 | Added a seven-step bilingual learner/parent profile wizard with separate role-owned fields, optional broad region, unknown-preserving defaults, full-width controls and a session-only review/save; income-band capture remains disabled pending an approved taxonomy | PR #32 merged as `b2c9ee6`; Actions run #148 passed compileall, Ruff, 138 Pytest tests and the live Streamlit/FastAPI process smoke check (one existing Starlette/httpx deprecation warning); issue #31 closed |
 
 ## Release acceptance checklist
 
