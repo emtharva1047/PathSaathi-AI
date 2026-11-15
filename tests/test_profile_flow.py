@@ -53,6 +53,7 @@ class FakeStreamlit:
 
     def button(self, label: str, **kwargs):
         self.buttons.append(label)
+        self.calls.append(("button", (label,), kwargs))
         if label == self.clicked and kwargs.get("on_click"):
             kwargs["on_click"](*kwargs.get("args", ()))
         return label == self.clicked
@@ -156,6 +157,9 @@ def test_review_save_keeps_draft_only_in_session_state() -> None:
     assert saved.learner.interests == ("health_and_care",)
     assert saved.parent.concerns == (ConcernCategory.PLACEMENT_AND_JOB_SECURITY,)
     assert any(call[0] == "success" for call in fake.calls)
+    button_calls = [call for call in fake.calls if call[0] == "button"]
+    assert button_calls
+    assert all(call[2]["use_container_width"] is True for call in button_calls)
     assert not any(call[0] in {"form_submit_button", "download_button"} for call in fake.calls)
 
 
