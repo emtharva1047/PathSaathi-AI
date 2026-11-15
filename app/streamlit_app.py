@@ -8,6 +8,8 @@ from urllib.error import HTTPError, URLError
 from urllib.parse import urlsplit
 from urllib.request import Request, urlopen
 
+from app.profile_flow import render_profile_capture
+
 
 API_TIMEOUT_SECONDS = 2.0
 DEFAULT_API_BASE_URL = "http://127.0.0.1:8000"
@@ -49,8 +51,8 @@ TRANSLATIONS = {
             "education, interests and location."
         ),
         "profile_placeholder": (
-            "Profile questions are being built. No personal information is collected on "
-            "this screen yet."
+            "Answer one short question at a time. Optional questions can be skipped. "
+            "This draft stays in the current session only."
         ),
         "pathways_heading": "Explore vocational pathways",
         "pathways_description": (
@@ -104,8 +106,8 @@ TRANSLATIONS = {
             "समजावून सांगता येतील."
         ),
         "profile_placeholder": (
-            "माहिती भरण्याचे प्रश्न तयार होत आहेत. या स्क्रीनवर सध्या कोणतीही "
-            "वैयक्तिक माहिती घेतली जात नाही."
+            "एकावेळी एक छोटा प्रश्न सोडवा. ऐच्छिक प्रश्न वगळू शकता. हा मसुदा "
+            "फक्त सध्याच्या सत्रात राहील."
         ),
         "pathways_heading": "व्यावसायिक शिक्षणाचे पर्याय",
         "pathways_description": (
@@ -226,27 +228,29 @@ def main() -> None:
         st.title(copy["profile_heading"])
         st.write(copy["profile_description"])
         st.info(copy["profile_placeholder"])
+        render_profile_capture(st, locale)
     else:
         st.title(copy["pathways_heading"])
         st.write(copy["pathways_description"])
         st.info(copy["pathways_placeholder"])
 
-    if selected_index > 0:
-        st.button(
-            copy["back"],
-            key="back_navigation",
-            on_click=set_page,
-            args=(page_keys[selected_index - 1],),
-            use_container_width=True,
-        )
-    if selected_index < len(page_keys) - 1:
-        st.button(
-            copy["next"],
-            key="next_navigation",
-            on_click=set_page,
-            args=(page_keys[selected_index + 1],),
-            use_container_width=True,
-        )
+    if selected_page != "profile":
+        if selected_index > 0:
+            st.button(
+                copy["back"],
+                key="back_navigation",
+                on_click=set_page,
+                args=(page_keys[selected_index - 1],),
+                use_container_width=True,
+            )
+        if selected_index < len(page_keys) - 1:
+            st.button(
+                copy["next"],
+                key="next_navigation",
+                on_click=set_page,
+                args=(page_keys[selected_index + 1],),
+                use_container_width=True,
+            )
 
     st.caption(copy["footer"])
 
