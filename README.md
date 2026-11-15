@@ -15,7 +15,7 @@ See [SIH requirement mapping](docs/PROBLEM_STATEMENT_MAPPING.md) and [project re
 ## MVP focus
 
 - English + Marathi pilot interface (Maharashtra scope assumption, subject to mentor confirmation).
-- Guided learner assessment and advisory pathway shortlisting.
+- Guided learner profile capture and transparent advisory pathway shortlisting; no validated aptitude or psychometric testing.
 - Qualification/course explorer with NCVET/NQR provenance.
 - Outcome evidence model preserving trade/provider/region/cohort granularity and metric definitions.
 - Shared learner-parent counselling session with separate preferences.
