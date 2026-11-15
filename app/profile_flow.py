@@ -394,7 +394,12 @@ def render_profile_capture(st: Any, locale: str) -> None:
                 st.session_state, locale
             )
 
-        st.button(copy["save"], key="profile_save", on_click=save_draft)
+        st.button(
+            copy["save"],
+            key="profile_save",
+            on_click=save_draft,
+            use_container_width=True,
+        )
         if st.session_state.get("profile_saved_context") is not None:
             st.success(copy["saved"])
 
@@ -403,6 +408,18 @@ def render_profile_capture(st: Any, locale: str) -> None:
         st.session_state.pop("profile_saved_context", None)
 
     if step > 0:
-        st.button(copy["back"], key="profile_back", on_click=move_to, args=(step - 1,))
+        st.button(
+            copy["back"],
+            key="profile_back",
+            on_click=move_to,
+            args=(step - 1,),
+            use_container_width=True,
+        )
     if step < total - 1:
-        st.button(copy["next"], key="profile_next", on_click=move_to, args=(step + 1,))
+        st.button(
+            copy["next"],
+            key="profile_next",
+            on_click=move_to,
+            args=(step + 1,),
+            use_container_width=True,
+        )
