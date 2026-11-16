@@ -114,8 +114,11 @@ Learner/parent onboarding and consent → joint bilingual counselling → contex
 - [x] Add seven-step, one-question-at-a-time profile capture in English and Marathi for learner education, broad optional region, learner interests/work preferences, parent-reported concerns and parent priorities.
 - [x] Keep the draft in Streamlit session state only; do not write profiles to the API/database before consent and retention design. Leave household-income bands uncollected until a pilot taxonomy is approved.
 - [x] Add bilingual UI/domain integration tests for one-question rendering, back/continue navigation, role separation, optional unknowns, Marathi language and session-only save. PR #32 merged as `b2c9ee6`; GitHub Actions run #148 passed compileall, Ruff, 138 Pytest tests and the live Streamlit/FastAPI process smoke check (one existing Starlette/httpx deprecation warning).
-- [ ] Build transparent advisory pathway shortlisting; do not present it as a validated aptitude test.
-- [ ] Day 15 implementation is on branch feat/transparent-pathway-shortlisting; PR validation is pending before acceptance is checked.
+- [x] Build deterministic advisory shortlisting from learner-stated interests and work preferences only; return exact reason codes and English/Marathi explanations without aptitude or ability scores.
+- [x] Keep every catalogue option explorable when preferences are empty or unmatched; use stable identifier tie-breaking and no learner ranking.
+- [x] Evaluate education eligibility separately and only from criteria attached to the same source-verified qualification code; synthetic and unverified entries remain unknown.
+- [x] Add a bilingual Streamlit explorer with four clearly labelled synthetic themes and no fabricated course, NSQF, fee or outcome claims.
+- [x] GitHub Actions PR run #154 and merged-main run #155 passed compilation, Ruff, 159 Pytest tests and the live Streamlit/FastAPI smoke check (one existing Starlette/httpx deprecation warning per run).
 
 ## Progress log
 
@@ -140,13 +143,14 @@ Learner/parent onboarding and consent → joint bilingual counselling → contex
 
 | 2026-11-14 | Started Phase 3 with separate immutable learner/parent context records and a source-backed three-state education eligibility evaluator | PR #30 / Actions run #142 and merged-main run #144: compileall and Ruff passed, 130 Pytest tests passed and live Streamlit/FastAPI smoke check passed (one existing Starlette/httpx deprecation warning); no official qualification criteria or real learner data added |
 | 2026-11-15 | Added a seven-step bilingual learner/parent profile wizard with separate role-owned fields, optional broad region, unknown-preserving defaults, full-width controls and a session-only review/save; income-band capture remains disabled pending an approved taxonomy | PR #32 merged as `b2c9ee6`; Actions run #148 passed compileall, Ruff, 138 Pytest tests and the live Streamlit/FastAPI process smoke check (one existing Starlette/httpx deprecation warning); issue #31 closed |
+| 2026-11-16 | Added deterministic learner-preference pathway matching, exact reason codes, bilingual explanations, separate source-backed education eligibility and an unrestricted synthetic-demo exploration screen | PR #34 merged as `ea0a145`; PR run #154 and merged-main run #155 passed compileall, Ruff, 159 Pytest tests and the live Streamlit/FastAPI smoke check (one existing Starlette/httpx deprecation warning per run); issue #33 closed |
 
 ## Release acceptance checklist
 
 - [ ] Joint learner-parent flow with distinct roles/preferences and consent.
 - [ ] Reviewed English/Marathi key flows with accessible guided steps and optional read-aloud.
-- [ ] Eligibility states distinguish eligible, ineligible and unknown.
-- [ ] Advisory recommendations explain why options are shortlisted and are not psychometric claims.
+- [x] Eligibility states distinguish eligible, ineligible and unknown.
+- [x] Advisory recommendations explain why options are shortlisted and are not psychometric claims.
 - [ ] Outcome import validates source, denominator, cohort, geography, period and units.
 - [ ] Course/NSQF explanations cite official qualification records.
 - [ ] Callback request queue is honest about partner availability.
@@ -158,5 +162,3 @@ Learner/parent onboarding and consent → joint bilingual counselling → contex
 - [ ] FastAPI and Streamlit are deployed separately and E2E verified.
 - [ ] CI, setup docs, screenshots, demo script, known limitations and resume summary are complete.
 
-
-| 2026-11-16 | Implemented deterministic learner-preference pathway matching, separate source-backed education eligibility, bilingual reason explanations and a full synthetic-demo exploration screen; PR validation pending | Branch feat/transparent-pathway-shortlisting; added core and UI tests; synthetic options are explicitly not official course or outcome records |
