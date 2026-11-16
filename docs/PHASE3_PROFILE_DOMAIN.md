@@ -92,3 +92,33 @@ transcribed from the exact NCVET/NQR qualification record and reviewed before us
 Build transparent advisory pathway shortlisting with reasons tied to the learner's
 stated interests and work preferences, while preserving an unrestricted option to
 explore other pathways. Do not rank learners or claim validated psychometrics.
+
+
+## Transparent advisory pathway shortlisting
+
+The pathway matcher is implemented in core/pathways.py and rendered through
+app/pathway_flow.py. It consumes only the learner's explicit interest and work-preference
+tags. Parent concerns, parent priorities, education level, broad region and income are
+not used to rank or filter preference matches.
+
+Each result retains:
+- Exact matched interest and work-preference tags.
+- Stable reason codes such as interest:technology and work_preference:hands_on.
+- English and Marathi explanations of the matched signals.
+- A separate eligible, ineligible or unknown education-criterion result.
+- An unrestricted list of all catalogue options, including those not shortlisted.
+
+The ordering is a deterministic presentation of exact catalogue-tag overlaps, with
+stable course-identifier tie-breaking. It is not a learner score, aptitude test,
+psychometric assessment or prediction of success. An ineligible or unknown education
+result does not silently remove an option from exploration.
+
+The current Streamlit screen uses four clearly labelled synthetic demonstration themes.
+They are not official course listings, NCVET/NQR records, NSQF mappings, provider offers,
+fees or outcome evidence. No placement, earnings, safety or job-security values are
+generated. All demo eligibility remains unknown because no official criteria are loaded.
+
+When official catalogue records are introduced, each option must retain its course-source
+status. Entry criteria are evaluated only when attached to the same source-verified
+qualification code; missing or unverified criteria remain unknown. Human review of
+Marathi terminology and actual course mappings remains outstanding.

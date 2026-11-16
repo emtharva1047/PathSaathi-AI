@@ -15,7 +15,7 @@ Day 1 is 2 November 2026. Day 60 is 31 December 2026.
 |---|---:|---|---|---|---|
 | 1. Research and requirements | 1–5 | 2–6 Nov | Official SIH26241 review, personas/use cases, SRS, architecture, risks, outcome contract, traceability and acceptance | Requirements mapped, source policy and acceptance baseline | Complete |
 | 2. Foundation | 6–12 | 7–13 Nov | Streamlit/FastAPI skeleton, config/logging, SQLAlchemy models, local SQLite, PostgreSQL-ready URL, API health, locale scaffold, read-only catalogue/evidence API, validation and CI | App/API start, explicit schema creation, request-scoped SQLite repositories, safe evidence responses and CI green | Complete (13 Nov) |
-| 3. Counselling/profile/pathway | 13–22 | 14–23 Nov | Learner and parent context, guided bilingual prompts, advisory shortlisting, eligibility and source-backed explainers | Deterministic recommendations, eligible/ineligible/unknown outcomes, explainable tests | In progress (15 Nov) |
+| 3. Counselling/profile/pathway | 13–22 | 14–23 Nov | Learner and parent context, guided bilingual prompts, advisory shortlisting, eligibility and source-backed explainers | Deterministic recommendations, eligible/ineligible/unknown outcomes, explainable tests | In progress (16 Nov) |
 | 4. Course/outcome explorer | 23–29 | 24–30 Nov | SIH dummy-data importer when supplied, validation, source-linked qualifications/outcomes, filters and comparisons | Provenance-aware import report and accurate comparison semantics | Not started |
 | 5. Family counselling/escalation | 30–36 | 1–7 Dec | Shared sessions, distinct learner/parent roles and preferences, consent and callback request workflow | Role separation, consent tests, honest escalation queue | Not started |
 | 6. AI and reporting | 37–41 | 8–12 Dec | Retrieval-grounded bilingual Q&A, safe prompts, source display and PDF report | Evidence-backed responses with source/caveat display; report export | Not started |
@@ -115,6 +115,7 @@ Learner/parent onboarding and consent → joint bilingual counselling → contex
 - [x] Keep the draft in Streamlit session state only; do not write profiles to the API/database before consent and retention design. Leave household-income bands uncollected until a pilot taxonomy is approved.
 - [x] Add bilingual UI/domain integration tests for one-question rendering, back/continue navigation, role separation, optional unknowns, Marathi language and session-only save. PR #32 merged as `b2c9ee6`; GitHub Actions run #148 passed compileall, Ruff, 138 Pytest tests and the live Streamlit/FastAPI process smoke check (one existing Starlette/httpx deprecation warning).
 - [ ] Build transparent advisory pathway shortlisting; do not present it as a validated aptitude test.
+- [ ] Day 15 implementation is on branch feat/transparent-pathway-shortlisting; PR validation is pending before acceptance is checked.
 
 ## Progress log
 
@@ -157,3 +158,5 @@ Learner/parent onboarding and consent → joint bilingual counselling → contex
 - [ ] FastAPI and Streamlit are deployed separately and E2E verified.
 - [ ] CI, setup docs, screenshots, demo script, known limitations and resume summary are complete.
 
+
+| 2026-11-16 | Implemented deterministic learner-preference pathway matching, separate source-backed education eligibility, bilingual reason explanations and a full synthetic-demo exploration screen; PR validation pending | Branch feat/transparent-pathway-shortlisting; added core and UI tests; synthetic options are explicitly not official course or outcome records |

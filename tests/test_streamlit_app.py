@@ -294,3 +294,23 @@ def test_offline_ui_shows_localised_status_and_keeps_each_page_usable(
         "pathways": [copy["back"]],
     }
     assert fake_streamlit.buttons == expected_buttons[page]
+
+
+def test_pathways_page_renders_the_illustrative_shortlist_and_unknown_eligibility(
+    monkeypatch,
+) -> None:
+    fake_streamlit = FakeStreamlit(locale="English", page="pathways")
+    monkeypatch.setitem(sys.modules, "streamlit", fake_streamlit)
+    monkeypatch.setattr(streamlit_app, "is_api_healthy", lambda: False)
+
+    streamlit_app.main()
+
+    rendered = [
+        str(value)
+        for _, args, _ in fake_streamlit.calls
+        for value in args
+    ]
+    text = " ".join(rendered)
+    assert "Illustrative demo catalogue only" in text
+    assert "Illustrative technology-support theme" in text
+    assert "Unknown — verified entry criteria or learner information are missing" in text

@@ -8,6 +8,7 @@ from urllib.error import HTTPError, URLError
 from urllib.parse import urlsplit
 from urllib.request import Request, urlopen
 
+from app.pathway_flow import render_pathway_explorer
 from app.profile_flow import render_profile_capture
 
 
@@ -56,12 +57,12 @@ TRANSLATIONS = {
         ),
         "pathways_heading": "Explore vocational pathways",
         "pathways_description": (
-            "Compare training routes, job roles and progression options using evidence "
-            "that matches the learner's context."
+            "Bring forward options that match the learner's stated interests and work preferences. "
+            "Show education eligibility separately and only from verified criteria."
         ),
         "pathways_placeholder": (
-            "The course catalogue and verified outcome evidence will appear here after "
-            "their data-validation work is complete."
+            "The current list contains illustrative demo themes only. Official course listings, "
+            "NSQF mappings and verified outcome evidence are not loaded yet."
         ),
         "footer": (
             "Prototype for SIH26241. Outcome figures will be shown only when their source, "
@@ -111,12 +112,12 @@ TRANSLATIONS = {
         ),
         "pathways_heading": "व्यावसायिक शिक्षणाचे पर्याय",
         "pathways_description": (
-            "विद्यार्थ्याच्या परिस्थितीशी जुळणारे प्रशिक्षण, नोकरीची भूमिका आणि "
-            "पुढील शिक्षणाचे पर्याय पुराव्याच्या आधारे समजून घ्या."
+            "विद्यार्थ्याने सांगितलेल्या आवडी आणि कामाच्या आवडींशी जुळणारे पर्याय आधी दाखवले जातात. "
+            "शिक्षणानुसार पात्रता स्वतंत्रपणे आणि पडताळलेल्या अटींवरच दाखवली जाते."
         ),
         "pathways_placeholder": (
-            "माहितीची पडताळणी पूर्ण झाल्यानंतर अभ्यासक्रम आणि रोजगारविषयक "
-            "पुरावे येथे दिसतील."
+            "सध्या येथे फक्त उदाहरणासाठीचे नमुना पर्याय आहेत. अधिकृत अभ्यासक्रम, NSQF स्तर "
+            "आणि पडताळलेले रोजगारविषयक पुरावे अद्याप उपलब्ध नाहीत."
         ),
         "footer": (
             "SIH26241 साठी नमुना आवृत्ती. स्रोत, गट आणि मोजमापांची व्याख्या उपलब्ध "
@@ -233,6 +234,7 @@ def main() -> None:
         st.title(copy["pathways_heading"])
         st.write(copy["pathways_description"])
         st.info(copy["pathways_placeholder"])
+        render_pathway_explorer(st, locale)
 
     if selected_page != "profile":
         if selected_index > 0:
