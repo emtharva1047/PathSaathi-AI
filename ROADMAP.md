@@ -116,7 +116,7 @@ Learner/parent onboarding and consent → joint bilingual counselling → contex
 - [x] Add bilingual UI/domain integration tests for one-question rendering, back/continue navigation, role separation, optional unknowns, Marathi language and session-only save. PR #32 merged as `b2c9ee6`; GitHub Actions run #148 passed compileall, Ruff, 138 Pytest tests and the live Streamlit/FastAPI process smoke check (one existing Starlette/httpx deprecation warning).
 - [x] Build deterministic advisory shortlisting from learner-stated interests and work preferences only; return exact reason codes and English/Marathi explanations without aptitude or ability scores.
 - [x] Keep every catalogue option explorable when preferences are empty or unmatched; use stable identifier tie-breaking and no learner ranking.
-- [x] Evaluate education eligibility separately and only from criteria attached to the same source-verified qualification code; synthetic and unverified entries remain unknown.
+- [x] Apply eligibility as a hard gate: only verified-eligible preference matches enter the eligible shortlist; unknown matches are separated for verification and ineligible matches remain explore-only.
 - [x] Add a bilingual Streamlit explorer with four clearly labelled synthetic themes and no fabricated course, NSQF, fee or outcome claims.
 - [x] GitHub Actions PR run #154 and merged-main run #155 passed compilation, Ruff, 159 Pytest tests and the live Streamlit/FastAPI smoke check (one existing Starlette/httpx deprecation warning per run).
 

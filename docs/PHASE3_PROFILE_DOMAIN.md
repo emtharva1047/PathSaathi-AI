@@ -135,3 +135,12 @@ PR #34 was merged to main as commit ea0a145. Its GitHub Actions PR run #154 and 
 Each run reported one existing Starlette/httpx deprecation warning. The 21 added tests cover the deterministic matcher, stable ties, incomplete/no-match exploration, exact reason codes, English/Marathi copy, parent-context separation, synthetic-data labels, source-code matching and separate eligibility states.
 
 The current four-option Streamlit catalogue is explicitly synthetic. It is a UI demonstration only and must be replaced by validated source-linked catalogue records during the course/outcome explorer phase. It contains no official qualification, NSQF, fee, placement, earnings, safety or job-security facts. Human Marathi review and target-user accessibility testing remain open in issue #14.
+
+
+### Eligibility gate and presentation
+
+Preference overlap is not eligibility. Only an option whose attached education criterion is
+verified and met may enter the eligible shortlist. Preference matches with unknown eligibility
+appear in a separate verification group and are explicitly not eligible recommendations.
+Options with an ineligible result remain in the full exploration list, labelled ineligible;
+preference matching cannot promote them into the shortlist. All options remain visible.

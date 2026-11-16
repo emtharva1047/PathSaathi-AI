@@ -6,6 +6,7 @@ from typing import Any
 
 from app.profile_flow import build_family_context
 from core.domain import CourseRecord
+from core.eligibility import EligibilityStatus
 from core.pathways import AdvisoryPathway, ShortlistState, build_pathway_shortlist
 
 
@@ -71,7 +72,17 @@ PATHWAY_COPY: dict[str, dict[str, Any]] = {
             "Only the learner's stated interests and work preferences drive this shortlist. "
             "Parent concerns and priorities stay separate for family discussion."
         ),
-        "matches_heading": "Options matching the learner's stated preferences",
+        "matches_heading": "Preference matches with verified education eligibility",
+        "verification_heading": "Preference matches — eligibility not yet confirmed",
+        "verification_notice": (
+            "These options match the learner's stated preferences but are not eligible until "
+            "official entry criteria and learner information are verified. They are shown "
+            "for discussion, not as eligible recommendations."
+        ),
+        "no_eligible": (
+            "No preference match currently has a verified eligible result. Unknown or "
+            "ineligible must not be treated as eligible."
+        ),
         "explore_heading": "Explore all other pathways",
         "no_preferences": (
             "No learner interests or work preferences were shared. No shortlist is generated; "
@@ -82,8 +93,12 @@ PATHWAY_COPY: dict[str, dict[str, Any]] = {
             "available to explore."
         ),
         "no_catalogue": "No pathway catalogue is available yet. No recommendation was generated.",
-        "match_label": "Shortlisted from learner preferences",
-        "also_match_label": "Also matches the learner's preferences",
+        "eligible_match_label": "Preference match and verified education criterion met",
+        "verification_match_label": "Preference match — eligibility unknown; not an eligible recommendation",
+        "ineligible_label": (
+            "Preference match, but the published education criterion is not met; confirm equivalence"
+        ),
+        "also_match_label": "Also matches preferences but is outside the shortlist display limit",
         "no_match_label": "No selected preference match — still available to explore",
         "why_label": "Why this option appears",
         "eligibility_label": "Education eligibility",
@@ -130,7 +145,16 @@ PATHWAY_COPY: dict[str, dict[str, Any]] = {
             "ही यादी फक्त विद्यार्थ्याने सांगितलेल्या आवडी आणि कामाच्या आवडींवर आधारित आहे. "
             "पालकांच्या चिंता आणि प्राधान्ये कौटुंबिक चर्चेसाठी वेगळी ठेवली आहेत."
         ),
-        "matches_heading": "विद्यार्थ्याच्या सांगितलेल्या आवडींशी जुळणारे पर्याय",
+        "matches_heading": "शिक्षणाच्या पडताळलेल्या अटी पूर्ण करणारे जुळणारे पर्याय",
+        "verification_heading": "आवडींशी जुळणारे पर्याय — पात्रतेची पुष्टी बाकी",
+        "verification_notice": (
+            "हे पर्याय विद्यार्थ्याच्या आवडींशी जुळतात; परंतु अधिकृत प्रवेशाच्या अटी आणि "
+            "विद्यार्थ्याची माहिती पडताळल्याशिवाय पात्र मानता येणार नाहीत. हे चर्चेसाठीचे पर्याय आहेत."
+        ),
+        "no_eligible": (
+            "सध्या कोणत्याही जुळणाऱ्या पर्यायासाठी पात्रतेची पडताळलेली पुष्टी नाही. "
+            "माहिती नसणे किंवा अपात्र असणे म्हणजे पात्र असणे नाही."
+        ),
         "explore_heading": "इतर सर्व पर्याय पाहा",
         "no_preferences": (
             "विद्यार्थ्याच्या आवडी किंवा कामाच्या आवडी दिलेल्या नाहीत. त्यामुळे यादी तयार "
@@ -140,8 +164,10 @@ PATHWAY_COPY: dict[str, dict[str, Any]] = {
             "निवडलेल्या आवडींशी नमुना पर्याय जुळत नाहीत. तरीही प्रत्येक पर्याय पाहता येईल."
         ),
         "no_catalogue": "अभ्यासक्रमांची यादी अद्याप उपलब्ध नाही. कोणतीही शिफारस तयार केलेली नाही.",
-        "match_label": "विद्यार्थ्याच्या आवडींवरून निवडलेला पर्याय",
-        "also_match_label": "विद्यार्थ्याच्या आवडींशी जुळणारा आणखी एक पर्याय",
+        "eligible_match_label": "आवडींशी जुळतो आणि शिक्षणाची पडताळलेली अट पूर्ण करतो",
+        "verification_match_label": "आवडींशी जुळतो — पात्रता अज्ञात; पात्र शिफारस नाही",
+        "ineligible_label": "आवडींशी जुळतो; पण प्रकाशित शिक्षणाची अट पूर्ण नाही. समकक्षता तपासा",
+        "also_match_label": "आवडींशी जुळणारा आणखी पर्याय; मुख्य यादीच्या मर्यादेबाहेर",
         "no_match_label": "निवडलेल्या आवडींशी जुळत नाही — तरीही पाहण्यासाठी उपलब्ध",
         "why_label": "हा पर्याय का दाखवला आहे",
         "eligibility_label": "शिक्षणाच्या अटींनुसार पात्रता",
@@ -192,16 +218,18 @@ def _catalogue_status(pathway: AdvisoryPathway, copy: dict[str, Any]) -> str:
     return copy["review_label"]
 
 
-def _render_option(st: Any, recommendation: Any, locale: str, copy: dict[str, Any]) -> None:
+def _render_option(
+    st: Any,
+    recommendation: Any,
+    locale: str,
+    copy: dict[str, Any],
+    status_label: str,
+) -> None:
     pathway = recommendation.pathway
     title = pathway.course.title if locale == "English" else pathway.display_title_mr
     trade = pathway.course.trade if locale == "English" else pathway.display_trade_mr
     st.write(f"{title} — {trade}")
-    st.caption(
-        copy["match_label"]
-        if recommendation.matches_preferences
-        else copy["no_match_label"]
-    )
+    st.caption(status_label)
     explanation = (
         recommendation.explanation_en if locale == "English" else recommendation.explanation_mr
     )
@@ -244,14 +272,32 @@ def render_pathway_explorer(
         st.info(copy["no_preferences"])
     elif result.state == ShortlistState.NO_MATCHES:
         st.info(copy["no_matches"])
+    elif result.state == ShortlistState.MATCHES_NOT_ELIGIBLE:
+        st.info(copy["no_eligible"])
 
     if result.shortlist:
         st.subheader(copy["matches_heading"])
         for recommendation in result.shortlist:
-            _render_option(st, recommendation, locale, copy)
+            _render_option(
+                st, recommendation, locale, copy, copy["eligible_match_label"]
+            )
+
+    if result.needs_verification:
+        st.subheader(copy["verification_heading"])
+        st.info(copy["verification_notice"])
+        for recommendation in result.needs_verification:
+            _render_option(
+                st, recommendation, locale, copy, copy["verification_match_label"]
+            )
 
     st.subheader(copy["explore_heading"])
     for recommendation in result.explore_all:
-        _render_option(st, recommendation, locale, copy)
+        if recommendation.eligibility.status == EligibilityStatus.INELIGIBLE:
+            status_label = copy["ineligible_label"]
+        elif recommendation.matches_preferences:
+            status_label = copy["also_match_label"]
+        else:
+            status_label = copy["no_match_label"]
+        _render_option(st, recommendation, locale, copy, status_label)
     if not result.explore_all:
         st.caption(copy["no_more_options"])

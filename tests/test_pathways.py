@@ -86,9 +86,17 @@ def verified_criteria(
 
 
 def test_matching_returns_exact_interest_and_work_reason_codes_in_both_languages() -> None:
-    item = pathway("demo-tech")
+    item = pathway(
+        "demo-tech",
+        entry_criteria=verified_criteria(frozenset({EducationLevel.GRADE_10})),
+        verification_status="verified",
+    )
     result = build_pathway_shortlist(
-        learner(interests=("technology",), work_preferences=("hands_on",)),
+        learner(
+            interests=("technology",),
+            work_preferences=("hands_on",),
+            education_level=EducationLevel.GRADE_10,
+        ),
         (item,),
     )
 
@@ -112,7 +120,7 @@ def test_ties_use_stable_course_identifier_order_without_a_learner_score() -> No
         max_shortlist=1,
     )
 
-    assert result.shortlist[0].pathway.course.course_id == "course-a"
+    assert result.needs_verification[0].pathway.course.course_id == "course-a"
     assert result.explore_all[0].pathway.course.course_id == "course-b"
     assert result.explore_all[0].matches_preferences is True
     assert len(result.all_options) == 2
@@ -146,7 +154,7 @@ def test_non_matching_preferences_do_not_hide_any_pathway() -> None:
 def test_synthetic_catalogue_items_never_claim_verified_eligibility_or_outcomes() -> None:
     result = build_pathway_shortlist(learner(interests=("technology",)), (pathway("demo"),))
 
-    recommendation = result.shortlist[0]
+    recommendation = result.needs_verification[0]
     assert recommendation.eligibility.status == EligibilityStatus.UNKNOWN
     assert recommendation.eligibility.reason_code == "criteria_not_available"
     assert recommendation.pathway.course.verification_status == "synthetic_demo"
@@ -167,10 +175,11 @@ def test_ineligible_education_result_does_not_override_preference_match() -> Non
         (item,),
     )
 
-    assert len(result.shortlist) == 1
-    assert result.shortlist[0].matches_preferences is True
-    assert result.shortlist[0].eligibility.status == EligibilityStatus.INELIGIBLE
-    assert result.shortlist[0].eligibility.admission_decision is False
+    assert result.shortlist == ()
+    assert result.explore_all[0].matches_preferences is True
+    assert result.explore_all[0].eligibility.status == EligibilityStatus.INELIGIBLE
+    assert result.explore_all[0].eligibility.admission_decision is False
+    assert result.state == ShortlistState.MATCHES_NOT_ELIGIBLE
 
 
 def test_unknown_education_remains_unknown_even_with_verified_entry_criteria() -> None:
@@ -182,8 +191,9 @@ def test_unknown_education_remains_unknown_even_with_verified_entry_criteria() -
     )
     result = build_pathway_shortlist(learner(interests=("technology",)), (item,))
 
-    assert result.shortlist[0].eligibility.status == EligibilityStatus.UNKNOWN
-    assert result.shortlist[0].eligibility.reason_code == "learner_education_unknown"
+    assert result.shortlist == ()
+    assert result.needs_verification[0].eligibility.status == EligibilityStatus.UNKNOWN
+    assert result.needs_verification[0].eligibility.reason_code == "learner_education_unknown"
 
 
 def test_unverified_criteria_do_not_produce_eligibility() -> None:
@@ -205,8 +215,8 @@ def test_unverified_criteria_do_not_produce_eligibility() -> None:
         (item,),
     )
 
-    assert result.shortlist[0].eligibility.status == EligibilityStatus.UNKNOWN
-    assert result.shortlist[0].eligibility.reason_code == "criteria_not_verified"
+    assert result.needs_verification[0].eligibility.status == EligibilityStatus.UNKNOWN
+    assert result.needs_verification[0].eligibility.reason_code == "criteria_not_verified"
 
 
 def test_parent_context_is_not_used_as_a_shortlisting_signal() -> None:
@@ -226,7 +236,8 @@ def test_parent_context_is_not_used_as_a_shortlisting_signal() -> None:
         ),
     )
 
-    assert [item.pathway.course.course_id for item in result.shortlist] == ["technology"]
+    assert result.shortlist == ()
+    assert [item.pathway.course.course_id for item in result.needs_verification] == ["technology"]
     assert [item.pathway.course.course_id for item in result.explore_all] == ["safety"]
 
 
@@ -281,5 +292,6 @@ def test_empty_catalogue_is_reported_without_inventing_options() -> None:
 
     assert result.state == ShortlistState.NO_CATALOGUE
     assert result.shortlist == ()
+    assert result.needs_verification == ()
     assert result.explore_all == ()
     assert result.all_options == ()

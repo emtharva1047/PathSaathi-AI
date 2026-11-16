@@ -7,7 +7,12 @@ from dataclasses import dataclass
 from enum import StrEnum
 
 from core.domain import CourseRecord
-from core.eligibility import EligibilityResult, QualificationEntryCriteria, evaluate_eligibility
+from core.eligibility import (
+    EligibilityResult,
+    EligibilityStatus,
+    QualificationEntryCriteria,
+    evaluate_eligibility,
+)
 from core.profiles import LearnerProfile
 
 
@@ -71,6 +76,8 @@ class ShortlistState(StrEnum):
     """Exploration state; never interpreted as a judgement about the learner."""
 
     MATCHES_AVAILABLE = "matches_available"
+    MATCHES_NEED_VERIFICATION = "matches_need_verification"
+    MATCHES_NOT_ELIGIBLE = "matches_not_eligible"
     NO_PREFERENCES = "no_preferences"
     NO_MATCHES = "no_matches"
     NO_CATALOGUE = "no_catalogue"
@@ -138,6 +145,7 @@ class ShortlistResult:
 
     state: ShortlistState
     shortlist: tuple[PathwayRecommendation, ...]
+    needs_verification: tuple[PathwayRecommendation, ...]
     explore_all: tuple[PathwayRecommendation, ...]
     all_options: tuple[PathwayRecommendation, ...]
 
@@ -215,8 +223,8 @@ def build_pathway_shortlist(
     """Match exact learner preference tags; never infer ability or restrict exploration.
 
     Parent concerns, parent priorities, education level, location and income are not
-    preference-ranking signals. Education eligibility is evaluated separately from
-    the shortlist and only from criteria attached to a source-verified course.
+    preference-ranking signals. Only verified-eligible matches enter the shortlist;
+    unknown matches are shown for verification, and ineligible matches remain explorable.
     """
     if isinstance(max_shortlist, bool) or not isinstance(max_shortlist, int):
         raise ValueError("max_shortlist must be an integer.")
@@ -274,12 +282,21 @@ def build_pathway_shortlist(
     )
     all_options = tuple(recommendations)
     matching = tuple(item for item in all_options if item.matches_preferences)
-    shortlist = matching[:max_shortlist]
-    shortlisted_ids = {item.pathway.course.course_id for item in shortlist}
+    eligible_matches = tuple(
+        item for item in matching if item.eligibility.status == EligibilityStatus.ELIGIBLE
+    )
+    unknown_matches = tuple(
+        item for item in matching if item.eligibility.status == EligibilityStatus.UNKNOWN
+    )
+    shortlist = eligible_matches[:max_shortlist]
+    needs_verification = unknown_matches[:max_shortlist]
+    surfaced_ids = {
+        item.pathway.course.course_id for item in (*shortlist, *needs_verification)
+    }
     explore_all = tuple(
         item
         for item in all_options
-        if item.pathway.course.course_id not in shortlisted_ids
+        if item.pathway.course.course_id not in surfaced_ids
     )
 
     if not catalogue:
@@ -288,12 +305,17 @@ def build_pathway_shortlist(
         state = ShortlistState.NO_PREFERENCES
     elif not matching:
         state = ShortlistState.NO_MATCHES
-    else:
+    elif shortlist:
         state = ShortlistState.MATCHES_AVAILABLE
+    elif needs_verification:
+        state = ShortlistState.MATCHES_NEED_VERIFICATION
+    else:
+        state = ShortlistState.MATCHES_NOT_ELIGIBLE
 
     return ShortlistResult(
         state=state,
         shortlist=shortlist,
+        needs_verification=needs_verification,
         explore_all=explore_all,
         all_options=all_options,
     )
