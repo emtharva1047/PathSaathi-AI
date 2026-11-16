@@ -144,3 +144,10 @@ verified and met may enter the eligible shortlist. Preference matches with unkno
 appear in a separate verification group and are explicitly not eligible recommendations.
 Options with an ineligible result remain in the full exploration list, labelled ineligible;
 preference matching cannot promote them into the shortlist. All options remain visible.
+
+
+Eligibility-gate follow-up PR #35 was validated by GitHub Actions run #157:
+compileall, Ruff, 159 Pytest tests and the live Streamlit/FastAPI smoke test passed
+(one existing Starlette/httpx deprecation warning). The regression suite confirms
+that unknown matches are separated for verification and ineligible matches cannot
+enter the eligible shortlist.
