@@ -54,7 +54,8 @@ def test_learner_preferences_drive_shortlist_but_parent_concerns_stay_separate()
     render_pathway_explorer(fake, "English")
 
     text = rendered_text(fake)
-    assert PATHWAY_COPY["English"]["matches_heading"] in text
+    assert PATHWAY_COPY["English"]["verification_heading"] in text
+    assert PATHWAY_COPY["English"]["verification_notice"] in text
     assert "Illustrative technology-support theme" in text
     assert "Illustrative repair and maintenance theme" in text
     assert "workplace safety" not in text.lower()
@@ -72,7 +73,8 @@ def test_marathi_explorer_shows_all_options_and_unknown_eligibility() -> None:
     render_pathway_explorer(fake, "मराठी")
 
     text = rendered_text(fake)
-    assert PATHWAY_COPY["मराठी"]["matches_heading"] in text
+    assert PATHWAY_COPY["मराठी"]["verification_heading"] in text
+    assert PATHWAY_COPY["मराठी"]["verification_notice"] in text
     assert PATHWAY_COPY["मराठी"]["eligibility_status"]["unknown"] in text
     assert PATHWAY_COPY["मराठी"]["synthetic_label"] in text
     for item in DEMO_PATHWAYS:

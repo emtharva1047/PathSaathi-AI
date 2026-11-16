@@ -1,7 +1,7 @@
 # Phase 3 — Learner/Parent Context and Eligibility Domain
 
-**Implementation slices:** Days 13–14, 14–15 November 2026  
-**Status:** Separate learner/parent domain records and verified-criteria eligibility are implemented; guided bilingual profile capture is session-only. Durable storage and counselling orchestration remain future work.
+**Implementation slices:** Days 13–15, 14–16 November 2026  
+**Status:** Separate learner/parent domain records, verified-criteria eligibility, guided bilingual profile capture and deterministic advisory shortlisting are implemented. Profile drafts remain session-only; durable storage and counselling orchestration remain future work.
 
 ## Learner and parent context
 
@@ -122,3 +122,32 @@ When official catalogue records are introduced, each option must retain its cour
 status. Entry criteria are evaluated only when attached to the same source-verified
 qualification code; missing or unverified criteria remain unknown. Human review of
 Marathi terminology and actual course mappings remains outstanding.
+
+
+## Validation evidence for advisory shortlisting
+
+PR #34 was merged to main as commit ea0a145. Its GitHub Actions PR run #154 and merged-main run #155 both passed:
+- Python package compilation.
+- Ruff lint.
+- 159 Pytest tests.
+- Live Streamlit/FastAPI process smoke test.
+
+Each run reported one existing Starlette/httpx deprecation warning. The 21 added tests cover the deterministic matcher, stable ties, incomplete/no-match exploration, exact reason codes, English/Marathi copy, parent-context separation, synthetic-data labels, source-code matching and separate eligibility states.
+
+The current four-option Streamlit catalogue is explicitly synthetic. It is a UI demonstration only and must be replaced by validated source-linked catalogue records during the course/outcome explorer phase. It contains no official qualification, NSQF, fee, placement, earnings, safety or job-security facts. Human Marathi review and target-user accessibility testing remain open in issue #14.
+
+
+### Eligibility gate and presentation
+
+Preference overlap is not eligibility. Only an option whose attached education criterion is
+verified and met may enter the eligible shortlist. Preference matches with unknown eligibility
+appear in a separate verification group and are explicitly not eligible recommendations.
+Options with an ineligible result remain in the full exploration list, labelled ineligible;
+preference matching cannot promote them into the shortlist. All options remain visible.
+
+
+Eligibility-gate follow-up PR #35 was validated by GitHub Actions run #157:
+compileall, Ruff, 159 Pytest tests and the live Streamlit/FastAPI smoke test passed
+(one existing Starlette/httpx deprecation warning). The regression suite confirms
+that unknown matches are separated for verification and ineligible matches cannot
+enter the eligible shortlist.
