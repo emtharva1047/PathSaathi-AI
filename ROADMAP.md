@@ -15,7 +15,7 @@ Day 1 is 2 November 2026. Day 60 is 31 December 2026.
 |---|---:|---|---|---|---|
 | 1. Research and requirements | 1–5 | 2–6 Nov | Official SIH26241 review, personas/use cases, SRS, architecture, risks, outcome contract, traceability and acceptance | Requirements mapped, source policy and acceptance baseline | Complete |
 | 2. Foundation | 6–12 | 7–13 Nov | Streamlit/FastAPI skeleton, config/logging, SQLAlchemy models, local SQLite, PostgreSQL-ready URL, API health, locale scaffold, read-only catalogue/evidence API, validation and CI | App/API start, explicit schema creation, request-scoped SQLite repositories, safe evidence responses and CI green | Complete (13 Nov) |
-| 3. Counselling/profile/pathway | 13–22 | 14–23 Nov | Learner and parent context, guided bilingual prompts, advisory shortlisting, eligibility and source-backed explainers | Deterministic recommendations, eligible/ineligible/unknown outcomes, explainable tests | In progress (16 Nov) |
+| 3. Counselling/profile/pathway | 13–22 | 14–23 Nov | Learner and parent context, guided bilingual prompts, advisory shortlisting, eligibility and source-backed explainers | Deterministic recommendations, eligible/ineligible/unknown outcomes, explainable tests | In progress (17 Nov) |
 | 4. Course/outcome explorer | 23–29 | 24–30 Nov | SIH dummy-data importer when supplied, validation, source-linked qualifications/outcomes, filters and comparisons | Provenance-aware import report and accurate comparison semantics | Not started |
 | 5. Family counselling/escalation | 30–36 | 1–7 Dec | Shared sessions, distinct learner/parent roles and preferences, consent and callback request workflow | Role separation, consent tests, honest escalation queue | Not started |
 | 6. AI and reporting | 37–41 | 8–12 Dec | Retrieval-grounded bilingual Q&A, safe prompts, source display and PDF report | Evidence-backed responses with source/caveat display; report export | Not started |
@@ -120,6 +120,11 @@ Learner/parent onboarding and consent → joint bilingual counselling → contex
 - [x] Add a bilingual Streamlit explorer with four clearly labelled synthetic themes and no fabricated course, NSQF, fee or outcome claims.
 - [x] GitHub Actions PR run #154 and merged-main run #155 passed compilation, Ruff, 159 Pytest tests and the live Streamlit/FastAPI smoke check; eligibility-gate follow-up PR #35 run #157 also passed the same checks (one existing Starlette/httpx deprecation warning per run).
 
+- [x] Add a curated, source-backed NQR qualification explainer with job description, alternative entry routes, minimum age, learning modules, total duration, NSQF level, progression and NQR validity.
+- [x] Withhold claims when the qualification is expired, archived, unknown or lacks complete claim-level provenance; mark Marathi translation as draft until human review.
+- [x] Support whole and half-step NSQF levels with Decimal domain values, SQL NUMERIC(3,1), query validation and API numeric serialization.
+- [ ] Extend eligibility evaluation to model every alternative education, prior-NSQF, experience and age condition before issuing a result for multi-route qualifications.
+
 ## Progress log
 
 | Date | Increment | Evidence |
@@ -144,6 +149,7 @@ Learner/parent onboarding and consent → joint bilingual counselling → contex
 | 2026-11-14 | Started Phase 3 with separate immutable learner/parent context records and a source-backed three-state education eligibility evaluator | PR #30 / Actions run #142 and merged-main run #144: compileall and Ruff passed, 130 Pytest tests passed and live Streamlit/FastAPI smoke check passed (one existing Starlette/httpx deprecation warning); no official qualification criteria or real learner data added |
 | 2026-11-15 | Added a seven-step bilingual learner/parent profile wizard with separate role-owned fields, optional broad region, unknown-preserving defaults, full-width controls and a session-only review/save; income-band capture remains disabled pending an approved taxonomy | PR #32 merged as `b2c9ee6`; Actions run #148 passed compileall, Ruff, 138 Pytest tests and the live Streamlit/FastAPI process smoke check (one existing Starlette/httpx deprecation warning); issue #31 closed |
 | 2026-11-16 | Added deterministic learner-preference pathway matching, exact reason codes, bilingual explanations, separate source-backed education eligibility and an unrestricted synthetic-demo exploration screen | PR #34 merged as `ea0a145`; PR run #154 and merged-main run #155 passed compileall, Ruff, 159 Pytest tests and the live Streamlit/FastAPI smoke check (one existing Starlette/httpx deprecation warning per run); issue #33 closed; eligibility-gate follow-up PR #35 run #157 passed compileall, Ruff, 159 tests and live smoke check |
+| 2026-11-17 | Added a provenance-gated bilingual NQR qualification explainer using the Assistant Baking Technician record, including alternative entry routes, learning modules, NSQF progression and validity; expanded NSQF domain, persistence and API filters to support exact half-levels | Branch feat/nqr-qualification-explainers; GitHub Actions validation pending; no provider availability or outcome figures inferred; Marathi translation remains unreviewed |
 
 ## Release acceptance checklist
 
@@ -152,7 +158,7 @@ Learner/parent onboarding and consent → joint bilingual counselling → contex
 - [x] Eligibility states distinguish eligible, ineligible and unknown.
 - [x] Advisory recommendations explain why options are shortlisted and are not psychometric claims.
 - [ ] Outcome import validates source, denominator, cohort, geography, period and units.
-- [ ] Course/NSQF explanations cite official qualification records.
+- [x] Add a source-backed NQR qualification explainer with exact record validity, entry routes, job-role summary and NSQF progression; full catalogue ingestion remains Phase 4.
 - [ ] Callback request queue is honest about partner availability.
 - [ ] Admin dashboard is aggregate-only with small-cohort suppression.
 - [ ] Optional concern changes are self-reported.
