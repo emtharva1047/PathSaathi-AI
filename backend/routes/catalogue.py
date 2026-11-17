@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from datetime import date
+from decimal import Decimal
 from typing import Annotated, Literal
 
 from fastapi import APIRouter, Depends, HTTPException, Path, Query
@@ -25,7 +26,7 @@ class CourseResponse(BaseModel):
     trade: str
     qualification_code: str | None
     awarding_body: str | None
-    nsqf_level: int | None
+    nsqf_level: float | None
     state: str | None
     district: str | None
     provider_id: str | None
@@ -84,7 +85,7 @@ def _course_response(record: CourseRecord) -> CourseResponse:
         trade=record.trade,
         qualification_code=record.qualification_code,
         awarding_body=record.awarding_body,
-        nsqf_level=record.nsqf_level,
+        nsqf_level=float(record.nsqf_level) if record.nsqf_level is not None else None,
         state=record.state,
         district=record.district,
         provider_id=record.provider_id,
@@ -161,8 +162,8 @@ def list_courses(
     district: Annotated[str | None, Query(min_length=1, max_length=100)] = None,
     trade: Annotated[str | None, Query(min_length=1, max_length=200)] = None,
     provider_id: Annotated[str | None, Query(min_length=1, max_length=100)] = None,
-    min_nsqf_level: Annotated[int | None, Query(ge=1, le=10)] = None,
-    max_nsqf_level: Annotated[int | None, Query(ge=1, le=10)] = None,
+    min_nsqf_level: Annotated[Decimal | None, Query(ge=1, le=10, multiple_of=Decimal('0.5'))] = None,
+    max_nsqf_level: Annotated[Decimal | None, Query(ge=1, le=10, multiple_of=Decimal('0.5'))] = None,
     limit: Annotated[int, Query(ge=1, le=100)] = 50,
     offset: Annotated[int, Query(ge=0)] = 0,
     session: Session = Depends(get_db_session),
