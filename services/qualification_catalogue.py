@@ -71,6 +71,8 @@ def load_official_qualification_examples() -> tuple[QualificationExplainerRecord
             valid_until=_parse_date(payload.get("valid_until")),
             facts=facts,
             nqr_record_url=payload.get("nqr_record_url"),
+            record_source_publisher=payload.get("record_source_publisher"),
+            record_last_verified_at=_parse_date(payload.get("record_last_verified_at")),
             marathi_translation_reviewed=bool(payload.get("marathi_translation_reviewed", False)),
         ),
     )
