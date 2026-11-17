@@ -2,8 +2,9 @@
 from __future__ import annotations
 
 from datetime import date
+from decimal import Decimal
 
-from sqlalchemy import CheckConstraint, Date, Float, Index, Integer, JSON, String, Text
+from sqlalchemy import CheckConstraint, Date, Float, Index, Integer, JSON, Numeric, String, Text
 from sqlalchemy.orm import Mapped, mapped_column
 
 from core.domain import CourseRecord, OutcomeEvidenceRecord
@@ -15,7 +16,7 @@ class CourseModel(Base):
 
     __tablename__ = "courses"
     __table_args__ = (
-        CheckConstraint("nsqf_level IS NULL OR nsqf_level BETWEEN 1 AND 10", name="nsqf_range"),
+        CheckConstraint("nsqf_level IS NULL OR (nsqf_level BETWEEN 1 AND 10 AND nsqf_level * 2 = CAST(nsqf_level * 2 AS INTEGER))", name="nsqf_range"),
         CheckConstraint(
             "verification_status IN ('verified', 'needs_review', 'stale', 'synthetic_demo')",
             name="verification_status",
@@ -34,7 +35,7 @@ class CourseModel(Base):
     trade: Mapped[str] = mapped_column(String(200), nullable=False)
     qualification_code: Mapped[str | None] = mapped_column(String(100))
     awarding_body: Mapped[str | None] = mapped_column(String(200))
-    nsqf_level: Mapped[int | None] = mapped_column(Integer)
+    nsqf_level: Mapped[Decimal | None] = mapped_column(Numeric(3, 1))
     state: Mapped[str | None] = mapped_column(String(100))
     district: Mapped[str | None] = mapped_column(String(100))
     provider_id: Mapped[str | None] = mapped_column(String(100))
