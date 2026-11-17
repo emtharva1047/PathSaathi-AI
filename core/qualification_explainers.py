@@ -108,6 +108,8 @@ class QualificationExplainerRecord:
     valid_until: date | None
     facts: tuple[QualificationFact, ...]
     nqr_record_url: str | None = None
+    record_source_publisher: str | None = None
+    record_last_verified_at: date | None = None
     marathi_translation_reviewed: bool = False
 
     def __post_init__(self) -> None:
@@ -124,6 +126,12 @@ class QualificationExplainerRecord:
             parsed = urlsplit(self.nqr_record_url)
             if parsed.scheme not in {"http", "https"} or not parsed.netloc:
                 raise ValueError("NQR record URLs must use HTTP or HTTPS.")
+        if status == QualificationRecordStatus.CURRENT and not all(
+            (self.nqr_record_url, self.record_source_publisher, self.record_last_verified_at)
+        ):
+            raise ValueError(
+                "Current NQR records require a record URL, publisher and verification date."
+            )
 
 
 @dataclass(frozen=True, slots=True)
@@ -162,6 +170,10 @@ def build_qualification_explainer(
         or not record.course.has_verified_source
         or record.course.last_verified_at is None
         or record.course.last_verified_at > today
+        or not record.nqr_record_url
+        or not record.record_source_publisher
+        or record.record_last_verified_at is None
+        or record.record_last_verified_at > today
     ):
         status = ExplainerStatus.UNKNOWN
         visible_facts = ()
