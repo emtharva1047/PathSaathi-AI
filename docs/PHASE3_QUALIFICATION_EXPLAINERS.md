@@ -69,3 +69,15 @@ NQR records may use half-step levels, for example Level 2.5. CourseRecord now st
 ## Next work
 
 Extend eligibility to support multiple alternative requirements (education, previous NSQF qualification, relevant experience and minimum age). Keep the current education-only evaluator scoped and do not apply it to qualifications whose full criteria cannot be represented.
+
+
+## Validation evidence
+
+PR [#36](https://github.com/emtharva1047/PathSaathi-AI/pull/36) was merged to main as
+[8f681248](https://github.com/emtharva1047/PathSaathi-AI/commit/8f681248bf21ceb239b862b484d70e22cec6f970).
+The final PR run [#165](https://github.com/emtharva1047/PathSaathi-AI/actions/runs/44013837400)
+and merged-main run
+[#166](https://github.com/emtharva1047/PathSaathi-AI/actions/runs/44013967127)
+both passed Python compilation, Ruff, 176 Pytest tests and the live Streamlit/FastAPI
+offline/online/offline smoke check. Each run recorded one existing Starlette/httpx
+deprecation warning.

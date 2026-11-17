@@ -160,7 +160,7 @@ enter the eligible shortlist.
 
 The bilingual Streamlit pathway page now renders one curated national NQR record:
 Assistant Baking Technician (NQR record 12209; qualification code
-QG-03-FI-02932-2024-V2-FICSI). The NQR record lists NSQF Level 3 and validity through
+QG-03-FI-02932-2024-V2-FICSI, V4.0). The NQR record lists NSQF Level 3 and validity through
 26 August 2027. Its qualification file supplies the job description, four alternative
 entry routes, minimum age 16, learning-module names/hours, total notional duration of
 300 hours and the progression route to Baking Technician and Plant Biscuit Production
@@ -169,7 +169,7 @@ Specialist. The NQR page lists the latter at NSQF Level 4.
 The typed contract in core/qualification_explainers.py separates record state from
 claim-level provenance. The renderer shows claims only when the qualification record
 is current and its source is verified, and each claim has its own publisher, URL,
-source section and verification date. Expired, archived, unknown, future-dated or
+source section and verification date. The NQR record's own publisher, URL and verification date are also required before its current status or validity can be used. Expired, archived, unknown, future-dated or
 unverified claims are withheld. A partially sourced record shows only its verified
 claims and counts the withheld remainder.
 

@@ -66,3 +66,14 @@ database connection.
 - `PATHSAATHI_DATABASE_URL` must parse as a SQLite or PostgreSQL SQLAlchemy URL.
   PostgreSQL URLs must include a host. This is syntax/configuration validation only;
   it does not test credentials, open a connection or provision a database.
+
+
+## NSQF level precision
+
+NSQF levels are stored as exact Decimal values and persisted with SQLAlchemy
+NUMERIC(3,1), supporting whole and half-step levels from 1.0 through 10.0 (for
+example, 2.5). Domain and repository validation reject arbitrary decimal values;
+the catalogue API accepts half-step filter bounds and serializes the value as a
+JSON number. Unknown levels remain null. No hosted PostgreSQL database or
+production migration was introduced; production migration planning remains in
+Phase 8.
