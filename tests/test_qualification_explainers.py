@@ -38,6 +38,12 @@ def test_curated_nqr_record_contains_source_backed_job_entry_and_progression_fac
     assert record.marathi_translation_reviewed is False
 
 
+def test_current_nqr_record_requires_record_level_provenance() -> None:
+    record = load_official_qualification_examples()[0]
+    with pytest.raises(ValueError, match="Current NQR records"):
+        replace(record, record_source_publisher=None)
+
+
 def test_expired_qualification_suppresses_all_current_guidance() -> None:
     record = load_official_qualification_examples()[0]
     expired = replace(record, valid_until=date(2026, 11, 16))
