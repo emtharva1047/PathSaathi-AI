@@ -8,6 +8,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from datetime import date
+from decimal import Decimal, InvalidOperation
 from math import isfinite
 from typing import Literal
 from urllib.parse import urlsplit
@@ -16,6 +17,24 @@ VerificationStatus = Literal["verified", "needs_review", "stale", "synthetic_dem
 GeographyLevel = Literal["national", "state", "district", "provider"]
 MetricKind = Literal["rate", "earnings", "count", "other"]
 StatisticType = Literal["mean", "median", "band", "unknown"]
+
+
+def normalize_nsqf_level(value: int | float | Decimal | str | None) -> Decimal | None:
+    """Normalize an NSQF level to an exact half-step Decimal, preserving unknowns."""
+    if value is None:
+        return None
+    if isinstance(value, bool):
+        raise ValueError("NSQF level must be a number, not a boolean.")
+    try:
+        level = Decimal(str(value))
+    except (InvalidOperation, ValueError) as exc:
+        raise ValueError("NSQF level must be a finite number.") from exc
+    if not level.is_finite() or not Decimal("1") <= level <= Decimal("10"):
+        raise ValueError("NSQF level must be between 1 and 10, or unknown.")
+    doubled = level * 2
+    if doubled != doubled.to_integral_value():
+        raise ValueError("NSQF levels must use whole or half-level increments.")
+    return level.quantize(Decimal("0.1"))
 
 
 def _validate_source(
@@ -45,7 +64,7 @@ class CourseRecord:
     trade: str
     qualification_code: str | None = None
     awarding_body: str | None = None
-    nsqf_level: int | None = None
+    nsqf_level: Decimal | None = None
     state: str | None = None
     district: str | None = None
     provider_id: str | None = None
@@ -66,8 +85,7 @@ class CourseRecord:
             raise ValueError("title cannot be empty.")
         if not self.trade.strip():
             raise ValueError("trade cannot be empty.")
-        if self.nsqf_level is not None and not 1 <= self.nsqf_level <= 10:
-            raise ValueError("nsqf_level must be between 1 and 10, or unknown.")
+        object.__setattr__(self, "nsqf_level", normalize_nsqf_level(self.nsqf_level))
         _validate_source(
             self.verification_status,
             self.source_publisher,

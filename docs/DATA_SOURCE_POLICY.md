@@ -64,3 +64,17 @@ The detailed import schema and validation rules are in docs/OUTCOME_DATA_CONTRAC
 - Do not imply historical group outcomes guarantee an individual's future outcome.
 - Missing values stay unknown; do not replace with zero.
 - Do not invent fees, placement rates, salary bands or provider rankings.
+
+
+## Curated NQR explainer example — 17 November 2026
+
+The prototype includes one curated public qualification record for **Assistant Baking Technician**, NQR record 12209, qualification code QG-03-FI-02932-2024-V2-FICSI. The NQR page lists it at NSQF Level 3 and shows validity through 26 August 2027. The linked qualification file was approved in the 39th NSQC meeting on 27 August 2024 and contains the job description, four alternative entry routes, minimum age, module summary, total training duration and progression pathway.
+
+Sources:
+- NQR qualification record: https://www.nqr.gov.in/qualifications/12209
+- Exact qualification file (PDF): https://www.nqr.gov.in/qualification/file/English%20Q-file%20Baking%20Tech..pdf
+- NQR overview and its official-register role: https://nqr.gov.in/aboutus
+- NQR Qualification File purpose and structure: https://nqr.gov.in/qualificationfile
+- NCVET office order on selecting valid NQR qualifications (8 October 2025): https://ncvet.gov.in/wp-content/uploads/2025/10/Office_Order-_Qualifications_from_NQR_and_Issuance_of_Certificates_docx1.pdf
+
+The example is a national qualification record, not a local training-provider offer. It does not establish district availability, seats, fees, admission or employment outcomes. Its entry rules include multiple education/experience alternatives and a minimum-age condition; the current education-only evaluator must not issue an eligibility result for it. Marathi text is a draft translation pending fluent human review. The source was checked on 17 November 2026; validity and archive state must be checked again before future use.

@@ -1,4 +1,6 @@
 """SQLite persistence tests for the SQLAlchemy repository adapters."""
+from decimal import Decimal
+
 import pytest
 from sqlalchemy.exc import IntegrityError
 
@@ -27,7 +29,7 @@ def make_course(
     course_id: str,
     *,
     trade: str = "Electrician",
-    nsqf_level: int | None = 4,
+    nsqf_level: Decimal | None = Decimal('4.0'),
 ) -> CourseRecord:
     return CourseRecord(
         course_id=course_id,
@@ -87,6 +89,36 @@ def test_course_repository_round_trips_domain_record(db_session) -> None:
 
     assert repository.get_course("course-01") == course
     assert repository.list_courses() == (course,)
+
+
+def test_course_repository_preserves_half_step_nsqf_levels_and_filters(db_session) -> None:
+    repository = SqlAlchemyCourseRepository(db_session)
+    half_level = make_course("level-2-5", nsqf_level=Decimal("2.5"))
+    repository.add_course(half_level)
+    db_session.commit()
+
+    restored = repository.get_course("level-2-5")
+    assert restored is not None
+    assert restored.nsqf_level == Decimal("2.5")
+    assert repository.list_courses(
+        CourseQuery(min_nsqf_level=Decimal("2.5"), max_nsqf_level=Decimal("2.5"))
+    ) == (half_level,)
+
+
+def test_database_constraint_rejects_non_half_step_nsqf_level(db_session) -> None:
+    db_session.add(
+        CourseModel(
+            course_id="invalid-level",
+            title="Invalid level",
+            trade="Test trade",
+            nsqf_level=2.3,
+            job_roles=[],
+            entry_requirements=[],
+            verification_status="synthetic_demo",
+        )
+    )
+    with pytest.raises(IntegrityError):
+        db_session.flush()
 
 
 def test_course_repository_applies_exact_filters_and_excludes_unknown_level(db_session) -> None:

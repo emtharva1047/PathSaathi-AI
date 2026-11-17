@@ -27,7 +27,10 @@ postgres = [
 ]
 
 [tool.setuptools.packages.find]
-include = ["app*", "backend*", "core*", "database*", "services*"]
+include = ["app*", "backend*", "core*", "database*", "services*", "data*"]
+
+[tool.setuptools.package-data]
+"data.qualifications" = ["*.json"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

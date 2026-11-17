@@ -3,9 +3,15 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from decimal import Decimal
 from typing import Protocol
 
-from core.domain import CourseRecord, OutcomeEvidenceRecord, VerificationStatus
+from core.domain import (
+    CourseRecord,
+    OutcomeEvidenceRecord,
+    VerificationStatus,
+    normalize_nsqf_level,
+)
 
 
 @dataclass(frozen=True, slots=True)
@@ -16,16 +22,16 @@ class CourseQuery:
     district: str | None = None
     trade: str | None = None
     provider_id: str | None = None
-    min_nsqf_level: int | None = None
-    max_nsqf_level: int | None = None
+    min_nsqf_level: Decimal | None = None
+    max_nsqf_level: Decimal | None = None
     limit: int | None = None
     offset: int = 0
 
     def __post_init__(self) -> None:
-        if self.min_nsqf_level is not None and not 1 <= self.min_nsqf_level <= 10:
-            raise ValueError("min_nsqf_level must be between 1 and 10.")
-        if self.max_nsqf_level is not None and not 1 <= self.max_nsqf_level <= 10:
-            raise ValueError("max_nsqf_level must be between 1 and 10.")
+        minimum = normalize_nsqf_level(self.min_nsqf_level)
+        maximum = normalize_nsqf_level(self.max_nsqf_level)
+        object.__setattr__(self, "min_nsqf_level", minimum)
+        object.__setattr__(self, "max_nsqf_level", maximum)
         if (
             self.min_nsqf_level is not None
             and self.max_nsqf_level is not None

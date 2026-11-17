@@ -89,9 +89,12 @@ transcribed from the exact NCVET/NQR qualification record and reviewed before us
 
 ## Next Phase 3 work
 
-Build transparent advisory pathway shortlisting with reasons tied to the learner's
-stated interests and work preferences, while preserving an unrestricted option to
-explore other pathways. Do not rank learners or claim validated psychometrics.
+Extend qualification eligibility to represent all published alternative routes, including
+academic education, prior NSQF qualification, relevant experience and minimum age. Do not
+collapse multiple alternatives into one education-only test. Until the full rule model is
+implemented, the Assistant Baking Technician example is explainer-only and its eligibility
+remains unassessed.
+
 
 
 ## Transparent advisory pathway shortlisting
@@ -151,3 +154,40 @@ compileall, Ruff, 159 Pytest tests and the live Streamlit/FastAPI smoke test pas
 (one existing Starlette/httpx deprecation warning). The regression suite confirms
 that unknown matches are separated for verification and ineligible matches cannot
 enter the eligible shortlist.
+
+
+## Source-backed NQR qualification explainer — 17 November 2026
+
+The bilingual Streamlit pathway page now renders one curated national NQR record:
+Assistant Baking Technician (NQR record 12209; qualification code
+QG-03-FI-02932-2024-V2-FICSI). The NQR record lists NSQF Level 3 and validity through
+26 August 2027. Its qualification file supplies the job description, four alternative
+entry routes, minimum age 16, learning-module names/hours, total notional duration of
+300 hours and the progression route to Baking Technician and Plant Biscuit Production
+Specialist. The NQR page lists the latter at NSQF Level 4.
+
+The typed contract in core/qualification_explainers.py separates record state from
+claim-level provenance. The renderer shows claims only when the qualification record
+is current and its source is verified, and each claim has its own publisher, URL,
+source section and verification date. Expired, archived, unknown, future-dated or
+unverified claims are withheld. A partially sourced record shows only its verified
+claims and counts the withheld remainder.
+
+The curated source data lives in
+data/qualifications/assistant_baking_technician.json and is loaded through
+services/qualification_catalogue.py. The Marathi strings are draft translations,
+explicitly labelled as awaiting fluent human review. The record is national, not a
+local provider listing; no seats, fees, local availability, eligibility decision,
+salary or placement outcomes are inferred.
+
+The qualification includes alternative education and experience routes plus a
+minimum-age condition. The current eligibility evaluator supports only a verified
+education-level criterion, so this record is deliberately not attached to that
+evaluator. A separate multi-condition eligibility model is still required.
+
+### Fractional NSQF levels
+
+NQR qualification records can refer to half-step levels such as 2.5. CourseRecord now
+stores NSQF levels as Decimal values in 0.5 increments from 1 through 10.
+SQLite/PostgreSQL-ready persistence uses NUMERIC(3,1), and API filters accept exact
+half-step bounds. This avoids truncating or rejecting legitimate half-level values.

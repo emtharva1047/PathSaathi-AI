@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from datetime import date
+from decimal import Decimal
 from collections.abc import Iterator
 
 import pytest
@@ -40,7 +41,7 @@ def make_course(
     course_id: str,
     *,
     trade: str = "Electrician",
-    nsqf_level: int | None = 4,
+    nsqf_level: Decimal | None = Decimal('4.0'),
 ) -> CourseRecord:
     return CourseRecord(
         course_id=course_id,
@@ -147,6 +148,21 @@ def test_course_detail_returns_record_and_unknown_id_is_404(api_client) -> None:
     assert response.status_code == 200
     assert response.json()["course_id"] == "course-01"
     assert client.get("/api/v1/courses/missing").status_code == 404
+
+
+def test_course_api_accepts_half_step_nsqf_levels_and_rejects_other_decimals(api_client) -> None:
+    client, factory = api_client
+    seed_records(factory, courses=(make_course("level-2-5", nsqf_level=Decimal("2.5")),))
+
+    response = client.get(
+        "/api/v1/courses",
+        params={"min_nsqf_level": "2.5", "max_nsqf_level": "2.5"},
+    )
+
+    assert response.status_code == 200
+    assert response.json()[0]["nsqf_level"] == 2.5
+    invalid = client.get("/api/v1/courses", params={"min_nsqf_level": "2.3"})
+    assert invalid.status_code == 422
 
 
 def test_invalid_nsqf_range_returns_422(api_client) -> None:
