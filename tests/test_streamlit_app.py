@@ -314,3 +314,5 @@ def test_pathways_page_renders_the_illustrative_shortlist_and_unknown_eligibilit
     assert "Illustrative demo catalogue only" in text
     assert "Illustrative technology-support theme" in text
     assert "Unknown — verified entry criteria or learner information are missing" in text
+    assert "Assistant Baking Technician" in text
+    assert "Plant Biscuit Production Specialist" in text
