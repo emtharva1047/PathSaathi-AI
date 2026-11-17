@@ -9,6 +9,7 @@ from urllib.parse import urlsplit
 from urllib.request import Request, urlopen
 
 from app.pathway_flow import render_pathway_explorer
+from app.qualification_flow import render_qualification_explainers
 from app.profile_flow import render_profile_capture
 
 
@@ -61,8 +62,8 @@ TRANSLATIONS = {
             "Show education eligibility separately and only from verified criteria."
         ),
         "pathways_placeholder": (
-            "The current list contains illustrative demo themes only. Official course listings, "
-            "NSQF mappings and verified outcome evidence are not loaded yet."
+            "Preference matching uses illustrative themes only. A separately sourced national "
+            "NQR qualification example appears below; it is not a local provider offer or outcome."
         ),
         "footer": (
             "Prototype for SIH26241. Outcome figures will be shown only when their source, "
@@ -116,8 +117,8 @@ TRANSLATIONS = {
             "शिक्षणानुसार पात्रता स्वतंत्रपणे आणि पडताळलेल्या अटींवरच दाखवली जाते."
         ),
         "pathways_placeholder": (
-            "सध्या येथे फक्त उदाहरणासाठीचे नमुना पर्याय आहेत. अधिकृत अभ्यासक्रम, NSQF स्तर "
-            "आणि पडताळलेले रोजगारविषयक पुरावे अद्याप उपलब्ध नाहीत."
+            "आवडींशी जुळवण्यासाठी फक्त उदाहरणार्थ पर्याय वापरले आहेत. खाली NQR मधील एक "
+            "राष्ट्रीय पात्रता नोंद दिली आहे; ती स्थानिक प्रशिक्षण केंद्र किंवा रोजगाराचा पुरावा नाही."
         ),
         "footer": (
             "SIH26241 साठी नमुना आवृत्ती. स्रोत, गट आणि मोजमापांची व्याख्या उपलब्ध "
@@ -235,6 +236,7 @@ def main() -> None:
         st.write(copy["pathways_description"])
         st.info(copy["pathways_placeholder"])
         render_pathway_explorer(st, locale)
+        render_qualification_explainers(st, locale)
 
     if selected_page != "profile":
         if selected_index > 0:
