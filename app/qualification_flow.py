@@ -35,6 +35,7 @@ EXPLAINER_COPY: dict[str, dict[str, Any]] = {
         "awarding_body": "Awarding body",
         "nsqf_level": "NSQF level",
         "valid_until": "NQR validity shown through",
+        "record_checked": "NQR record checked",
         "current_note": "The NQR record is listed as current through {valid_until}. Re-check the record before applying.",
         "partial_note": "Only claims with complete, current source references are shown; other claims remain unknown.",
         "expired_note": "This qualification record is expired as of the selected date. Its claims are withheld from current guidance.",
@@ -77,6 +78,7 @@ EXPLAINER_COPY: dict[str, dict[str, Any]] = {
         "awarding_body": "प्रमाणपत्र देणारी संस्था",
         "nsqf_level": "NSQF स्तर",
         "valid_until": "NQR नोंदीनुसार वैधता",
+        "record_checked": "NQR नोंद पडताळली",
         "current_note": "NQR नोंद {valid_until} पर्यंत वैध दाखवली आहे. अर्ज करण्यापूर्वी नोंद पुन्हा तपासा.",
         "partial_note": "पूर्ण आणि अद्ययावत स्रोत असलेली माहितीच दाखवली आहे; इतर माहिती अज्ञात राहते.",
         "expired_note": "निवडलेल्या तारखेनुसार ही पात्रता कालबाह्य आहे. सध्याच्या मार्गदर्शनातून तिचे तपशील लपवले आहेत.",
@@ -156,6 +158,11 @@ def render_qualification_explainers(
                 st.write(f"{copy['valid_until']}: {record.valid_until.isoformat()}")
             if record.nqr_record_url:
                 st.markdown(f"[{copy['nqr_link']}]({record.nqr_record_url})")
+            if record.record_source_publisher and record.record_last_verified_at:
+                st.caption(
+                    f"{record.record_source_publisher} · "
+                    f"{copy['record_checked']} {record.record_last_verified_at.isoformat()}"
+                )
             if course.source_url:
                 st.markdown(f"[{copy['file_link']}]({course.source_url})")
 
