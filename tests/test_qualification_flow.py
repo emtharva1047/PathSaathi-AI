@@ -44,6 +44,7 @@ def test_english_explainer_shows_nsqf_entry_routes_duration_and_progression() ->
     assert "Eligibility is not calculated here" in text
     assert "https://www.nqr.gov.in/qualifications/12209" in text
     assert "has not yet been reviewed" in text
+    assert "NQR record checked" in text
 
 
 def test_marathi_explainer_marks_translation_as_unreviewed() -> None:
