@@ -13,7 +13,7 @@ The prototype includes one current NQR example:
 |---|---|
 | NQR record | 12209 |
 | Qualification | Assistant Baking Technician |
-| Qualification code | QG-03-FI-02932-2024-V2-FICSI |
+| Qualification code/version | QG-03-FI-02932-2024-V2-FICSI, V4.0 |
 | Sector | Food Processing |
 | Awarding body | Food Industry Capacity and Skill Initiative (FICSI) |
 | NSQF level | 3 |
