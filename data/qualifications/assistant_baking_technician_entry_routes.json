@@ -1,0 +1,175 @@
+{
+  "qualification_code": "QG-03-FI-02932-2024-V2-FICSI",
+  "qualification_version": "V4.0",
+  "valid_until": "2027-08-26",
+  "source": {
+    "publisher": "Food Industry Capacity and Skill Initiative (FICSI), qualification file approved by NSQC; National Qualifications Register (NCVET)",
+    "url": "https://www.nqr.gov.in/qualification/file/English%20Q-file%20Baking%20Tech..pdf",
+    "reference": "Qualification File, Section 1, items 9(a)-9(b), page 3; NQR record 12209",
+    "last_verified_at": "2026-11-17",
+    "verification_status": "verified"
+  },
+  "routes": [
+    {
+      "route_id": "grade-10",
+      "conditions": [
+        {
+          "condition_id": "grade-10-pass",
+          "kind": "education_level",
+          "accepted_levels": ["grade_10"],
+          "source": {
+            "publisher": "FICSI qualification file approved by NSQC",
+            "url": "https://www.nqr.gov.in/qualification/file/English%20Q-file%20Baking%20Tech..pdf",
+            "reference": "Qualification File, Section 1, item 9(a), page 3: Grade 10 pass",
+            "last_verified_at": "2026-11-17",
+            "verification_status": "verified"
+          }
+        },
+        {
+          "condition_id": "minimum-age-16",
+          "kind": "minimum_age",
+          "minimum_years": 16,
+          "source": {
+            "publisher": "FICSI qualification file approved by NSQC",
+            "url": "https://www.nqr.gov.in/qualification/file/English%20Q-file%20Baking%20Tech..pdf",
+            "reference": "Qualification File, Section 1, item 9(b), page 3: minimum age",
+            "last_verified_at": "2026-11-17",
+            "verification_status": "verified"
+          }
+        }
+      ]
+    },
+    {
+      "route_id": "grade-8-plus-36-months",
+      "conditions": [
+        {
+          "condition_id": "grade-8-pass",
+          "kind": "education_level",
+          "accepted_levels": ["grade_8"],
+          "source": {
+            "publisher": "FICSI qualification file approved by NSQC",
+            "url": "https://www.nqr.gov.in/qualification/file/English%20Q-file%20Baking%20Tech..pdf",
+            "reference": "Qualification File, Section 1, item 9(a), page 3: Grade 8 pass",
+            "last_verified_at": "2026-11-17",
+            "verification_status": "verified"
+          }
+        },
+        {
+          "condition_id": "food-industry-36-months",
+          "kind": "relevant_experience",
+          "minimum_months": 36,
+          "industry_code": "food_industry",
+          "industry_label_en": "Food Industry",
+          "industry_label_mr": "अन्न उद्योग",
+          "source": {
+            "publisher": "FICSI qualification file approved by NSQC",
+            "url": "https://www.nqr.gov.in/qualification/file/English%20Q-file%20Baking%20Tech..pdf",
+            "reference": "Qualification File, Section 1, item 9(a), page 3: three years of relevant Food Industry experience",
+            "last_verified_at": "2026-11-17",
+            "verification_status": "verified"
+          }
+        },
+        {
+          "condition_id": "minimum-age-16",
+          "kind": "minimum_age",
+          "minimum_years": 16,
+          "source": {
+            "publisher": "FICSI qualification file approved by NSQC",
+            "url": "https://www.nqr.gov.in/qualification/file/English%20Q-file%20Baking%20Tech..pdf",
+            "reference": "Qualification File, Section 1, item 9(b), page 3: minimum age",
+            "last_verified_at": "2026-11-17",
+            "verification_status": "verified"
+          }
+        }
+      ]
+    },
+    {
+      "route_id": "prior-nsqf-2-5-plus-18-months",
+      "conditions": [
+        {
+          "condition_id": "prior-relevant-nsqf-2-5",
+          "kind": "prior_nsqf",
+          "minimum_level": "2.5",
+          "source": {
+            "publisher": "FICSI qualification file approved by NSQC",
+            "url": "https://www.nqr.gov.in/qualification/file/English%20Q-file%20Baking%20Tech..pdf",
+            "reference": "Qualification File, Section 1, item 9(a), page 3: previous relevant NSQF Level 2.5 qualification",
+            "last_verified_at": "2026-11-17",
+            "verification_status": "verified"
+          }
+        },
+        {
+          "condition_id": "food-industry-18-months",
+          "kind": "relevant_experience",
+          "minimum_months": 18,
+          "industry_code": "food_industry",
+          "industry_label_en": "Food Industry",
+          "industry_label_mr": "अन्न उद्योग",
+          "source": {
+            "publisher": "FICSI qualification file approved by NSQC",
+            "url": "https://www.nqr.gov.in/qualification/file/English%20Q-file%20Baking%20Tech..pdf",
+            "reference": "Qualification File, Section 1, item 9(a), page 3: 1.5 years of relevant Food Industry experience",
+            "last_verified_at": "2026-11-17",
+            "verification_status": "verified"
+          }
+        },
+        {
+          "condition_id": "minimum-age-16",
+          "kind": "minimum_age",
+          "minimum_years": 16,
+          "source": {
+            "publisher": "FICSI qualification file approved by NSQC",
+            "url": "https://www.nqr.gov.in/qualification/file/English%20Q-file%20Baking%20Tech..pdf",
+            "reference": "Qualification File, Section 1, item 9(b), page 3: minimum age",
+            "last_verified_at": "2026-11-17",
+            "verification_status": "verified"
+          }
+        }
+      ]
+    },
+    {
+      "route_id": "prior-nsqf-2-plus-36-months",
+      "conditions": [
+        {
+          "condition_id": "prior-relevant-nsqf-2",
+          "kind": "prior_nsqf",
+          "minimum_level": "2.0",
+          "source": {
+            "publisher": "FICSI qualification file approved by NSQC",
+            "url": "https://www.nqr.gov.in/qualification/file/English%20Q-file%20Baking%20Tech..pdf",
+            "reference": "Qualification File, Section 1, item 9(a), page 3: previous relevant NSQF Level 2 qualification",
+            "last_verified_at": "2026-11-17",
+            "verification_status": "verified"
+          }
+        },
+        {
+          "condition_id": "food-industry-36-months",
+          "kind": "relevant_experience",
+          "minimum_months": 36,
+          "industry_code": "food_industry",
+          "industry_label_en": "Food Industry",
+          "industry_label_mr": "अन्न उद्योग",
+          "source": {
+            "publisher": "FICSI qualification file approved by NSQC",
+            "url": "https://www.nqr.gov.in/qualification/file/English%20Q-file%20Baking%20Tech..pdf",
+            "reference": "Qualification File, Section 1, item 9(a), page 3: three years of relevant Food Industry experience",
+            "last_verified_at": "2026-11-17",
+            "verification_status": "verified"
+          }
+        },
+        {
+          "condition_id": "minimum-age-16",
+          "kind": "minimum_age",
+          "minimum_years": 16,
+          "source": {
+            "publisher": "FICSI qualification file approved by NSQC",
+            "url": "https://www.nqr.gov.in/qualification/file/English%20Q-file%20Baking%20Tech..pdf",
+            "reference": "Qualification File, Section 1, item 9(b), page 3: minimum age",
+            "last_verified_at": "2026-11-17",
+            "verification_status": "verified"
+          }
+        }
+      ]
+    }
+  ]
+}

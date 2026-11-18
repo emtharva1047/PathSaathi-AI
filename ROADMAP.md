@@ -15,7 +15,7 @@ Day 1 is 2 November 2026. Day 60 is 31 December 2026.
 |---|---:|---|---|---|---|
 | 1. Research and requirements | 1–5 | 2–6 Nov | Official SIH26241 review, personas/use cases, SRS, architecture, risks, outcome contract, traceability and acceptance | Requirements mapped, source policy and acceptance baseline | Complete |
 | 2. Foundation | 6–12 | 7–13 Nov | Streamlit/FastAPI skeleton, config/logging, SQLAlchemy models, local SQLite, PostgreSQL-ready URL, API health, locale scaffold, read-only catalogue/evidence API, validation and CI | App/API start, explicit schema creation, request-scoped SQLite repositories, safe evidence responses and CI green | Complete (13 Nov) |
-| 3. Counselling/profile/pathway | 13–22 | 14–23 Nov | Learner and parent context, guided bilingual prompts, advisory shortlisting, eligibility and source-backed explainers | Deterministic recommendations, eligible/ineligible/unknown outcomes, explainable tests | In progress (17 Nov) |
+| 3. Counselling/profile/pathway | 13–22 | 14–23 Nov | Learner and parent context, guided bilingual prompts, advisory shortlisting, eligibility and source-backed explainers | Deterministic recommendations, eligible/ineligible/unknown outcomes, explainable tests | In progress (18 Nov) |
 | 4. Course/outcome explorer | 23–29 | 24–30 Nov | SIH dummy-data importer when supplied, validation, source-linked qualifications/outcomes, filters and comparisons | Provenance-aware import report and accurate comparison semantics | Not started |
 | 5. Family counselling/escalation | 30–36 | 1–7 Dec | Shared sessions, distinct learner/parent roles and preferences, consent and callback request workflow | Role separation, consent tests, honest escalation queue | Not started |
 | 6. AI and reporting | 37–41 | 8–12 Dec | Retrieval-grounded bilingual Q&A, safe prompts, source display and PDF report | Evidence-backed responses with source/caveat display; report export | Not started |
@@ -123,7 +123,11 @@ Learner/parent onboarding and consent → joint bilingual counselling → contex
 - [x] Add a curated, source-backed NQR qualification explainer with job description, alternative entry routes, minimum age, learning modules, total duration, NSQF level, progression and NQR validity.
 - [x] Withhold claims when the qualification is expired, archived, unknown or lacks complete claim-level provenance; mark Marathi translation as draft until human review.
 - [x] Support whole and half-step NSQF levels with Decimal domain values, SQL NUMERIC(3,1), query validation and API numeric serialization.
-- [ ] [Issue #37](https://github.com/emtharva1047/PathSaathi-AI/issues/37): model every alternative education, prior-NSQF, experience and age condition before issuing a result for multi-route qualifications.
+- [x] Model alternative qualification entry routes as OR branches with AND conditions, using exact qualification code/version and source provenance per condition.
+- [x] Add education, verified prior NSQF, verified relevant experience and minimum-age conditions with conservative eligible/ineligible/unknown evaluation.
+- [x] Curate all four Assistant Baking Technician routes from NQR 12209 / the FICSI qualification file; the result stays unknown until required learner facts are supplied and verified.
+- [x] Add English/Marathi condition and route explanations without collecting date of birth or employer names; keep the education-only evaluator unchanged.
+- [x] Add focused tests for alternative routes, half-step NSQF levels, AND requirements, age boundaries, incomplete/unverified evidence, stale sources and privacy boundaries.
 
 ## Progress log
 
@@ -150,6 +154,7 @@ Learner/parent onboarding and consent → joint bilingual counselling → contex
 | 2026-11-15 | Added a seven-step bilingual learner/parent profile wizard with separate role-owned fields, optional broad region, unknown-preserving defaults, full-width controls and a session-only review/save; income-band capture remains disabled pending an approved taxonomy | PR #32 merged as `b2c9ee6`; Actions run #148 passed compileall, Ruff, 138 Pytest tests and the live Streamlit/FastAPI process smoke check (one existing Starlette/httpx deprecation warning); issue #31 closed |
 | 2026-11-16 | Added deterministic learner-preference pathway matching, exact reason codes, bilingual explanations, separate source-backed education eligibility and an unrestricted synthetic-demo exploration screen | PR #34 merged as `ea0a145`; PR run #154 and merged-main run #155 passed compileall, Ruff, 159 Pytest tests and the live Streamlit/FastAPI smoke check (one existing Starlette/httpx deprecation warning per run); issue #33 closed; eligibility-gate follow-up PR #35 run #157 passed compileall, Ruff, 159 tests and live smoke check |
 | 2026-11-17 | Added a provenance-gated bilingual NQR qualification explainer using Assistant Baking Technician (NQR 12209; code/version QG-03-FI-02932-2024-V2-FICSI, V4.0), including alternative entry routes, learning modules, NSQF progression and validity; expanded NSQF domain, persistence and API filters to support exact half-levels | PR #36 merged as 8f681248; PR run #165 and merged-main run #166 passed compileall, Ruff, 176 Pytest tests and live Streamlit/FastAPI smoke checks (one existing Starlette/httpx deprecation warning per run); issue #37 opened for multi-route eligibility; no provider availability or outcome figures inferred; Marathi translation remains unreviewed |
+| 2026-11-18 | Added source-backed OR/AND eligibility routes for Assistant Baking Technician: Grade 10; Grade 8 + 36 months; NSQF 2.5 + 18 months; NSQF 2 + 36 months; minimum age 16 on every route. Missing or unverified learner evidence remains unknown; age is completed years only and experience uses opaque evidence references. | Issue #37 implementation; PR validation evidence to be recorded after CI and merge. The education-only evaluator remains unchanged; no admission decision is made. |
 
 ## Release acceptance checklist
 
