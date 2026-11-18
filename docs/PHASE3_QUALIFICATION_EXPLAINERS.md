@@ -56,7 +56,7 @@ No LLM is used to create these facts. The current rendering is deterministic.
 
 ## Eligibility and local availability limitations
 
-This qualification has several alternative education/experience routes and a minimum-age condition. The current eligibility evaluator only handles a verified education-level criterion. Therefore the example is explainer-only: PathSaathi does not calculate or label this learner eligible/ineligible from this record. A future multi-condition evaluator must model every alternative route before issuing a result.
+This qualification has several alternative education/experience routes and a minimum-age condition. The multi-route evaluator now models all four published routes as OR alternatives with AND conditions. The current Streamlit profile wizard does not collect age, prior qualifications or experience, so the example remains unknown until those facts are deliberately supplied and verified. The older education-only evaluator remains separate and is not used to collapse the routes into a single Grade 10 check.
 
 The NQR record is national. It does not confirm a local Maharashtra training centre, seats, fees, course delivery in a learner's district, or provider admission. The explainer includes no placement, salary, safety or job-security statistics.
 
@@ -66,9 +66,9 @@ The Marathi strings are draft translations. They are labelled as unreviewed unti
 
 NQR records may use half-step levels, for example Level 2.5. CourseRecord now stores NSQF levels as Decimal values in 0.5 increments between 1 and 10. SQLAlchemy uses NUMERIC(3,1), repository filters use Decimal bounds, and the API serializes the level as a JSON number. Unknown values remain null.
 
-## Next work
+## Multi-route eligibility
 
-Extend eligibility to support multiple alternative requirements (education, previous NSQF qualification, relevant experience and minimum age). Keep the current education-only evaluator scoped and do not apply it to qualifications whose full criteria cannot be represented.
+See [PHASE3_MULTI_ROUTE_ELIGIBILITY.md](PHASE3_MULTI_ROUTE_ELIGIBILITY.md) for the OR/AND route model, learner evidence contract, privacy constraints, bilingual result explanations and test coverage. Eligibility remains advisory, not an admission decision. Human Marathi review is still required.
 
 
 ## Validation evidence
