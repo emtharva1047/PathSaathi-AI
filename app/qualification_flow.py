@@ -400,7 +400,13 @@ def render_multi_route_eligibility(
         for condition_result, condition in zip(
             route_result.conditions, route.conditions, strict=True
         ):
-            condition_label = copy["condition_labels"][condition_result.condition_kind]
+            condition_kind = {
+                "EducationLevelCondition": "education_level",
+                "MinimumAgeCondition": "minimum_age",
+                "PriorNSQFCondition": "prior_nsqf",
+                "RelevantExperienceCondition": "relevant_experience",
+            }.get(type(condition).__name__, condition_result.condition_kind)
+            condition_label = copy["condition_labels"][condition_kind]
             condition_status = copy["condition_status"][condition_result.status.value]
             st.markdown(f"**{condition_label}: {condition_status}**")
             condition_explanation = (
