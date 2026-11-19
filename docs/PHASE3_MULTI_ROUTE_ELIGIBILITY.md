@@ -1,6 +1,6 @@
 # Phase 3 — Multi-route qualification eligibility
 
-**Implementation slice:** Day 17, 18 November 2026  
+**Implementation slices:** Day 17 (18 November) and Day 18 (19 November 2026)  
 **Scope:** Deterministic, provenance-backed evaluation of alternative qualification entry routes. This is advisory screening, not an admission decision.
 
 ## Route semantics
@@ -62,10 +62,24 @@ The evaluator returns English and Marathi condition-level and overall explanatio
 
 - This is not a provider admission decision or a guarantee of enrolment.
 - Learner evidence may require verification by the awarding body or provider.
-- The current Streamlit profile wizard does not collect age, prior qualifications or experience. The multi-route evaluator is a domain capability and keeps the NQR example unknown until those facts are deliberately supplied.
+- The pathways eligibility panel reuses only the education level from a profile explicitly saved in the current Streamlit session. It deliberately does not collect age, prior qualifications or experience; those conditions remain unknown until the facts are independently supplied and verified.
 - No local course availability, seats, fees, salary, placement or employment claims are inferred.
 - No aptitude, psychometric, admission, employment or earnings prediction is produced.
 
 ## Validation
 
 Tests cover OR/AND route semantics, Grade 10 and Grade 8 routes, NSQF 2.5 and 2.0, half-level precision, experience thresholds, minimum age, missing/unverified evidence, stale/expired criteria, source provenance, bilingual explanations and privacy-minimized inputs.
+
+
+## Streamlit eligibility explanation
+
+The pathways page now renders the multi-route result immediately after the source-backed qualification explainer.
+
+- It reads only the saved session-only learner education level. An unsaved draft is not used.
+- It does not add inputs for age, date of birth, prior qualification documents, employer names or work history.
+- It displays the overall eligible / ineligible / unknown result, every alternative route, every AND condition, the bilingual condition explanation and the exact qualification-file source reference/link.
+- With the current profile schema, age, prior qualification and experience are absent. The Assistant Baking Technician example therefore remains unknown; a saved Grade 10 profile can satisfy the Grade 10 education condition, but the missing minimum-age condition keeps that route unknown.
+- Criteria that are expired or not currently source-verified are displayed as unknown rather than assessed against learner facts.
+- The screen explicitly describes this as preliminary advisory screening, not an admission decision. No learner evidence is written to the API or database.
+
+Automated rendering tests cover an empty profile, a saved Grade 10 profile, English and Marathi explanations, all four routes, exact source links and expired criteria. They do not establish human Marathi quality or accessibility conformance; issue #14 remains open.

@@ -15,7 +15,7 @@ Day 1 is 2 November 2026. Day 60 is 31 December 2026.
 |---|---:|---|---|---|---|
 | 1. Research and requirements | 1–5 | 2–6 Nov | Official SIH26241 review, personas/use cases, SRS, architecture, risks, outcome contract, traceability and acceptance | Requirements mapped, source policy and acceptance baseline | Complete |
 | 2. Foundation | 6–12 | 7–13 Nov | Streamlit/FastAPI skeleton, config/logging, SQLAlchemy models, local SQLite, PostgreSQL-ready URL, API health, locale scaffold, read-only catalogue/evidence API, validation and CI | App/API start, explicit schema creation, request-scoped SQLite repositories, safe evidence responses and CI green | Complete (13 Nov) |
-| 3. Counselling/profile/pathway | 13–22 | 14–23 Nov | Learner and parent context, guided bilingual prompts, advisory shortlisting, eligibility and source-backed explainers | Deterministic recommendations, eligible/ineligible/unknown outcomes, explainable tests | In progress (18 Nov) |
+| 3. Counselling/profile/pathway | 13–22 | 14–23 Nov | Learner and parent context, guided bilingual prompts, advisory shortlisting, eligibility and source-backed explainers | Deterministic recommendations, eligible/ineligible/unknown outcomes, explainable tests | In progress (19 Nov) |
 | 4. Course/outcome explorer | 23–29 | 24–30 Nov | SIH dummy-data importer when supplied, validation, source-linked qualifications/outcomes, filters and comparisons | Provenance-aware import report and accurate comparison semantics | Not started |
 | 5. Family counselling/escalation | 30–36 | 1–7 Dec | Shared sessions, distinct learner/parent roles and preferences, consent and callback request workflow | Role separation, consent tests, honest escalation queue | Not started |
 | 6. AI and reporting | 37–41 | 8–12 Dec | Retrieval-grounded bilingual Q&A, safe prompts, source display and PDF report | Evidence-backed responses with source/caveat display; report export | Not started |
@@ -128,6 +128,7 @@ Learner/parent onboarding and consent → joint bilingual counselling → contex
 - [x] Curate all four Assistant Baking Technician routes from NQR 12209 / the FICSI qualification file; the result stays unknown until required learner facts are supplied and verified.
 - [x] Add English/Marathi condition and route explanations without collecting date of birth or employer names; keep the education-only evaluator unchanged.
 - [x] Add focused tests for alternative routes, half-step NSQF levels, AND requirements, age boundaries, incomplete/unverified evidence, stale sources and privacy boundaries.
+- [x] Integrate the multi-route evaluator into the Streamlit qualification explorer. Reuse only the saved session-only education level; display all four routes, every condition's bilingual status/explanation, exact source references and the reason the overall result remains unknown. Do not collect age, date of birth, prior-qualification documents or work history in this UI.
 
 ## Progress log
 
