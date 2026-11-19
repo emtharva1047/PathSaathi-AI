@@ -316,3 +316,6 @@ def test_pathways_page_renders_the_illustrative_shortlist_and_unknown_eligibilit
     assert "Unknown — verified entry criteria or learner information are missing" in text
     assert "Assistant Baking Technician" in text
     assert "Plant Biscuit Production Specialist" in text
+    assert "Qualification entry-route screening" in text
+    assert "Route 1 — Grade 10" in text
+    assert "Cannot determine yet" in text

@@ -9,7 +9,10 @@ from urllib.parse import urlsplit
 from urllib.request import Request, urlopen
 
 from app.pathway_flow import render_pathway_explorer
-from app.qualification_flow import render_qualification_explainers
+from app.qualification_flow import (
+    render_multi_route_eligibility,
+    render_qualification_explainers,
+)
 from app.profile_flow import render_profile_capture
 
 
@@ -237,6 +240,7 @@ def main() -> None:
         st.info(copy["pathways_placeholder"])
         render_pathway_explorer(st, locale)
         render_qualification_explainers(st, locale)
+        render_multi_route_eligibility(st, locale)
 
     if selected_page != "profile":
         if selected_index > 0:
