@@ -352,8 +352,14 @@ def render_multi_route_eligibility(
         has_saved_profile = evidence.education_level != EducationLevel.UNKNOWN
 
     today = as_of or date.today()
-    criteria_current = criteria.source.is_current(today) and (
-        criteria.valid_until is None or criteria.valid_until >= today
+    criteria_current = (
+        criteria.source.is_current(today)
+        and (criteria.valid_until is None or criteria.valid_until >= today)
+        and all(
+            condition.source.is_current(today)
+            for route in criteria.routes
+            for condition in route.conditions
+        )
     )
     result = evaluate_multi_route_eligibility(evidence, criteria, as_of=today)
 
