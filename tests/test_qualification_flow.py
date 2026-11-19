@@ -10,7 +10,6 @@ from app.qualification_flow import (
     render_multi_route_eligibility,
     render_qualification_explainers,
 )
-from core.eligibility import EligibilityStatus
 from core.profiles import EducationLevel
 from services.eligibility_catalogue import load_assistant_baking_technician_entry_criteria
 from services.qualification_catalogue import load_official_qualification_examples
