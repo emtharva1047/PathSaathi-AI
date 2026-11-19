@@ -222,6 +222,7 @@ ELIGIBILITY_COPY: dict[str, dict[str, Any]] = {
             "Cannot determine yet. Some required learner information or verification is missing; "
             "no route has been assumed."
         ),
+        "route_generic": "Alternative route {index}",
         "route_labels": {
             "grade-10": "Route 1 — Grade 10",
             "grade-8-plus-36-months": "Route 2 — Grade 8 plus 36 months of Food Industry experience",
@@ -280,6 +281,7 @@ ELIGIBILITY_COPY: dict[str, dict[str, Any]] = {
             "अद्याप निर्णय देता येत नाही. काही आवश्यक माहिती किंवा पडताळणी उपलब्ध नाही; कोणताही "
             "प्रवेश मार्ग गृहित धरलेला नाही."
         ),
+        "route_generic": "पर्यायी मार्ग {index}",
         "route_labels": {
             "grade-10": "मार्ग १ — इयत्ता १० वी",
             "grade-8-plus-36-months": "मार्ग २ — इयत्ता ८ वी आणि अन्न उद्योगातील ३६ महिन्यांचा अनुभव",
@@ -392,9 +394,13 @@ def render_multi_route_eligibility(
     st.markdown(f"[{copy['source_link']}]({result.source_url})")
 
     route_sources = {route.route_id: route for route in criteria.routes}
-    for route_result in result.route_evaluations:
+    for route_index, route_result in enumerate(result.route_evaluations, start=1):
         route = route_sources[route_result.route_id]
-        route_label = copy["route_labels"].get(route.route_id, route.route_id)
+        route_label = (
+            copy["route_labels"].get(route.route_id, route.route_id)
+            if criteria_current
+            else copy["route_generic"].format(index=route_index)
+        )
         route_status = copy["condition_status"][route_result.status.value]
         st.markdown(f"**{route_label} — {route_status}**")
         for condition_result, condition in zip(
