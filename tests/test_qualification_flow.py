@@ -159,3 +159,7 @@ def test_expired_criteria_withholds_every_route_as_unknown() -> None:
     assert ELIGIBILITY_COPY["English"]["criteria_expired"] in text
     assert "Cannot determine yet" in text
     assert "The qualification criteria are expired or not currently verified." in text
+    assert "Alternative route 1" in text
+    assert "Route 1 — Grade 10" not in text
+    assert "36 months of Food Industry experience" not in text
+    assert "three years of relevant Food Industry experience" not in text
