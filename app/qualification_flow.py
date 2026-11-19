@@ -241,6 +241,7 @@ ELIGIBILITY_COPY: dict[str, dict[str, Any]] = {
             "unknown": "Unknown — information missing or needs verification",
         },
         "source_link": "Open the exact qualification-file source",
+        "source_reference_withheld": "Exact criterion reference withheld because the criteria are not current",
         "source_checked": "Source checked",
         "criteria_current": "The published criteria are within their recorded validity period.",
         "criteria_expired": (
@@ -300,6 +301,7 @@ ELIGIBILITY_COPY: dict[str, dict[str, Any]] = {
             "unknown": "अज्ञात — माहिती अपुरी किंवा पडताळणी आवश्यक",
         },
         "source_link": "पात्रता फाइलमधील अचूक स्रोत उघडा",
+        "source_reference_withheld": "निकष सध्याचे नसल्यामुळे अचूक अट-संदर्भ दाखवलेला नाही",
         "source_checked": "स्रोत पडताळला",
         "criteria_current": "प्रकाशित निकष नोंदवलेल्या वैधता कालावधीत आहेत.",
         "criteria_expired": (
@@ -421,8 +423,13 @@ def render_multi_route_eligibility(
                 else condition_result.explanation_mr
             )
             st.write(condition_explanation)
+            source_reference = (
+                condition.source.reference
+                if criteria_current
+                else copy["source_reference_withheld"]
+            )
             st.caption(
-                f"{condition.source.publisher} · {condition.source.reference} · "
+                f"{condition.source.publisher} · {source_reference} · "
                 f"{copy['source_checked']} "
                 f"{condition.source.last_verified_at.isoformat() if condition.source.last_verified_at else copy['not_available']}"
             )
