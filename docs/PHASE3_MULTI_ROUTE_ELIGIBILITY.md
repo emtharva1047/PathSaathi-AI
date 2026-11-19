@@ -79,7 +79,7 @@ The pathways page now renders the multi-route result immediately after the sourc
 - It does not add inputs for age, date of birth, prior qualification documents, employer names or work history.
 - It displays the overall eligible / ineligible / unknown result, every alternative route, every AND condition, the bilingual condition explanation and the exact qualification-file source reference/link.
 - With the current profile schema, age, prior qualification and experience are absent. The Assistant Baking Technician example therefore remains unknown; a saved Grade 10 profile can satisfy the Grade 10 education condition, but the missing minimum-age condition keeps that route unknown.
-- Criteria that are expired or not currently source-verified are displayed as unknown rather than assessed against learner facts.
+- Criteria that are expired or not currently source-verified are displayed as unknown rather than assessed against learner facts. When criteria are not current, specific route thresholds and exact criterion references are withheld; only generic alternative-route labels and the source link remain visible.
 - The screen explicitly describes this as preliminary advisory screening, not an admission decision. No learner evidence is written to the API or database.
 
 Automated rendering tests cover an empty profile, a saved Grade 10 profile, English and Marathi explanations, all four routes, exact source links and expired criteria. They do not establish human Marathi quality or accessibility conformance; issue #14 remains open.
