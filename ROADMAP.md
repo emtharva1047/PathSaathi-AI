@@ -15,7 +15,7 @@ Day 1 is 2 November 2026. Day 60 is 31 December 2026.
 |---|---:|---|---|---|---|
 | 1. Research and requirements | 1–5 | 2–6 Nov | Official SIH26241 review, personas/use cases, SRS, architecture, risks, outcome contract, traceability and acceptance | Requirements mapped, source policy and acceptance baseline | Complete |
 | 2. Foundation | 6–12 | 7–13 Nov | Streamlit/FastAPI skeleton, config/logging, SQLAlchemy models, local SQLite, PostgreSQL-ready URL, API health, locale scaffold, read-only catalogue/evidence API, validation and CI | App/API start, explicit schema creation, request-scoped SQLite repositories, safe evidence responses and CI green | Complete (13 Nov) |
-| 3. Counselling/profile/pathway | 13–22 | 14–23 Nov | Learner and parent context, guided bilingual prompts, advisory shortlisting, eligibility and source-backed explainers | Deterministic recommendations, eligible/ineligible/unknown outcomes, explainable tests | In progress (19 Nov) |
+| 3. Counselling/profile/pathway | 13–22 | 14–23 Nov | Learner and parent context, guided bilingual prompts, advisory shortlisting, eligibility and source-backed explainers | Deterministic recommendations, eligible/ineligible/unknown outcomes, explainable tests | In progress (20 Nov) |
 | 4. Course/outcome explorer | 23–29 | 24–30 Nov | SIH dummy-data importer when supplied, validation, source-linked qualifications/outcomes, filters and comparisons | Provenance-aware import report and accurate comparison semantics | Not started |
 | 5. Family counselling/escalation | 30–36 | 1–7 Dec | Shared sessions, distinct learner/parent roles and preferences, consent and callback request workflow | Role separation, consent tests, honest escalation queue | Not started |
 | 6. AI and reporting | 37–41 | 8–12 Dec | Retrieval-grounded bilingual Q&A, safe prompts, source display and PDF report | Evidence-backed responses with source/caveat display; report export | Not started |
@@ -129,6 +129,10 @@ Learner/parent onboarding and consent → joint bilingual counselling → contex
 - [x] Add English/Marathi condition and route explanations without collecting date of birth or employer names; keep the education-only evaluator unchanged.
 - [x] Add focused tests for alternative routes, half-step NSQF levels, AND requirements, age boundaries, incomplete/unverified evidence, stale sources and privacy boundaries.
 - [x] Integrate the multi-route evaluator into the Streamlit qualification explorer. Reuse only the saved session-only education level; display all four routes, every condition's bilingual status/explanation, exact source references and the reason the overall result remains unknown. Do not collect age, date of birth, prior-qualification documents or work history in this UI.
+- [x] Add six deterministic joint counselling prompts in English and Marathi: learner evidence questions, parent self-reported concerns, learner priorities, parent information needs, learner next step and a shared family discussion topic.
+- [x] Keep every answer under a fixed prompt ID and role; distinguish unanswered, empty, skipped and answered states, and record revision counts when a participant changes a response.
+- [x] Add one-question-at-a-time controls, optional Skip, Back/Continue, a role-separated review and per-answer revision. The learner's own next-step choice remains visible and parent concerns are explicitly self-reported.
+- [x] Keep the draft in Streamlit session state only; no API, database, counsellor, analytics or LLM call. Use fixed option IDs rather than free text; Marathi is marked draft pending human review.
 
 ## Progress log
 
@@ -157,10 +161,12 @@ Learner/parent onboarding and consent → joint bilingual counselling → contex
 | 2026-11-17 | Added a provenance-gated bilingual NQR qualification explainer using Assistant Baking Technician (NQR 12209; code/version QG-03-FI-02932-2024-V2-FICSI, V4.0), including alternative entry routes, learning modules, NSQF progression and validity; expanded NSQF domain, persistence and API filters to support exact half-levels | PR #36 merged as 8f681248; PR run #165 and merged-main run #166 passed compileall, Ruff, 176 Pytest tests and live Streamlit/FastAPI smoke checks (one existing Starlette/httpx deprecation warning per run); issue #37 opened for multi-route eligibility; no provider availability or outcome figures inferred; Marathi translation remains unreviewed |
 | 2026-11-18 | Added source-backed OR/AND eligibility routes for Assistant Baking Technician: Grade 10; Grade 8 + 36 months; NSQF 2.5 + 18 months; NSQF 2 + 36 months; minimum age 16 on every route. Missing or unverified learner evidence remains unknown; age is completed years only and experience uses opaque evidence references. | PR #38 merged as c1e659a; PR run #168 and merged-main run #169 both passed compileall, Ruff, 192 Pytest tests and the live Streamlit/FastAPI smoke check (one existing Starlette/httpx deprecation warning per run); issue #37 closed. The education-only evaluator remains unchanged; no admission decision is made. |
 | 2026-11-19 | Integrated the source-backed multi-route eligibility evaluator into the Streamlit qualification explorer, using only saved session-only education; rendered all four routes, every condition, bilingual explanations and exact source links; expired criteria now hide route thresholds and exact criterion references. | PR #39 merged as `493024c`; PR run #176 and merged-main run #177 passed Python compilation, Ruff, 197 Pytest tests and the live Streamlit/FastAPI smoke check (one existing Starlette/httpx deprecation warning); issue #40 opened for the guided joint counselling prompt flow. |
+| 2026-11-20 | Added a six-prompt deterministic joint learner-parent conversation with role-owned answers, explicit question/preference/discussion categories, optional skip, Back/Continue, revision tracking and a final family review; integrated it as a fourth bilingual Streamlit page. All responses remain session-only with no external writes. | PR #40 pending validation; issue #14 remains open for human Marathi, target-user, assistive-technology and device checks. |
 
 ## Release acceptance checklist
 
-- [ ] Joint learner-parent flow with distinct roles/preferences and consent.
+- [x] Deterministic joint learner-parent prompt/review flow with distinct role-owned answers and learner-agency guardrails (session-only prototype).
+- [ ] Phase 5 consent, persistent shared-session workflow and counsellor callback request queue.
 - [ ] Reviewed English/Marathi key flows with accessible guided steps and optional read-aloud.
 - [x] Eligibility states distinguish eligible, ineligible and unknown.
 - [x] Advisory recommendations explain why options are shortlisted and are not psychometric claims.
