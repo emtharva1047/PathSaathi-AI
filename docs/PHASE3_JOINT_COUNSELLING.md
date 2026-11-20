@@ -40,7 +40,7 @@ Responses are stored in `st.session_state["joint_counselling_answers"]`, keyed b
 
 Unknown option identifiers are discarded. A response is accepted only under the role assigned to its fixed prompt. Revising a learner prompt cannot overwrite a parent prompt.
 
-The review screen preserves the learner's own next-step choice and labels parent concerns as self-reported. A parent response never overrides the learner's response.
+The review screen preserves the learner's own next-step choice and labels parent concerns as self-reported. A parent response never overrides the learner's response. Role ownership is structural rather than identity-authenticated: the current prototype assumes participants take turns on one shared session/device. It does not verify who is answering and does not capture consent. Phase 5 must add an appropriate consent and participant/session model before persistent storage or sharing.
 
 ## Privacy and integration boundary
 
