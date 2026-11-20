@@ -184,20 +184,23 @@ def test_continue_with_no_selection_records_empty_and_advances() -> None:
 
 
 def test_review_allows_revision_and_preserves_learner_agency() -> None:
-    state = {"joint_counselling_step": len(PROMPTS)}
-    fake = FakeCounsellingStreamlit(
-        state=state,
-        clicked_key="joint_counselling_revise_learner_next_step",
-    )
-    render_joint_counselling(fake, "English")
-    assert fake.session_state["joint_counselling_step"] == 4
+    review_state = {"joint_counselling_step": len(PROMPTS)}
+    review = FakeCounsellingStreamlit(state=review_state)
+    render_joint_counselling(review, "English")
     rendered = " ".join(
         str(value)
-        for _, args, _ in fake.calls
+        for _, args, _ in review.calls
         for value in args
     )
     assert COUNSELLING_COPY["English"]["agency_note"] in rendered
     assert "Parent/guardian — self-reported" in rendered
+
+    revise = FakeCounsellingStreamlit(
+        state={"joint_counselling_step": len(PROMPTS)},
+        clicked_key="joint_counselling_revise_learner_next_step",
+    )
+    render_joint_counselling(revise, "English")
+    assert revise.session_state["joint_counselling_step"] == 4
 
 
 def test_review_can_be_kept_only_in_session_and_has_no_external_writes() -> None:
