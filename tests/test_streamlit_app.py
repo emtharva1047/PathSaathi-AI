@@ -11,6 +11,7 @@ from unittest.mock import patch
 import pytest
 
 from app import streamlit_app
+from app.counselling_flow import COUNSELLING_COPY
 from app.profile_flow import PROFILE_COPY
 from app.streamlit_app import TRANSLATIONS, is_api_healthy
 
@@ -96,6 +97,7 @@ def test_translation_catalogues_have_matching_keys() -> None:
     assert {
         "nav_home",
         "nav_profile",
+        "nav_conversation",
         "nav_pathways",
         "progress",
         "help_title",
@@ -186,10 +188,10 @@ def test_home_renders_progress_help_and_continue_control(monkeypatch) -> None:
 
     streamlit_app.main()
 
-    assert fake_streamlit.progress_calls == [(1 / 3, "Step 1 of 3")]
+    assert fake_streamlit.progress_calls == [(1 / 4, "Step 1 of 4")]
     assert fake_streamlit.expanders == ["Need help?"]
     assert fake_streamlit.buttons == ["Continue"]
-    assert fake_streamlit.radio_options == ("home", "profile", "pathways")
+    assert fake_streamlit.radio_options == ("home", "profile", "conversation", "pathways")
 
 
 def test_marathi_profile_renders_localised_progress_and_back_next_controls(monkeypatch) -> None:
@@ -200,7 +202,7 @@ def test_marathi_profile_renders_localised_progress_and_back_next_controls(monke
     streamlit_app.main()
 
     assert fake_streamlit.progress_calls == [
-        (2 / 3, "टप्पा 2 / 3"),
+        (2 / 4, "टप्पा 2 / 4"),
         (1 / 7, "प्रश्न 1 / 7"),
     ]
     assert fake_streamlit.expanders == ["मदत हवी आहे?"]
@@ -213,9 +215,11 @@ def test_marathi_profile_renders_localised_progress_and_back_next_controls(monke
     [
         ("English", "home"),
         ("English", "profile"),
+        ("English", "conversation"),
         ("English", "pathways"),
         ("मराठी", "home"),
         ("मराठी", "profile"),
+        ("मराठी", "conversation"),
         ("मराठी", "pathways"),
     ],
 )
@@ -261,6 +265,11 @@ def test_offline_ui_shows_localised_status_and_keeps_each_page_usable(
             copy["profile_description"],
             copy["profile_placeholder"],
         ),
+        "conversation": (
+            copy["conversation_heading"],
+            copy["conversation_description"],
+            COUNSELLING_COPY[locale]["prompt_titles"]["learner_evidence_questions"],
+        ),
         "pathways": (
             copy["pathways_heading"],
             copy["pathways_description"],
@@ -272,11 +281,11 @@ def test_offline_ui_shows_localised_status_and_keeps_each_page_usable(
         for expected in page_copy[page]
     )
 
-    page_index = ("home", "profile", "pathways").index(page)
+    page_index = ("home", "profile", "conversation", "pathways").index(page)
     expected_progress = [
         (
-            (page_index + 1) / 3,
-            copy["progress"].format(step=page_index + 1, total=3),
+            (page_index + 1) / 4,
+            copy["progress"].format(step=page_index + 1, total=4),
         )
     ]
     if page == "profile":
@@ -286,11 +295,22 @@ def test_offline_ui_shows_localised_status_and_keeps_each_page_usable(
                 PROFILE_COPY[locale]["progress"].format(step=1, total=7),
             )
         )
+    elif page == "conversation":
+        expected_progress.append(
+            (
+                1 / 7,
+                COUNSELLING_COPY[locale]["progress"].format(step=1, total=6),
+            )
+        )
     assert fake_streamlit.progress_calls == expected_progress
     assert fake_streamlit.expanders == [copy["help_title"]]
     expected_buttons = {
         "home": [copy["next"]],
         "profile": [PROFILE_COPY[locale]["next"]],
+        "conversation": [
+            COUNSELLING_COPY[locale]["skip"],
+            COUNSELLING_COPY[locale]["continue"],
+        ],
         "pathways": [copy["back"]],
     }
     assert fake_streamlit.buttons == expected_buttons[page]
