@@ -161,7 +161,6 @@ def test_skip_continue_and_back_navigation_save_only_the_current_prompt() -> Non
     assert skip.session_state["joint_counselling_step"] == 1
     assert build_review(skip.session_state)[0].status == "skipped"
 
-    second = PROMPTS[1]
     back = FakeCounsellingStreamlit(
         state={"joint_counselling_step": 1},
         clicked_key="joint_counselling_back",
