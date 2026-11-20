@@ -14,6 +14,7 @@ from app.qualification_flow import (
     render_qualification_explainers,
 )
 from app.profile_flow import render_profile_capture
+from app.counselling_flow import render_joint_counselling
 
 
 API_TIMEOUT_SECONDS = 2.0
@@ -27,11 +28,14 @@ TRANSLATIONS = {
         "navigation": "Choose a section",
         "nav_home": "Home",
         "nav_profile": "Learner profile",
+        "nav_conversation": "Family conversation",
         "nav_pathways": "Explore pathways",
+        "conversation_heading": "Family counselling conversation",
+        "conversation_description": "Learner and parent/guardian questions are recorded separately. Choose one short prompt at a time; every answer is optional.",
         "progress": "Step {step} of {total}",
         "help_title": "Need help?",
         "help_body": (
-            "Use the section list to move between Home, Learner profile and Explore pathways. "
+            "Use the section list to move between Home, Learner profile, Family conversation and Explore pathways. "
             "You can change language at any time. This prototype screen does not collect "
             "personal information."
         ),
@@ -80,11 +84,14 @@ TRANSLATIONS = {
         "navigation": "विभाग निवडा",
         "nav_home": "मुख्यपृष्ठ",
         "nav_profile": "विद्यार्थ्याची माहिती",
+        "nav_conversation": "कौटुंबिक चर्चा",
         "nav_pathways": "शिक्षणाचे पर्याय",
+        "conversation_heading": "विद्यार्थी आणि पालकांचे समुपदेशन",
+        "conversation_description": "विद्यार्थी आणि पालक/पालकप्रतिनिधी यांचे प्रश्न स्वतंत्रपणे नोंदवले जातात. एका वेळी एक छोटा प्रश्न घ्या; प्रत्येक उत्तर ऐच्छिक आहे.",
         "progress": "टप्पा {step} / {total}",
         "help_title": "मदत हवी आहे?",
         "help_body": (
-            "मुख्यपृष्ठ, विद्यार्थ्याची माहिती आणि शिक्षणाचे पर्याय या विभागांमध्ये "
+            "मुख्यपृष्ठ, विद्यार्थ्याची माहिती, कौटुंबिक चर्चा आणि शिक्षणाचे पर्याय या विभागांमध्ये "
             "जाण्यासाठी विभाग सूची वापरा. तुम्ही कधीही भाषा बदलू शकता. या नमुना "
             "स्क्रीनवर वैयक्तिक माहिती घेतली जात नाही."
         ),
@@ -193,7 +200,7 @@ def main() -> None:
 
     locale = st.sidebar.selectbox("Language / भाषा", list(TRANSLATIONS))
     copy = TRANSLATIONS[locale]
-    page_keys = ("home", "profile", "pathways")
+    page_keys = ("home", "profile", "conversation", "pathways")
     if st.session_state.get("page_navigation") not in page_keys:
         st.session_state["page_navigation"] = "home"
 
@@ -234,6 +241,10 @@ def main() -> None:
         st.write(copy["profile_description"])
         st.info(copy["profile_placeholder"])
         render_profile_capture(st, locale)
+    elif selected_page == "conversation":
+        st.title(copy["conversation_heading"])
+        st.write(copy["conversation_description"])
+        render_joint_counselling(st, locale)
     else:
         st.title(copy["pathways_heading"])
         st.write(copy["pathways_description"])
@@ -242,7 +253,7 @@ def main() -> None:
         render_qualification_explainers(st, locale)
         render_multi_route_eligibility(st, locale)
 
-    if selected_page != "profile":
+    if selected_page not in {"profile", "conversation"}:
         if selected_index > 0:
             st.button(
                 copy["back"],
