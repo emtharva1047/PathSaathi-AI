@@ -36,8 +36,8 @@ TRANSLATIONS = {
         "help_title": "Need help?",
         "help_body": (
             "Use the section list to move between Home, Learner profile, Family conversation and Explore pathways. "
-            "You can change language at any time. This prototype screen does not collect "
-            "personal information."
+            "You can change language at any time. Profile and conversation drafts stay in this "
+            "Streamlit session only; they are not sent to the API or written to a database."
         ),
         "back": "Back",
         "next": "Continue",
@@ -92,8 +92,9 @@ TRANSLATIONS = {
         "help_title": "मदत हवी आहे?",
         "help_body": (
             "मुख्यपृष्ठ, विद्यार्थ्याची माहिती, कौटुंबिक चर्चा आणि शिक्षणाचे पर्याय या विभागांमध्ये "
-            "जाण्यासाठी विभाग सूची वापरा. तुम्ही कधीही भाषा बदलू शकता. या नमुना "
-            "स्क्रीनवर वैयक्तिक माहिती घेतली जात नाही."
+            "जाण्यासाठी विभाग सूची वापरा. तुम्ही कधीही भाषा बदलू शकता. विद्यार्थ्याची माहिती आणि "
+            "कौटुंबिक चर्चेचे मसुदे फक्त सध्याच्या सत्रात राहतात; ते API कडे पाठवले जात नाहीत "
+            "किंवा डेटाबेसमध्ये लिहिले जात नाहीत."
         ),
         "back": "मागील टप्पा",
         "next": "पुढील टप्पा",
