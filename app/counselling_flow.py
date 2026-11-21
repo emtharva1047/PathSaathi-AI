@@ -10,6 +10,9 @@ from collections.abc import Mapping, MutableMapping
 from dataclasses import dataclass
 from typing import Any
 
+from app.profile_flow import PROFILE_COPY
+from core.profiles import FamilyCounsellingContext
+
 
 @dataclass(frozen=True)
 class CounsellingPrompt:
@@ -210,6 +213,17 @@ COUNSELLING_COPY: dict[str, dict[str, Any]] = {
         "continue": "Continue",
         "review_title": "Review the family conversation",
         "review_help": "Check that each answer belongs to the right person. Select Revise to change that response.",
+        "profile_context_title": "Saved profile context",
+        "profile_context_separation": "These details are shown for context only. They do not fill or replace any counselling answer.",
+        "profile_context_missing": "No saved profile context is available in this session. Profile fields are shown as not provided.",
+        "profile_context_learner": "Learner profile",
+        "profile_context_parent": "Parent/guardian profile — self-reported",
+        "profile_context_education": "Education",
+        "profile_context_region": "Broad region",
+        "profile_context_interests": "Interests",
+        "profile_context_work_preferences": "Work preferences",
+        "profile_context_concerns": "Self-reported concerns",
+        "profile_context_priorities": "Self-reported priorities",
         "status_labels": {
             "not_answered": "Not answered yet",
             "empty": "Continued without selecting an answer",
@@ -319,6 +333,17 @@ COUNSELLING_COPY: dict[str, dict[str, Any]] = {
         "continue": "पुढे जा",
         "review_title": "कौटुंबिक चर्चेची उजळणी",
         "review_help": "प्रत्येक उत्तर योग्य व्यक्तीचे आहे का ते तपासा. उत्तर बदलण्यासाठी 'उत्तर बदला' निवडा.",
+        "profile_context_title": "साठवलेला प्रोफाइल संदर्भ",
+        "profile_context_separation": "ही माहिती फक्त संदर्भासाठी आहे. ती चर्चेतील कोणतेही उत्तर आपोआप भरत किंवा बदलत नाही.",
+        "profile_context_missing": "या सत्रात साठवलेला प्रोफाइल उपलब्ध नाही. प्रोफाइलमधील माहिती दिलेली नाही अशी दाखवली आहे.",
+        "profile_context_learner": "विद्यार्थ्याचा प्रोफाइल",
+        "profile_context_parent": "पालक/पालकप्रतिनिधीचा प्रोफाइल — स्वतः सांगितलेले",
+        "profile_context_education": "शिक्षण",
+        "profile_context_region": "व्यापक विभाग",
+        "profile_context_interests": "आवडी",
+        "profile_context_work_preferences": "कामाच्या आवडी",
+        "profile_context_concerns": "स्वतः सांगितलेल्या चिंता",
+        "profile_context_priorities": "स्वतः सांगितलेली प्राधान्ये",
         "status_labels": {
             "not_answered": "अद्याप उत्तर दिलेले नाही",
             "empty": "पर्याय न निवडता पुढे गेले",
@@ -427,12 +452,81 @@ def build_review(state: Mapping[str, Any]) -> tuple[CounsellingReviewItem, ...]:
     return tuple(items)
 
 
+def _profile_items(
+    values: tuple[Any, ...], labels: Mapping[Any, str], not_provided: str
+) -> str:
+    """Translate a fixed set of profile values without inventing missing details."""
+    rendered = [labels[value] for value in values if value in labels]
+    return ", ".join(rendered) if rendered else not_provided
+
+
+def _render_saved_profile_context(st: Any, locale: str, copy: dict[str, Any]) -> None:
+    """Show saved learner/parent context without converting it into prompt answers."""
+    profile_copy = PROFILE_COPY.get(locale, PROFILE_COPY["English"])
+    not_provided = profile_copy["not_provided"]
+    context = st.session_state.get("profile_saved_context")
+
+    st.subheader(copy["profile_context_title"])
+    st.caption(copy["profile_context_separation"])
+    if isinstance(context, FamilyCounsellingContext):
+        learner = context.learner
+        parent = context.parent
+        learner_fields = {
+            "profile_context_education": profile_copy["education_labels"].get(
+                learner.education_level, not_provided
+            ),
+            "profile_context_region": profile_copy["region_labels"].get(
+                learner.state_code, not_provided
+            ),
+            "profile_context_interests": _profile_items(
+                learner.interests, profile_copy["interest_labels"], not_provided
+            ),
+            "profile_context_work_preferences": _profile_items(
+                learner.work_preferences,
+                profile_copy["work_preference_labels"],
+                not_provided,
+            ),
+        }
+        parent_fields = {
+            "profile_context_concerns": _profile_items(
+                parent.concerns, profile_copy["concern_labels"], not_provided
+            ),
+            "profile_context_priorities": _profile_items(
+                parent.priorities, profile_copy["priority_labels"], not_provided
+            ),
+        }
+    else:
+        st.caption(copy["profile_context_missing"])
+        learner_fields = {
+            key: not_provided
+            for key in (
+                "profile_context_education",
+                "profile_context_region",
+                "profile_context_interests",
+                "profile_context_work_preferences",
+            )
+        }
+        parent_fields = {
+            key: not_provided
+            for key in ("profile_context_concerns", "profile_context_priorities")
+        }
+
+    st.markdown(f"**{copy['profile_context_learner']}**")
+    for key, value in learner_fields.items():
+        st.write(f"{copy[key]}: {value}")
+
+    st.markdown(f"**{copy['profile_context_parent']}**")
+    for key, value in parent_fields.items():
+        st.write(f"{copy[key]}: {value}")
+
+
 def _render_review(st: Any, locale: str, copy: dict[str, Any]) -> None:
     """Render a role-separated review and allow a participant to revise their answer."""
     st.progress(1.0, text=copy["review_progress"].format(total=len(PROMPTS)))
     st.subheader(copy["review_title"])
     st.caption(copy["review_help"])
     st.caption(copy["translation_status"])
+    _render_saved_profile_context(st, locale, copy)
 
     for index, (prompt, item) in enumerate(zip(PROMPTS, build_review(st.session_state))):
         role = copy["role_labels"][item.role]
