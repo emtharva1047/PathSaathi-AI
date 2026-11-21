@@ -42,6 +42,20 @@ Unknown option identifiers are discarded. A response is accepted only under the 
 
 The review screen preserves the learner's own next-step choice and labels parent concerns as self-reported. A parent response never overrides the learner's response. Role ownership is structural rather than identity-authenticated: the current prototype assumes participants take turns on one shared session/device. It does not verify who is answering and does not capture consent. Phase 5 must add an appropriate consent and participant/session model before persistent storage or sharing.
 
+## Saved profile context in the conversation review
+
+When a learner/parent profile has been explicitly kept in the current Streamlit session, the
+conversation review shows learner education, broad region, interests and work preferences in
+a learner-labelled section. Parent concerns and priorities appear in a separate parent/guardian
+section and are explicitly labelled as self-reported. If no profile has been saved, every profile
+field is shown as not provided; empty optional lists are not filled with assumptions.
+
+This context is display-only. It is not copied into the fixed prompt-ID response records, does not
+change unanswered/skipped prompt states, and cannot overwrite either participant's answers.
+English and Marathi labels are provided; Marathi remains draft pending fluent human review.
+The context and prompt responses remain in the current session only, with no API, database or
+analytics write.
+
 ## Privacy and integration boundary
 
 - The flow uses only fixed option IDs; it does not collect names, phone numbers, exact income, date of birth, addresses, employer names or free-text narratives.
@@ -61,6 +75,6 @@ The review screen preserves the learner's own next-step choice and labels parent
 
 ## Automated acceptance
 
-Tests cover matching English/Marathi prompt keys and option IDs, one question at a time, fixed role ownership, self-reported parent concerns, distinct evidence/preference/discussion categories, unanswered/empty/skipped/revised states, Back/Continue, review/revise, learner agency and the session-only boundary.
+Tests cover matching English/Marathi prompt keys and option IDs, one question at a time, fixed role ownership, self-reported parent concerns, distinct evidence/preference/discussion categories, unanswered/empty/skipped/revised states, Back/Continue, review/revise, learner agency, populated and missing saved-profile context, profile/answer separation, and the session-only boundary.
 
 Automated render tests do not establish WCAG conformance, real-device usability, screen-reader support, participant comprehension or fluent Marathi quality. Those checks remain open in issue #14.

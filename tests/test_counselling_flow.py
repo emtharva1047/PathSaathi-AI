@@ -2,6 +2,9 @@
 
 from __future__ import annotations
 
+from app.profile_flow import PROFILE_COPY, build_family_context
+from core.profiles import ConcernCategory, EducationLevel
+
 from app.counselling_flow import (
     COUNSELLING_COPY,
     PROMPTS,
@@ -223,3 +226,95 @@ def test_review_status_displays_revision_count() -> None:
     render_joint_counselling(fake, "English")
     captions = [args[0] for name, args, _ in fake.calls if name == "caption"]
     assert any("Revised 1 time(s)" in caption for caption in captions)
+
+
+def test_review_renders_saved_profile_context_separately_in_both_locales() -> None:
+    profile_state = {
+        "profile_education_level": EducationLevel.GRADE_10,
+        "profile_state_code": "MH",
+        "profile_interests": ["technology"],
+        "profile_work_preferences": ["hands_on"],
+        "profile_parent_concerns": [ConcernCategory.WORKPLACE_SAFETY],
+        "profile_parent_priorities": ["learner_choice"],
+    }
+
+    for locale in COUNSELLING_COPY:
+        state = {
+            "joint_counselling_step": len(PROMPTS),
+            "profile_saved_context": build_family_context(profile_state, locale),
+        }
+        record_response(state, "learner_next_step", ["take_time"])
+        record_response(state, "parent_reported_concerns", ["income_evidence"])
+        before_answers = {
+            prompt_id: dict(response)
+            for prompt_id, response in state["joint_counselling_answers"].items()
+        }
+
+        fake = FakeCounsellingStreamlit(state=state)
+        render_joint_counselling(fake, locale)
+        rendered = " ".join(
+            str(value)
+            for _, args, _ in fake.calls
+            for value in args
+        )
+        profile_copy = PROFILE_COPY[locale]
+        copy = COUNSELLING_COPY[locale]
+
+        assert copy["profile_context_learner"] in rendered
+        assert copy["profile_context_parent"] in rendered
+        assert profile_copy["education_labels"][EducationLevel.GRADE_10] in rendered
+        assert profile_copy["interest_labels"]["technology"] in rendered
+        assert profile_copy["work_preference_labels"]["hands_on"] in rendered
+        assert (
+            profile_copy["concern_labels"][ConcernCategory.WORKPLACE_SAFETY]
+            in rendered
+        )
+        assert profile_copy["priority_labels"]["learner_choice"] in rendered
+        assert copy["option_labels"]["parent_reported_concerns"]["income_evidence"] in rendered
+        assert copy["option_labels"]["learner_next_step"]["take_time"] in rendered
+        assert state["joint_counselling_answers"] == before_answers
+        review = {item.prompt_id: item for item in build_review(state)}
+        assert review["learner_next_step"].selected_values == ("take_time",)
+        assert review["parent_reported_concerns"].selected_values == ("income_evidence",)
+
+
+def test_missing_or_empty_saved_profile_is_rendered_as_not_provided() -> None:
+    for locale in COUNSELLING_COPY:
+        for saved_context in (None, build_family_context({}, locale)):
+            state = {"joint_counselling_step": len(PROMPTS)}
+            if saved_context is not None:
+                state["profile_saved_context"] = saved_context
+            fake = FakeCounsellingStreamlit(state=state)
+            render_joint_counselling(fake, locale)
+
+            rendered = " ".join(
+                str(value)
+                for _, args, _ in fake.calls
+                for value in args
+            )
+            profile_copy = PROFILE_COPY[locale]
+            copy = COUNSELLING_COPY[locale]
+            assert copy["profile_context_learner"] in rendered
+            assert copy["profile_context_parent"] in rendered
+            assert profile_copy["not_provided"] in rendered
+            if saved_context is None:
+                assert copy["profile_context_missing"] in rendered
+
+
+def test_saved_profile_never_prefills_parent_counselling_answers() -> None:
+    for locale in COUNSELLING_COPY:
+        state = {
+            "joint_counselling_step": len(PROMPTS),
+            "profile_saved_context": build_family_context(
+                {"profile_parent_concerns": [ConcernCategory.WORKPLACE_SAFETY]},
+                locale,
+            ),
+        }
+        fake = FakeCounsellingStreamlit(state=state)
+        render_joint_counselling(fake, locale)
+
+        review = {item.prompt_id: item for item in build_review(state)}
+        assert review["parent_reported_concerns"].status == "not_answered"
+        assert review["parent_reported_concerns"].selected_values == ()
+        assert "joint_counselling_answers" not in state
+
