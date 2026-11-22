@@ -20,7 +20,7 @@ Human-review fixed UI strings and key counselling explanations. LLM-generated ou
 - Visible progress, back, edit and help options.
 - Avoid long forms and dense learner/parent dashboards.
 - Keep language selection visible.
-- Offer optional read-aloud support where feasible; audio must never be the only access method.
+- Offer optional read-aloud support where feasible; audio must never be the only access method. The current shell reads page introductions only through a matching installed browser voice, requires an explicit user action, and keeps visible text available. Marathi voice availability and pronunciation still require device and fluent-speaker review.
 
 ## Validation
 - Review Marathi wording with a fluent speaker before release.
