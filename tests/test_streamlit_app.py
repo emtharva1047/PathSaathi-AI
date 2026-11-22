@@ -5,6 +5,7 @@ from __future__ import annotations
 import json
 import sys
 from contextlib import nullcontext
+from types import SimpleNamespace
 from urllib.error import URLError
 from unittest.mock import patch
 
@@ -71,6 +72,10 @@ class FakeStreamlit:
         self.expanders: list[str] = []
         self.progress_calls: list[tuple[float, str]] = []
         self.radio_options: tuple[str, ...] = ()
+        self.components = SimpleNamespace(v1=SimpleNamespace(html=self._render_html))
+
+    def _render_html(self, markup: str, *, height: int, scrolling: bool) -> None:
+        self.calls.append(("components.v1.html", (markup,), {"height": height, "scrolling": scrolling}))
 
     def set_page_config(self, **kwargs) -> None:
         self.calls.append(("set_page_config", (), kwargs))
@@ -192,6 +197,10 @@ def test_home_renders_progress_help_and_continue_control(monkeypatch) -> None:
     assert fake_streamlit.expanders == ["Need help?"]
     assert fake_streamlit.buttons == ["Continue"]
     assert fake_streamlit.radio_options == ("home", "profile", "conversation", "pathways")
+    read_aloud = [call for call in fake_streamlit.calls if call[0] == "components.v1.html"]
+    assert len(read_aloud) == 1
+    assert "Read page introduction aloud" in read_aloud[0][1][0]
+    assert "Explore vocational pathways together." in read_aloud[0][1][0]
 
 
 def test_marathi_profile_renders_localised_progress_and_back_next_controls(monkeypatch) -> None:
@@ -207,6 +216,10 @@ def test_marathi_profile_renders_localised_progress_and_back_next_controls(monke
     ]
     assert fake_streamlit.expanders == ["मदत हवी आहे?"]
     assert fake_streamlit.buttons == ["पुढील प्रश्न"]
+    read_aloud = [call for call in fake_streamlit.calls if call[0] == "components.v1.html"]
+    assert len(read_aloud) == 1
+    assert "पानाची ओळख मोठ्याने वाचा" in read_aloud[0][1][0]
+    assert "data-locale=\"mr-IN\"" in read_aloud[0][1][0]
 
 
 

@@ -15,6 +15,7 @@ from app.qualification_flow import (
 )
 from app.profile_flow import render_profile_capture
 from app.counselling_flow import render_joint_counselling
+from app.read_aloud import render_read_aloud
 
 
 API_TIMEOUT_SECONDS = 2.0
@@ -231,21 +232,25 @@ def main() -> None:
     with st.expander(copy["help_title"], expanded=False):
         st.write(copy["help_body"])
 
+    read_aloud_text = ""
     if selected_page == "home":
         st.title(copy["title"])
         st.subheader(copy["tagline"])
         st.info(copy["notice"])
         st.write(copy["welcome"])
         st.markdown(f"**{copy['home_next']}**")
+        read_aloud_text = " ".join((copy["tagline"], copy["notice"], copy["welcome"], copy["home_next"]))
     elif selected_page == "profile":
         st.title(copy["profile_heading"])
         st.write(copy["profile_description"])
         st.info(copy["profile_placeholder"])
         render_profile_capture(st, locale)
+        read_aloud_text = " ".join((copy["profile_heading"], copy["profile_description"], copy["profile_placeholder"]))
     elif selected_page == "conversation":
         st.title(copy["conversation_heading"])
         st.write(copy["conversation_description"])
         render_joint_counselling(st, locale)
+        read_aloud_text = " ".join((copy["conversation_heading"], copy["conversation_description"]))
     else:
         st.title(copy["pathways_heading"])
         st.write(copy["pathways_description"])
@@ -253,6 +258,7 @@ def main() -> None:
         render_pathway_explorer(st, locale)
         render_qualification_explainers(st, locale)
         render_multi_route_eligibility(st, locale)
+        read_aloud_text = " ".join((copy["pathways_heading"], copy["pathways_description"], copy["pathways_placeholder"]))
 
     if selected_page not in {"profile", "conversation"}:
         if selected_index > 0:
@@ -272,6 +278,7 @@ def main() -> None:
                 use_container_width=True,
             )
 
+    render_read_aloud(st, read_aloud_text, locale)
     st.caption(copy["footer"])
 
 
