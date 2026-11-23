@@ -3,7 +3,7 @@
 **Review date:** 23 November 2026  
 **Project day:** 22/60  
 **Phase window:** 14–23 November 2026  
-**Status:** Implementation exit review; automated validation of the Day 22 cross-flow regression is pending.
+**Status:** Phase 3 deterministic implementation exit gate passed on 23 November 2026. PR #45 and merged-main CI run #194 succeeded.
 
 ## Decision boundary
 
@@ -27,7 +27,7 @@ The profile and family conversation remain session-only. Role ownership is promp
 
 ## Cross-flow invariants
 
-The Day 22 integration test must demonstrate all of the following in English and Marathi:
+The Day 22 integration test in `tests/test_phase3_journey.py` demonstrates all of the following in English and Marathi:
 
 1. Learner and parent references remain distinct.
 2. Only learner interests/work preferences contribute shortlist reason codes.
@@ -57,6 +57,6 @@ The test uses fixed synthetic profile values and a Streamlit test double. It doe
 
 ## Phase 3 exit
 
-The deterministic implementation scope can be marked complete only after the Day 22 cross-flow regression passes the repository's GitHub Actions checks: Python compilation, Ruff, Pytest and the live Streamlit/FastAPI smoke test. Human/device validation remains a cross-phase blocker in issue #14, not a result that may be inferred from CI.
+The deterministic Phase 3 implementation scope is complete. PR #45 was merged as `2e4e2d8`; GitHub Actions PR run #193 and merged-main run #194 both passed Python compilation, Ruff, **222 Pytest tests** and the live Streamlit/FastAPI smoke test. Each run reported one existing Starlette/httpx deprecation warning. Human/device validation remains a cross-phase blocker in issue #14, not a result that may be inferred from CI.
 
 **Next phase:** Phase 4 starts 24 November 2026 (Day 23/60). Build the provenance-aware course/outcome import and validation path using synthetic fixtures until the official SIH dataset is supplied. Keep the 31 December 2026 deadline unchanged.
