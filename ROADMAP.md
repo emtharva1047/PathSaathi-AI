@@ -152,7 +152,7 @@ The implementation review is recorded in [PHASE3_ACCEPTANCE.md](docs/PHASE3_ACCE
 - [x] Prevent uploaded files from asserting verified status; require all-or-nothing readiness before records can be staged.
 - [x] Add synthetic-only row/header/provenance/numeric/error-path tests. The importer is preview-only and makes no database writes.
 - [x] GitHub Actions run #199 passed compileall, Ruff, 249 Pytest tests and the live Streamlit/FastAPI smoke check; one existing Starlette/httpx deprecation warning.
-- [ ] Add Streamlit import preview and controlled repository staging; map the official SIH file only after its data dictionary is received (issue #5).
+- [ ] Add the bilingual Streamlit import preview with row-level diagnostics; keep it preview-only until an authenticated data-steward boundary exists (issue [#48](https://github.com/emtharva1047/PathSaathi-AI/issues/48)). Map the official SIH file only after its data dictionary is received (issue [#5](https://github.com/emtharva1047/PathSaathi-AI/issues/5)).
 
 ## Progress log
 
