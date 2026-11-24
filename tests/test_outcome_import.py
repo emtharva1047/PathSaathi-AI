@@ -201,7 +201,9 @@ def test_duplicate_headers_are_rejected() -> None:
 
 def test_missing_required_header_is_rejected() -> None:
     headers = [item for item in HEADERS if item != "definition"]
-    report = parse(make_csv([base_row()], headers=headers))
+    row = base_row()
+    row.pop("definition")
+    report = parse(make_csv([row], headers=headers))
 
     assert report.ready_to_import is False
     assert any(
@@ -346,7 +348,7 @@ def test_non_finite_values_are_rejected() -> None:
 
 
 def test_malformed_csv_and_invalid_utf8_are_rejected() -> None:
-    malformed = parse(b'evidence_id,metric_code\n"unterminated,value\n')
+    malformed = parse((",".join(HEADERS) + '\n"unterminated\n').encode("utf-8"))
     invalid_encoding = parse(b"evidence_id,metric_code\n\xff,rate\n")
 
     assert malformed.errors[0].code == "malformed_csv"
