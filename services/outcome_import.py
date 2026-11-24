@@ -9,7 +9,6 @@ from __future__ import annotations
 import csv
 import hashlib
 import io
-import re
 from collections.abc import Mapping
 from dataclasses import dataclass
 from datetime import date, datetime, timezone
@@ -194,7 +193,14 @@ def _optional_date(row: Mapping[str, str], field_name: str) -> date | None:
     raw = _text(row, field_name)
     if raw is None:
         return None
-    if re.fullmatch(r"\\d{4}-\\d{2}-\\d{2}", raw) is None:
+    date_digits = raw[:4] + raw[5:7] + raw[8:]
+    if (
+        len(raw) != 10
+        or raw[4:5] != "-"
+        or raw[7:8] != "-"
+        or not date_digits.isascii()
+        or not date_digits.isdigit()
+    ):
         raise _RowValidationError(
             field_name, "invalid_date", f"{field_name} must use an ISO date (YYYY-MM-DD)."
         )
