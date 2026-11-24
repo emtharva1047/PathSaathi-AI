@@ -52,6 +52,8 @@ See the [60-day roadmap](ROADMAP.md) for exit criteria and verified progress, [d
 
 Phase 4 begins with a strict canonical outcome CSV validator. It records dataset identity, source filename, SHA-256 and UTC import time; validates row-level metric, geography and provenance semantics; preserves missing values; and blocks partial imports. It is a preview-only boundary, not a database write or an importer for the not-yet-supplied SIH file. See [outcome import contract](docs/OUTCOME_IMPORT.md) and issue [#46](https://github.com/emtharva1047/PathSaathi-AI/issues/46).
 
+PR [#47](https://github.com/emtharva1047/PathSaathi-AI/pull/47) contains the first Phase 4 increment. GitHub Actions run [#199](https://github.com/emtharva1047/PathSaathi-AI/actions/runs/45319556341) passed Python compilation, Ruff, **249 Pytest tests** and the live Streamlit/FastAPI smoke check (one existing Starlette/httpx deprecation warning).
+
 The local default database URL is sqlite:///./data/pathsaathi.db. The application creates tables only when the explicit create_schema() helper is called; importing the API does not create a database or connect to a hosted service. PATHSAATHI_DATABASE_URL can be set to a PostgreSQL URL, with the optional Psycopg driver installed when needed.
 
 Production PostgreSQL provisioning and application deployment are reserved for Phase 8. Local SQLite is part of Phase 2 and is not blocked by the production-hosting gate.
