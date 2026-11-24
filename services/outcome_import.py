@@ -9,6 +9,7 @@ from __future__ import annotations
 import csv
 import hashlib
 import io
+import re
 from collections.abc import Mapping
 from dataclasses import dataclass
 from datetime import date, datetime, timezone
@@ -181,7 +182,8 @@ def _optional_integer(row: Mapping[str, str], field_name: str) -> int | None:
     raw = _text(row, field_name)
     if raw is None:
         return None
-    if not raw.lstrip("+-").isdigit():
+    digits = raw[1:] if raw[:1] in {"+", "-"} else raw
+    if not digits or not digits.isascii() or not digits.isdigit():
         raise _RowValidationError(
             field_name, "invalid_integer", f"{field_name} must be a whole number."
         )
@@ -192,6 +194,10 @@ def _optional_date(row: Mapping[str, str], field_name: str) -> date | None:
     raw = _text(row, field_name)
     if raw is None:
         return None
+    if re.fullmatch(r"\\d{4}-\\d{2}-\\d{2}", raw) is None:
+        raise _RowValidationError(
+            field_name, "invalid_date", f"{field_name} must use an ISO date (YYYY-MM-DD)."
+        )
     try:
         return date.fromisoformat(raw)
     except ValueError as exc:

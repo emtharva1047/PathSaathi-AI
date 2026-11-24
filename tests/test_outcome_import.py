@@ -372,6 +372,20 @@ def test_row_limit_is_enforced_without_partial_import(monkeypatch: pytest.Monkey
         report.require_importable_records()
 
 
+def test_integer_fields_reject_malformed_signs() -> None:
+    report = parse(make_csv([base_row(numerator="+-60")]))
+
+    assert report.ready_to_import is False
+    assert report.errors[0].code == "invalid_integer"
+
+
+def test_dates_require_extended_iso_format() -> None:
+    report = parse(make_csv([base_row(source_publication_date="20261124")]))
+
+    assert report.ready_to_import is False
+    assert report.errors[0].code == "invalid_date"
+
+
 def test_import_metadata_requires_dataset_identity_and_timezone() -> None:
     with pytest.raises(ValueError, match="dataset_id and dataset_version"):
         parse_outcome_csv(
