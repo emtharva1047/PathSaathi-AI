@@ -181,12 +181,11 @@ def _optional_integer(row: Mapping[str, str], field_name: str) -> int | None:
     raw = _text(row, field_name)
     if raw is None:
         return None
-    try:
-        return int(raw, 10)
-    except ValueError as exc:
+    if not raw.lstrip("+-").isdigit():
         raise _RowValidationError(
             field_name, "invalid_integer", f"{field_name} must be a whole number."
-        ) from exc
+        )
+    return int(raw, 10)
 
 
 def _optional_date(row: Mapping[str, str], field_name: str) -> date | None:
@@ -260,7 +259,12 @@ def _build_record(
             "Provide source_url or source_page_or_table for provenance.",
         )
     if source_url is not None:
-        parsed_url = urlsplit(source_url)
+        try:
+            parsed_url = urlsplit(source_url)
+        except ValueError as exc:
+            raise _RowValidationError(
+                "source_url", "invalid_source_url", "source_url is malformed."
+            ) from exc
         if (
             parsed_url.scheme not in {"http", "https"}
             or not parsed_url.netloc
@@ -279,6 +283,7 @@ def _build_record(
     sample_size = _optional_integer(row, "sample_size")
     unit = _text(row, "unit")
     derived_rate = False
+    source_rate_without_counts = False
 
     if metric_kind == "rate":
         if unit is not None and unit.casefold() not in {"percent", "%"}:
@@ -311,19 +316,15 @@ def _build_record(
                     f"{RATE_RECONCILIATION_TOLERANCE} percentage points.",
                 )
         elif value_decimal is not None:
-            raise_warning = True
-        else:
-            raise_warning = False
+            source_rate_without_counts = True
         if value_decimal is not None and unit is None:
             unit = "percent"
-    else:
-        raise_warning = False
-        if numerator is not None or denominator is not None:
-            raise _RowValidationError(
-                "numerator",
-                "counts_only_for_rates",
-                "numerator and denominator are reserved for rate metrics.",
-            )
+    elif numerator is not None or denominator is not None:
+        raise _RowValidationError(
+            "numerator",
+            "counts_only_for_rates",
+            "numerator and denominator are reserved for rate metrics.",
+        )
 
     statistic_text = _text(row, "statistic_type") or "unknown"
     if statistic_text not in _STATISTIC_TYPES:
@@ -333,6 +334,8 @@ def _build_record(
     statistic_type = cast(StatisticType, statistic_text)
 
     currency = _text(row, "currency")
+    source_publication_date = _optional_date(row, "source_publication_date")
+    last_verified_at = _optional_date(row, "last_verified_at")
     if metric_kind == "earnings" and value_decimal is not None:
         if not currency or not unit or statistic_type == "unknown":
             raise _RowValidationError(
@@ -366,16 +369,18 @@ def _build_record(
             follow_up_period=_text(row, "follow_up_period"),
             source_publisher=source_publisher,
             source_url=source_url,
-            source_publication_date=_optional_date(row, "source_publication_date"),
+            source_publication_date=source_publication_date,
             source_page_or_table=source_page_or_table,
             methodology=_text(row, "methodology"),
-            last_verified_at=_optional_date(row, "last_verified_at"),
+            last_verified_at=last_verified_at,
             verification_status=verification_status,
         )
     except ValueError as exc:
         raise _RowValidationError("record", "domain_validation", str(exc)) from exc
 
     warnings: list[tuple[str, str]] = []
+    if record.value is None:
+        warnings.append(("value", "Metric value is not supplied and remains unknown."))
     if record.cohort_period is None:
         warnings.append(("cohort_period", "Cohort period is not supplied; keep cohort scope unknown."))
     if record.observation_period is None:
@@ -386,17 +391,13 @@ def _build_record(
         warnings.append(("sample_size", "Sample size is not supplied."))
     if record.follow_up_period is None:
         warnings.append(("follow_up_period", "Follow-up period is not supplied."))
-    if raise_warning:
+    if source_rate_without_counts:
         warnings.append(
             ("numerator", "Only a source-reported percentage is available; counts are unknown.")
         )
     if derived_rate:
         warnings.append(
             ("value", "Percentage derived from the supplied numerator and denominator.")
-        )
-    if metric_kind == "earnings" and record.value is not None and record.sample_size is None:
-        warnings.append(
-            ("sample_size", "Earnings value has no observation count; interpret with caution.")
         )
 
     return record, derived_rate, tuple(warnings)
@@ -549,15 +550,16 @@ def parse_outcome_csv(
             records.append(record)
             if derived:
                 derived_ids.append(record.evidence_id)
-            findings.extend(
-                ImportFinding(row_number, "warning", code, message, field_name)
-                for field_name, message in row_warnings
-                for code in (
-                    "rate_derived" if field_name == "value" and derived else
-                    "rate_counts_unavailable" if field_name == "numerator" else
-                    "missing_context",
+            for field_name, message in row_warnings:
+                if field_name == "value" and derived:
+                    code = "rate_derived"
+                elif field_name == "numerator":
+                    code = "rate_counts_unavailable"
+                else:
+                    code = "missing_context"
+                findings.append(
+                    ImportFinding(row_number, "warning", code, message, field_name)
                 )
-            )
     except csv.Error as exc:
         findings.append(
             ImportFinding(
