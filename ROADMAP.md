@@ -143,7 +143,7 @@ Learner/parent onboarding and consent → joint bilingual counselling → contex
 
 The implementation review is recorded in [PHASE3_ACCEPTANCE.md](docs/PHASE3_ACCEPTANCE.md). The Day 22 cross-flow regression merged as PR #45 (`2e4e2d8`); PR run #193 and merged-main run #194 passed Python compilation, Ruff, 222 Pytest tests and the live Streamlit/FastAPI smoke test. Phase 3's deterministic implementation scope is complete. Human Marathi, target-user, screen-reader, keyboard, contrast, mobile and device voice validation remain open in issue #14 and are not inferred from automated tests.
 
-## Phase 4 progress — 24 November 2026
+## Phase 4 progress — 25 November 2026
 
 - [x] Create issue [#46](https://github.com/emtharva1047/PathSaathi-AI/issues/46) for the canonical provenance-aware CSV import boundary.
 - [x] Add a strict UTF-8 CSV preview parser with exact header mapping, file/row limits, dataset identity, source filename, SHA-256 and UTC import timestamp.
@@ -152,7 +152,8 @@ The implementation review is recorded in [PHASE3_ACCEPTANCE.md](docs/PHASE3_ACCE
 - [x] Prevent uploaded files from asserting verified status; require all-or-nothing readiness before records can be staged.
 - [x] Add synthetic-only row/header/provenance/numeric/error-path tests. The importer is preview-only and makes no database writes.
 - [x] GitHub Actions run #199 passed compileall, Ruff, 249 Pytest tests and the live Streamlit/FastAPI smoke check; one existing Starlette/httpx deprecation warning.
-- [ ] Add the bilingual Streamlit import preview with row-level diagnostics; keep it preview-only until an authenticated data-steward boundary exists (issue [#48](https://github.com/emtharva1047/PathSaathi-AI/issues/48)). Map the official SIH file only after its data dictionary is received (issue [#5](https://github.com/emtharva1047/PathSaathi-AI/issues/5)).
+- [x] Add the bilingual Streamlit CSV review preview: reject unsupported filenames/MIME types and oversized payloads before parsing, require dataset identity, show SHA-256/UTC metadata and every finding, and render a row table only when every row passes. `synthetic_demo`, `needs_review` and `stale` remain explicit; no authentication, persistence, approval or verified-status promotion is added. Marathi copy still needs fluent human review (PR [#49](https://github.com/emtharva1047/PathSaathi-AI/pull/49), Actions run [#204](https://github.com/emtharva1047/PathSaathi-AI/actions/runs/45542099992)).
+- [ ] Map the official SIH file only after its authorised data dictionary and licence are received (issue [#5](https://github.com/emtharva1047/PathSaathi-AI/issues/5)).
 
 ## Progress log
 
@@ -186,6 +187,8 @@ The implementation review is recorded in [PHASE3_ACCEPTANCE.md](docs/PHASE3_ACCE
 | 2026-11-22 | Added opt-in browser-native read-aloud for the page introduction on all four pages in English/Marathi, using an installed matching device voice only after explicit Read activation; added Stop, localised status/fallback, escaped text and no audio recording/upload. | PR #44 merged as `96f914c`; PR run #190 and merged-main run #191 passed compileall, Ruff, 220 Pytest tests and live Streamlit/FastAPI smoke check (one existing Starlette/httpx deprecation warning per run). Dynamic prompts are not read aloud; real-device voice availability, Marathi pronunciation and screen-reader behaviour remain open in issue #14. |
 | 2026-11-23 | Completed the Phase 3 exit review with a cross-flow regression for saved learner/parent context → learner-only advisory shortlist → source-backed NQR multi-route eligibility → role-separated family review in English/Marathi. | PR #45 merged as `2e4e2d8`; PR run #193 and merged-main run #194 passed compileall, Ruff, 222 Pytest tests and live Streamlit/FastAPI smoke checks (one existing Starlette/httpx deprecation warning per run). |
 | 2026-11-24 | Started Phase 4 with a canonical, provenance-aware CSV preview importer: strict headers/row widths, file hash and dataset metadata, metric/geography/status validation, provider-scope safeguards, rate/count reconciliation, earnings semantics and all-or-nothing readiness. | PR #47; GitHub Actions run #199 passed compileall, Ruff, 249 Pytest tests and the live Streamlit/FastAPI smoke check (one existing Starlette/httpx deprecation warning). Runs #196–198 exposed two test-fixture defects; both were corrected before the successful run. Official SIH dataset remains unavailable in issue #5; no data is persisted and no real outcomes are claimed. |
+
+| 2026-11-25 | Added the bilingual, preview-only Streamlit outcome CSV review with pre-parse file checks, dataset audit metadata, complete row diagnostics and an all-rows-valid table gate | PR #49; Actions run #204 passed compileall, Ruff, 260 Pytest tests and live Streamlit/FastAPI smoke check. Run #203 exposed a missing SHA-256 display label; corrected before #204. Issue #5 remains open for official SIH data. |
 
 ## Release acceptance checklist
 
