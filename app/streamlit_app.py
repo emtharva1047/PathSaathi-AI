@@ -16,6 +16,7 @@ from app.qualification_flow import (
 from app.profile_flow import render_profile_capture
 from app.counselling_flow import render_joint_counselling
 from app.read_aloud import render_read_aloud
+from app.outcome_import_flow import render_outcome_import
 
 
 API_TIMEOUT_SECONDS = 2.0
@@ -258,6 +259,7 @@ def main() -> None:
         render_pathway_explorer(st, locale)
         render_qualification_explainers(st, locale)
         render_multi_route_eligibility(st, locale)
+        render_outcome_import(st, locale)
         read_aloud_text = " ".join((copy["pathways_heading"], copy["pathways_description"], copy["pathways_placeholder"]))
 
     if selected_page not in {"profile", "conversation"}:

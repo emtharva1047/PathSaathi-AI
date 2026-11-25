@@ -52,4 +52,6 @@ This first ingestion boundary is row-oriented and strict: it needs exact headers
 - It does not aggregate unlike cohorts, geographies, providers or outcome definitions.
 - It does not convert placement, employment, trade-related employment, apprenticeship and self-employment into one metric.
 
-Next Phase 4 increments: add a reviewable Streamlit import preview, repository staging behind an explicit all-or-nothing service boundary, then evidence filters/comparisons that preserve geography, cohort, denominator, sample size and provenance.
+The bilingual Streamlit review preview is implemented in `app/outcome_import_flow.py` and is rendered below the pathway and qualification sections. It rejects non-CSV filenames/MIME types and oversized payloads before parsing, requires dataset ID/version, displays the SHA-256 and UTC timestamp, and renders every finding. A failed or partial file never receives a row table. A fully valid preview labels `synthetic_demo`, `needs_review` and `stale` rows explicitly; it does not promote them to verified evidence. The screen has no authenticated steward role and performs no persistence or external calls. Marathi copy remains a draft pending fluent human review.
+
+Next Phase 4 increment: implement read-only outcome filters/comparisons that preserve geography, cohort, denominator, sample size, follow-up period and provenance. Do not add persistence or a write action until an authenticated data-steward boundary and the official SIH data dictionary are available.
