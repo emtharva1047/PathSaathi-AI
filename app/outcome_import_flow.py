@@ -260,6 +260,7 @@ def render_outcome_import(st: Any, locale: str) -> None:
     st.markdown(f"**{copy['audit_heading']}**")
     st.write(f"{copy['dataset']}: {report.dataset_id} · {report.dataset_version}")
     st.write(f"{copy['filename']}: {report.source_filename}")
+    st.write(f"{copy['sha256']}:")
     st.code(report.source_sha256, language="text")
     st.write(f"{copy['imported_at']}: {report.imported_at.isoformat()}")
     st.write(f"{copy['rows']}: {report.row_count}")
