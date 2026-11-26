@@ -62,12 +62,12 @@ Use an absolute HTTP or HTTPS base URL without embedded credentials, a query str
 |---|---|---|
 | GET | `/api/v1/courses` | List courses; supports state, district, trade, provider_id and NSQF-level filters |
 | GET | `/api/v1/courses/{course_id}` | Fetch one course |
-| GET | `/api/v1/outcomes` | List outcome evidence; supports metric, trade/job role, provider, state, district and verification-status filters |
+| GET | `/api/v1/outcomes` | List outcome evidence; supports metric, geography level/name, trade/job role, provider, cohort, observation period and verification-status filters |
 | GET | `/api/v1/outcomes/{evidence_id}` | Fetch one evidence record |
 
 Both list endpoints accept `limit` (default 50, maximum 100) and `offset` (default 0). Results use stable identifier ordering (`course_id` or `evidence_id`) so adjacent pages do not depend on database row order. The API returns a plain list; clients can request the next page by adding the returned page length to `offset`. A total-count field is intentionally omitted until a concrete UI needs it.
 
-All filters are exact matches. A provider filter is restricted to records whose `geography_level` is `provider`; a state or trade aggregate is never promoted to provider evidence.
+All filters are exact matches. Outcome filters include `metric_code`, `geography_level`, `geography_name`, `trade`, `provider_id`, `cohort_period`, `observation_period` and `verification_status`, alongside the existing state/district filters. Geography levels are national, state, district or provider. The provider ID control is shown only when provider-level geography is selected; the API rejects a provider ID combined with a different explicit geography level, and the repository independently restricts provider-ID queries to `geography_level=provider`. A state or trade aggregate is never promoted to provider evidence. Missing cohort or observation metadata remains unknown and is not matched by an invented default.
 
 ## Outcome value display contract
 
@@ -82,6 +82,14 @@ The API exposes a numeric `value` only when the record is marked `verified` and 
 - `source_verified` reports whether the verification status and required source fields are present (it is not an independent audit claim).
 
 A `verified` label is not a claim that the source has been independently audited by PathSaathi; it records the current data-review status and must be supported by the supplied provenance. Synthetic fixtures are used only in tests and are never inserted as official outcomes.
+
+## Outcome explorer and comparison semantics
+
+The bilingual Streamlit outcome explorer calls the read-only `GET /api/v1/outcomes` endpoint. It sends exact filters and requests bounded pages of 50 records using the API's stable `evidence_id` ordering; the UI never substitutes local fixtures when the API is offline. An empty page means no record matched the current exact filters in the available catalogue, not that no outcome exists elsewhere. Invalid filters and API failures are shown as errors rather than silently broadened.
+
+The UI repeats the numeric display gate: `verification_status=verified`, `value_status=verified`, `source_verified=true`, `displayable=true` and a non-null value must all be present. Numerator, denominator and sample size are shown only when the API does not withhold numeric metadata. All records retain the source publisher, HTTP(S) source link, publication date, page/table reference, verification date and methodology/caveats. A verified label describes the current data-review state; it is not a claim of independent PathSaathi source audit.
+
+Two observations can be compared side by side only when metric code and definition, metric kind, currency/unit/statistic semantics, geography granularity and trade/job role match. Provider-level comparisons require provider IDs on both records. Differences in geography name, provider, cohort, observation or follow-up period are disclosed explicitly. The interface does not pool, average, extrapolate or adjust observations across cohorts or regions. If either numeric value is unknown or withheld, only the compatible metadata is compared. Different metrics (including placement, employment, trade-related employment, apprenticeship and self-employment) are never merged.
 
 ## Database lifecycle
 

@@ -63,6 +63,10 @@ class SqlAlchemyOutcomeEvidenceRepository:
                 "provider_id",
                 "state",
                 "district",
+                "geography_level",
+                "geography_name",
+                "cohort_period",
+                "observation_period",
                 "verification_status",
             ):
                 expected = getattr(query, field_name)

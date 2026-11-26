@@ -64,6 +64,9 @@ def make_outcome(
     verification_status: str = "synthetic_demo",
     geography_level: str = "state",
     provider_id: str | None = None,
+    geography_name: str | None = None,
+    cohort_period: str = "test cohort",
+    observation_period: str = "test observation period",
 ) -> OutcomeEvidenceRecord:
     verified = verification_status == "verified"
     return OutcomeEvidenceRecord(
@@ -74,7 +77,7 @@ def make_outcome(
         metric_kind="rate",
         value=value,
         geography_level=geography_level,
-        geography_name=provider_id or "Maharashtra",
+        geography_name=geography_name or provider_id or "Maharashtra",
         trade_or_job_role="Electrician",
         provider_id=provider_id,
         state="Maharashtra",
@@ -82,8 +85,8 @@ def make_outcome(
         numerator=62 if value is not None else None,
         denominator=100 if value is not None else None,
         sample_size=100 if value is not None else None,
-        cohort_period="test cohort",
-        observation_period="test observation period",
+        cohort_period=cohort_period,
+        observation_period=observation_period,
         source_publisher="Test fixture publisher" if verified else None,
         source_url="https://example.org/test-evidence" if verified else None,
         last_verified_at=date(2026, 11, 4) if verified else None,
@@ -313,3 +316,59 @@ def test_catalogue_pagination_rejects_invalid_bounds(api_client, params) -> None
 
     assert client.get("/api/v1/courses", params=params).status_code == 422
     assert client.get("/api/v1/outcomes", params=params).status_code == 422
+
+
+def test_outcome_filters_preserve_geography_and_period_scope(api_client) -> None:
+    client, factory = api_client
+    seed_records(
+        factory,
+        outcomes=(
+            make_outcome(
+                "state-2025",
+                geography_level="state",
+                geography_name="Maharashtra",
+                cohort_period="2024",
+                observation_period="2025",
+            ),
+            make_outcome(
+                "district-2025",
+                geography_level="district",
+                geography_name="Thane",
+                cohort_period="2024",
+                observation_period="2025",
+            ),
+            make_outcome(
+                "state-2024",
+                geography_level="state",
+                geography_name="Maharashtra",
+                cohort_period="2023",
+                observation_period="2024",
+            ),
+        ),
+    )
+
+    response = client.get(
+        "/api/v1/outcomes",
+        params={
+            "metric_code": "trade_related_employment_rate",
+            "geography_level": "state",
+            "geography_name": "Maharashtra",
+            "cohort_period": "2024",
+            "observation_period": "2025",
+        },
+    )
+
+    assert response.status_code == 200
+    assert [record["evidence_id"] for record in response.json()] == ["state-2025"]
+
+
+def test_provider_filter_rejects_non_provider_geography_level(api_client) -> None:
+    client, factory = api_client
+    seed_records(factory, outcomes=(make_outcome("provider", geography_level="provider", provider_id="p-1"),))
+
+    response = client.get(
+        "/api/v1/outcomes",
+        params={"provider_id": "p-1", "geography_level": "state"},
+    )
+
+    assert response.status_code == 422

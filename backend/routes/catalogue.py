@@ -11,7 +11,7 @@ from pydantic import BaseModel
 from sqlalchemy.orm import Session
 
 from backend.dependencies import get_db_session
-from core.domain import CourseRecord, OutcomeEvidenceRecord, VerificationStatus
+from core.domain import CourseRecord, GeographyLevel, OutcomeEvidenceRecord, VerificationStatus
 from database.repositories import SqlAlchemyCourseRepository, SqlAlchemyOutcomeEvidenceRepository
 from services.repositories import CourseQuery, OutcomeQuery
 
@@ -211,18 +211,31 @@ def list_outcomes(
     provider_id: Annotated[str | None, Query(min_length=1, max_length=100)] = None,
     state: Annotated[str | None, Query(min_length=1, max_length=100)] = None,
     district: Annotated[str | None, Query(min_length=1, max_length=100)] = None,
+    geography_level: GeographyLevel | None = None,
+    geography_name: Annotated[str | None, Query(min_length=1, max_length=150)] = None,
+    cohort_period: Annotated[str | None, Query(min_length=1, max_length=120)] = None,
+    observation_period: Annotated[str | None, Query(min_length=1, max_length=120)] = None,
     verification_status: VerificationStatus | None = None,
     limit: Annotated[int, Query(ge=1, le=100)] = 50,
     offset: Annotated[int, Query(ge=0)] = 0,
     session: Session = Depends(get_db_session),
 ) -> list[OutcomeEvidenceResponse]:
     """List source-scoped outcomes without exposing unverified numeric values."""
+    if provider_id is not None and geography_level not in (None, "provider"):
+        raise HTTPException(
+            status_code=422,
+            detail="Provider filters require provider-level geography.",
+        )
     query = OutcomeQuery(
         metric_code=metric_code,
         trade_or_job_role=trade,
         provider_id=provider_id,
         state=state,
         district=district,
+        geography_level=geography_level,
+        geography_name=geography_name,
+        cohort_period=cohort_period,
+        observation_period=observation_period,
         verification_status=verification_status,
         limit=limit,
         offset=offset,
