@@ -8,6 +8,7 @@ from typing import Protocol
 
 from core.domain import (
     CourseRecord,
+    GeographyLevel,
     OutcomeEvidenceRecord,
     VerificationStatus,
     normalize_nsqf_level,
@@ -53,11 +54,21 @@ class OutcomeQuery:
     provider_id: str | None = None
     state: str | None = None
     district: str | None = None
+    geography_level: GeographyLevel | None = None
+    geography_name: str | None = None
+    cohort_period: str | None = None
+    observation_period: str | None = None
     verification_status: VerificationStatus | None = None
     limit: int | None = None
     offset: int = 0
 
     def __post_init__(self) -> None:
+        if self.geography_level is not None and self.geography_level not in {
+            "national", "state", "district", "provider"
+        }:
+            raise ValueError("Unsupported outcome geography-level filter.")
+        if self.provider_id is not None and self.geography_level not in (None, "provider"):
+            raise ValueError("Provider filters require provider-level geography.")
         if self.verification_status is not None and self.verification_status not in {
             "verified",
             "needs_review",
