@@ -143,7 +143,7 @@ Learner/parent onboarding and consent → joint bilingual counselling → contex
 
 The implementation review is recorded in [PHASE3_ACCEPTANCE.md](docs/PHASE3_ACCEPTANCE.md). The Day 22 cross-flow regression merged as PR #45 (`2e4e2d8`); PR run #193 and merged-main run #194 passed Python compilation, Ruff, 222 Pytest tests and the live Streamlit/FastAPI smoke test. Phase 3's deterministic implementation scope is complete. Human Marathi, target-user, screen-reader, keyboard, contrast, mobile and device voice validation remain open in issue #14 and are not inferred from automated tests.
 
-## Phase 4 progress — 25 November 2026
+## Phase 4 progress — 26 November 2026
 
 - [x] Create issue [#46](https://github.com/emtharva1047/PathSaathi-AI/issues/46) for the canonical provenance-aware CSV import boundary.
 - [x] Add a strict UTF-8 CSV preview parser with exact header mapping, file/row limits, dataset identity, source filename, SHA-256 and UTC import timestamp.
@@ -153,6 +153,9 @@ The implementation review is recorded in [PHASE3_ACCEPTANCE.md](docs/PHASE3_ACCE
 - [x] Add synthetic-only row/header/provenance/numeric/error-path tests. The importer is preview-only and makes no database writes.
 - [x] GitHub Actions run #199 passed compileall, Ruff, 249 Pytest tests and the live Streamlit/FastAPI smoke check; one existing Starlette/httpx deprecation warning.
 - [x] Add the bilingual Streamlit CSV review preview: reject unsupported filenames/MIME types and oversized payloads before parsing, require dataset identity, show SHA-256/UTC metadata and every finding, and render a row table only when every row passes. `synthetic_demo`, `needs_review` and `stale` remain explicit; no authentication, persistence, approval or verified-status promotion is added. Marathi copy still needs fluent human review (PR [#49](https://github.com/emtharva1047/PathSaathi-AI/pull/49), Actions run [#204](https://github.com/emtharva1047/PathSaathi-AI/actions/runs/45542099992)).
+- [x] Add a bilingual read-only outcome explorer over the FastAPI evidence API with exact metric/geography/trade/provider/cohort/observation filters, provider-level scope enforcement and bounded stable pagination.
+- [x] Repeat the verified numeric-value gate in the UI; display metric definition, cohort/observation/follow-up periods, counts/sample size only when API provenance permits, source links, publication/verification dates and methodology.
+- [x] Add side-by-side comparison compatibility checks for metric code/definition, metric kind, currency/unit/statistic semantics, geography granularity and trade/job role; disclose geography/provider/cohort/observation/follow-up differences without pooling or deriving aggregate outcomes.
 - [ ] Map the official SIH file only after its authorised data dictionary and licence are received (issue [#5](https://github.com/emtharva1047/PathSaathi-AI/issues/5)).
 
 ## Progress log
@@ -209,3 +212,6 @@ The implementation review is recorded in [PHASE3_ACCEPTANCE.md](docs/PHASE3_ACCE
 - [ ] FastAPI and Streamlit are deployed separately and E2E verified.
 - [ ] CI, setup docs, screenshots, demo script, known limitations and resume summary are complete.
 
+
+
+| 2026-11-26 | Added a bilingual read-only outcome evidence explorer, exact API filters for geography/cohort/observation scope, stable bounded pagination and conservative side-by-side comparisons; provider IDs remain provider-geography-only and numeric values require the full verified API contract | Implementation and regression tests are on the Day 25 feature branch; CI validation pending. Official SIH dummy data remains unavailable in issue #5; no local/synthetic outcomes are substituted. |
