@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 import os
+from contextlib import nullcontext
 from dataclasses import dataclass
 from typing import Any, Mapping
 from urllib.error import HTTPError, URLError
@@ -481,7 +482,11 @@ def render_outcome_explorer(
     )
 
     st.markdown(f"**{copy['filters_heading']}**")
-    with st.form("outcome_explorer_filters"):
+    form_factory = getattr(st, "form", None)
+    form_context = form_factory("outcome_explorer_filters") if callable(form_factory) else None
+    if form_context is None:
+        form_context = nullcontext()
+    with form_context:
         metric_code = st.text_input(
             copy["metric_code"], value=active_filters.get("metric_code", ""), key="outcome_metric_filter"
         )
@@ -548,6 +553,8 @@ def render_outcome_explorer(
 
     if not records:
         st.info(copy["empty"])
+        if offset > 0 and st.button(copy["previous"], key="outcome_previous_page"):
+            state["outcome_explorer_offset"] = max(0, offset - PAGE_SIZE)
         return
 
     st.caption(copy["page"].format(offset=offset, count=len(records), limit=PAGE_SIZE))
