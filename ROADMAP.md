@@ -158,6 +158,7 @@ The implementation review is recorded in [PHASE3_ACCEPTANCE.md](docs/PHASE3_ACCE
 - [x] Add side-by-side comparison compatibility checks for metric code/definition, metric kind, currency/unit/statistic semantics, geography granularity and trade/job role; disclose geography/provider/cohort/observation/follow-up differences without pooling or deriving aggregate outcomes.
 - [x] Validate the Day 25 increment in GitHub Actions run [#208](https://github.com/emtharva1047/PathSaathi-AI/actions/runs/45752147679): Python compilation, Ruff, 280 Pytest tests and live Streamlit/FastAPI smoke check passed (one existing Starlette/httpx deprecation warning).
 - [ ] Map the official SIH file only after its authorised data dictionary and licence are received (issue [#5](https://github.com/emtharva1047/PathSaathi-AI/issues/5)).
+- [ ] Add bilingual course catalogue search over the existing read-only API with exact state/district/trade/provider/NSQF filters, provenance display and bounded pagination (issue [#52](https://github.com/emtharva1047/PathSaathi-AI/issues/52)).
 
 ## Progress log
 
@@ -215,4 +216,4 @@ The implementation review is recorded in [PHASE3_ACCEPTANCE.md](docs/PHASE3_ACCE
 
 
 
-| 2026-11-26 | Added a bilingual read-only outcome evidence explorer, exact API filters for geography/cohort/observation scope, stable bounded pagination and conservative side-by-side comparisons; provider IDs remain provider-geography-only and numeric values require the full verified API contract | PR [#51](https://github.com/emtharva1047/PathSaathi-AI/pull/51); Actions run [#208](https://github.com/emtharva1047/PathSaathi-AI/actions/runs/45752147679) passed compileall, Ruff, 280 Pytest tests and the live Streamlit/FastAPI smoke check (one existing Starlette/httpx deprecation warning). Official SIH dummy data remains unavailable in issue #5; no local/synthetic outcomes are substituted. |
+| 2026-11-26 | Added a bilingual read-only outcome evidence explorer, exact API filters for geography/cohort/observation scope, stable bounded pagination and conservative side-by-side comparisons; provider IDs remain provider-geography-only and numeric values require the full verified API contract | PR [#51](https://github.com/emtharva1047/PathSaathi-AI/pull/51); Actions run [#208](https://github.com/emtharva1047/PathSaathi-AI/actions/runs/45752147679) passed compileall, Ruff, 280 Pytest tests and the live Streamlit/FastAPI smoke check (one existing Starlette/httpx deprecation warning). Official SIH dummy data remains unavailable in issue #5; no local/synthetic outcomes are substituted. Next Phase 4 task: course catalogue search, issue [#52](https://github.com/emtharva1047/PathSaathi-AI/issues/52). |
