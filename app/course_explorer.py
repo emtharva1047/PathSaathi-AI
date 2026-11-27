@@ -283,7 +283,12 @@ def _display_value(st: Any, label: str, value: Any, unknown: str) -> None:
 def _status_label(record: Mapping[str, Any], copy: Mapping[str, str]) -> tuple[str, str]:
     """Return a label and presentation kind without trusting status alone."""
     status = record.get("verification_status")
-    source_verified = record.get("source_verified") is True
+    source_verified = (
+        record.get("source_verified") is True
+        and bool(record.get("source_publisher"))
+        and bool(record.get("last_verified_at"))
+        and safe_source_url(record.get("source_url")) is not None
+    )
     if status == "verified" and source_verified:
         return copy["verified"], "success"
     if status == "verified":
