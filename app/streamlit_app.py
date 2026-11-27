@@ -17,6 +17,7 @@ from app.profile_flow import render_profile_capture
 from app.counselling_flow import render_joint_counselling
 from app.read_aloud import render_read_aloud
 from app.outcome_import_flow import render_outcome_import
+from app.course_explorer import render_course_explorer
 from app.outcome_explorer import render_outcome_explorer
 
 
@@ -260,6 +261,7 @@ def main() -> None:
         render_pathway_explorer(st, locale)
         render_qualification_explainers(st, locale)
         render_multi_route_eligibility(st, locale)
+        render_course_explorer(st, locale)
         render_outcome_import(st, locale)
         render_outcome_explorer(st, locale)
         read_aloud_text = " ".join((copy["pathways_heading"], copy["pathways_description"], copy["pathways_placeholder"]))
