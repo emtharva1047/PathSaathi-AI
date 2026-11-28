@@ -16,7 +16,7 @@ Day 1 is 2 November 2026. Day 60 is 31 December 2026.
 | 1. Research and requirements | 1–5 | 2–6 Nov | Official SIH26241 review, personas/use cases, SRS, architecture, risks, outcome contract, traceability and acceptance | Requirements mapped, source policy and acceptance baseline | Complete |
 | 2. Foundation | 6–12 | 7–13 Nov | Streamlit/FastAPI skeleton, config/logging, SQLAlchemy models, local SQLite, PostgreSQL-ready URL, API health, locale scaffold, read-only catalogue/evidence API, validation and CI | App/API start, explicit schema creation, request-scoped SQLite repositories, safe evidence responses and CI green | Complete (13 Nov) |
 | 3. Counselling/profile/pathway | 13–22 | 14–23 Nov | Learner and parent context, guided bilingual prompts, advisory shortlisting, eligibility and source-backed explainers | Deterministic recommendations, eligible/ineligible/unknown outcomes, explainable tests | Complete (23 Nov) |
-| 4. Course/outcome explorer | 23–29 | 24–30 Nov | SIH dummy-data importer when supplied, validation, source-linked qualifications/outcomes, filters and comparisons | Provenance-aware import report and accurate comparison semantics | In progress (24 Nov) |
+| 4. Course/outcome explorer | 23–29 | 24–30 Nov | SIH dummy-data importer when supplied, validation, source-linked qualifications/outcomes, filters and comparisons | Provenance-aware import report and accurate comparison semantics | In progress (Day 27 review; target exit 30 Nov) |
 | 5. Family counselling/escalation | 30–36 | 1–7 Dec | Shared sessions, distinct learner/parent roles and preferences, consent and callback request workflow | Role separation, consent tests, honest escalation queue | Not started |
 | 6. AI and reporting | 37–41 | 8–12 Dec | Retrieval-grounded bilingual Q&A, safe prompts, source display and PDF report | Evidence-backed responses with source/caveat display; report export | Not started |
 | 7. Admin analytics, quality and privacy | 42–47 | 13–18 Dec | Aggregate dashboard, optional self-reported concern shifts, small-cohort suppression, security, data-quality and usability review | Privacy-safe analytics, QA and usability evidence | Not started |
@@ -143,7 +143,7 @@ Learner/parent onboarding and consent → joint bilingual counselling → contex
 
 The implementation review is recorded in [PHASE3_ACCEPTANCE.md](docs/PHASE3_ACCEPTANCE.md). The Day 22 cross-flow regression merged as PR #45 (`2e4e2d8`); PR run #193 and merged-main run #194 passed Python compilation, Ruff, 222 Pytest tests and the live Streamlit/FastAPI smoke test. Phase 3's deterministic implementation scope is complete. Human Marathi, target-user, screen-reader, keyboard, contrast, mobile and device voice validation remain open in issue #14 and are not inferred from automated tests.
 
-## Phase 4 progress — 27 November 2026
+## Phase 4 progress — 28 November 2026
 
 - [x] Create issue [#46](https://github.com/emtharva1047/PathSaathi-AI/issues/46) for the canonical provenance-aware CSV import boundary.
 - [x] Add a strict UTF-8 CSV preview parser with exact header mapping, file/row limits, dataset identity, source filename, SHA-256 and UTC import timestamp.
@@ -159,6 +159,12 @@ The implementation review is recorded in [PHASE3_ACCEPTANCE.md](docs/PHASE3_ACCE
 - [x] Validate the Day 25 increment in GitHub Actions run [#208](https://github.com/emtharva1047/PathSaathi-AI/actions/runs/45752147679): Python compilation, Ruff, 280 Pytest tests and live Streamlit/FastAPI smoke check passed (one existing Starlette/httpx deprecation warning).
 - [ ] Map the official SIH file only after its authorised data dictionary and licence are received (issue [#5](https://github.com/emtharva1047/PathSaathi-AI/issues/5)).
 - [x] Add bilingual course catalogue search over the existing read-only API with exact state/district/trade/provider/NSQF filters, provenance display and bounded pagination. Preserve exact half-step NSQF validation, safe HTTP(S)-only source links, unknown fields, API-only results and bounded stable pagination; do not infer local availability, seats, fees, admissions or outcomes. PR [#53](https://github.com/emtharva1047/PathSaathi-AI/pull/53) merged as `c451f66`; PR run [#214](https://github.com/emtharva1047/PathSaathi-AI/actions/runs/45936879448) and merged-main run [#215](https://github.com/emtharva1047/PathSaathi-AI/actions/runs/45936965342) passed compileall, Ruff, 310 Pytest tests and the live Streamlit/FastAPI smoke check (one existing Starlette/httpx deprecation warning); issue #52 closed.
+- [x] Add a cross-layer Phase 4 regression that drives the Streamlit course catalogue, CSV preview and outcome explorer through the real FastAPI routes and request-scoped SQLAlchemy sessions on isolated SQLite in English and Marathi. Synthetic records remain labelled and API-withheld outcome values/counts must remain absent from the UI (tests/test_phase4_journey.py). PR CI validation is pending; see [Phase 4 acceptance review](docs/PHASE4_ACCEPTANCE.md).
+- [ ] Map the authorised SIH dataset only after its data dictionary and licence are received; issue [#5](https://github.com/emtharva1047/PathSaathi-AI/issues/5) remains an external blocker.
+
+## Phase 4 acceptance review — 28 November 2026
+
+See [PHASE4_ACCEPTANCE.md](docs/PHASE4_ACCEPTANCE.md). The implementation is ready for a final Day 29 review subject to the new cross-layer regression passing CI. The official SIH dataset mapping remains blocked by issue #5; the review does not claim real-data ingestion. Human Marathi/accessibility validation remains open in issue #14.
 
 ## Progress log
 
@@ -203,8 +209,8 @@ The implementation review is recorded in [PHASE3_ACCEPTANCE.md](docs/PHASE3_ACCE
 - [ ] Reviewed English/Marathi key flows with accessible guided steps and optional read-aloud.
 - [x] Eligibility states distinguish eligible, ineligible and unknown.
 - [x] Advisory recommendations explain why options are shortlisted and are not psychometric claims.
-- [ ] Outcome import validates source, denominator, cohort, geography, period and units.
-- [x] Add a source-backed NQR qualification explainer with exact record validity, entry routes, job-role summary and NSQF progression; full catalogue ingestion remains Phase 4.
+- [x] Canonical outcome CSV preview validates source, denominator, cohort, geography, period and units; it remains preview-only, and SIH-specific mapping/persistence are not claimed.
+- [x] Add a source-backed NQR qualification explainer with exact record validity, entry routes, job-role summary and NSQF progression; the read-only API course catalogue explorer is also implemented. Bulk catalogue ingestion still requires an authorised source.
 - [ ] Callback request queue is honest about partner availability.
 - [ ] Admin dashboard is aggregate-only with small-cohort suppression.
 - [ ] Optional concern changes are self-reported.
@@ -218,3 +224,4 @@ The implementation review is recorded in [PHASE3_ACCEPTANCE.md](docs/PHASE3_ACCE
 
 | 2026-11-26 | Added a bilingual read-only outcome evidence explorer, exact API filters for geography/cohort/observation scope, stable bounded pagination and conservative side-by-side comparisons; provider IDs remain provider-geography-only and numeric values require the full verified API contract | PR [#51](https://github.com/emtharva1047/PathSaathi-AI/pull/51); Actions run [#208](https://github.com/emtharva1047/PathSaathi-AI/actions/runs/45752147679) passed compileall, Ruff, 280 Pytest tests and the live Streamlit/FastAPI smoke check (one existing Starlette/httpx deprecation warning). Official SIH dummy data remains unavailable in issue #5; no local/synthetic outcomes are substituted. Next Phase 4 task: course catalogue search, issue [#52](https://github.com/emtharva1047/PathSaathi-AI/issues/52). |
 | 2026-11-27 | Added a bilingual read-only course catalogue explorer over `GET /api/v1/courses` with exact state/district/trade/provider filters, Decimal-validated whole/half-step NSQF bounds, bounded stable pagination, explicit offline/empty/invalid states, source-backed qualification/job-role/entry-requirement display, unknown-preserving fields and credential-free HTTP(S)-only source links. The curated NQR example remains separate; no synthetic fallback or admission/provider/fee/placement claims are introduced. | PR [#53](https://github.com/emtharva1047/PathSaathi-AI/pull/53) merged as `c451f66`; PR run [#214](https://github.com/emtharva1047/PathSaathi-AI/actions/runs/45936879448) and merged-main run [#215](https://github.com/emtharva1047/PathSaathi-AI/actions/runs/45936965342) passed compileall, Ruff, 310 Pytest tests and live Streamlit/FastAPI smoke check (one existing Starlette/httpx deprecation warning). Issue #52 closed; official SIH dummy data remains unavailable in issue #5. |
+| 2026-11-28 | Added a cross-layer Phase 4 regression using isolated SQLite, the real FastAPI catalogue/evidence routes and Streamlit course, CSV-preview and outcome renderers in English/Marathi; synthetic outcome values/counts are asserted to remain withheld at the UI boundary | PR CI validation pending; the authorised SIH dataset mapping remains blocked by issue #5. See [Phase 4 acceptance review](docs/PHASE4_ACCEPTANCE.md). |
