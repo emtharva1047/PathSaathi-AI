@@ -50,7 +50,7 @@ This is an in-process integration test, not a deployed-network test, source audi
 
 Before the scheduled Day 29 review on 30 November:
 
-- [ ] The cross-layer English/Marathi integration test passes in GitHub Actions.
+- [x] The cross-layer English/Marathi integration test passes in GitHub Actions run [#217](https://github.com/emtharva1047/PathSaathi-AI/actions/runs/46104298781): compileall, Ruff, 312 Pytest tests and the live Streamlit/FastAPI smoke check passed (one existing Starlette/httpx deprecation warning).
 - [ ] README and ROADMAP identify the SIH dataset mapping as blocked by issue #5, not complete.
 - [ ] The final Phase 4 status distinguishes implemented software from unavailable external data.
 - [ ] No unverified or synthetic numeric outcome is exposed.

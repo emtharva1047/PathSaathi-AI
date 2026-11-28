@@ -65,7 +65,7 @@ The local default database URL is sqlite:///./data/pathsaathi.db. The applicatio
 Production PostgreSQL provisioning and application deployment are reserved for Phase 8. Local SQLite is part of Phase 2 and is not blocked by the production-hosting gate.
 
 
-Phase 4 now has a cross-layer regression in tests/test_phase4_journey.py: the course catalogue, CSV preview and outcome explorer run in English and Marathi against the real FastAPI routes backed by isolated SQLite. Synthetic course records remain labelled, and synthetic outcome values/counts withheld by the API are asserted not to reappear in the UI. See the [Phase 4 acceptance review](docs/PHASE4_ACCEPTANCE.md). This integration test does not represent an import of the still-unavailable official SIH dataset; issue [#5](https://github.com/emtharva1047/PathSaathi-AI/issues/5) remains open.
+Phase 4 now has a cross-layer regression in tests/test_phase4_journey.py: the course catalogue, CSV preview and outcome explorer run in English and Marathi against the real FastAPI routes backed by isolated SQLite. Synthetic course records remain labelled, and synthetic outcome values/counts withheld by the API are asserted not to reappear in the UI. See the [Phase 4 acceptance review](docs/PHASE4_ACCEPTANCE.md). This integration test does not represent an import of the still-unavailable official SIH dataset; issue [#5](https://github.com/emtharva1047/PathSaathi-AI/issues/5) remains open. GitHub Actions PR run [#217](https://github.com/emtharva1047/PathSaathi-AI/actions/runs/46104298781) passed compilation, Ruff, 312 Pytest tests and the live Streamlit/FastAPI smoke check (one existing Starlette/httpx deprecation warning).
 
 ## Project documentation
 
